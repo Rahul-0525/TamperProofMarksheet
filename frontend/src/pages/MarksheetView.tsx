@@ -62,32 +62,32 @@ export const MarksheetView: React.FC = () => {
   const qrString = JSON.stringify(qrPayload);
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8">
-      {/* Sleek Action & Selector Bar (Hidden during print) */}
-      <div className="no-print mb-8 floating-action-card p-4 rounded-3xl flex flex-wrap items-center justify-between gap-4 fly-in is-revealed">
+    <div className="max-w-5xl mx-auto px-4 sm:px-8 lg:px-10 py-10 sm:py-16 space-y-10">
+      {/* Sleek Action & Selector Bar (Hidden during print) - Spacey & Relaxed */}
+      <div className="no-print mb-10 floating-action-card p-5 sm:p-7 rounded-[30px] flex flex-wrap items-center justify-between gap-6 fly-in is-revealed shadow-2xl">
         {/* Search Box with Sunken Inset Input */}
-        <form onSubmit={handleSearch} className="flex items-center space-x-2 flex-grow max-w-md">
-          <div className="inset-pill-field relative flex-grow flex items-center px-3.5 py-1.5">
-            <Search className="w-4 h-4 text-pine-300 mr-2 flex-shrink-0" />
+        <form onSubmit={handleSearch} className="flex items-center space-x-3 flex-grow max-w-md">
+          <div className="inset-pill-field relative flex-grow flex items-center px-4 py-2">
+            <Search className="w-4 h-4 text-pine-300 mr-2.5 flex-shrink-0" />
             <input
               type="text"
               value={searchRoll}
               onChange={(e) => setSearchRoll(e.target.value)}
               placeholder="Search Roll No (e.g., 2024CS001)"
-              className="bg-transparent text-white font-mono uppercase text-xs focus:outline-none w-full placeholder:text-pine-400/60"
+              className="bg-transparent text-white font-mono uppercase text-xs focus:outline-none w-full placeholder:text-pine-400/60 font-semibold"
             />
           </div>
           <button
             type="submit"
-            className="btn-pill-white px-5 py-2 text-xs"
+            className="btn-pill-white px-6 py-2.5 text-xs font-bold active:scale-95 shadow-md"
           >
             Search
           </button>
         </form>
 
         {/* Quick-Pick Selector */}
-        <div className="flex items-center space-x-1.5 text-xs">
-          <span className="text-pine-300 text-[11px] mr-1 hidden sm:inline">Roll:</span>
+        <div className="flex items-center space-x-2 text-xs">
+          <span className="text-pine-300 text-xs font-bold mr-1 hidden sm:inline">Roll:</span>
           {MOCK_STUDENTS.map((s) => (
             <button
               key={s.roll_no}
@@ -95,10 +95,10 @@ export const MarksheetView: React.FC = () => {
                 setSearchRoll(s.roll_no);
                 navigate(`/marksheet/${s.roll_no}`);
               }}
-              className={`px-3 py-1 rounded-full font-mono text-[11px] transition active:scale-95 ${
+              className={`px-3.5 py-1.5 rounded-full font-mono text-xs font-bold transition active:scale-95 ${
                 s.roll_no === currentRoll
                   ? 'btn-pill-white'
-                  : 'bg-white/[0.06] hover:bg-white/[0.12] text-pine-200'
+                  : 'bg-white/[0.06] hover:bg-white/[0.14] text-pine-200'
               }`}
             >
               {s.roll_no}
@@ -107,19 +107,19 @@ export const MarksheetView: React.FC = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-3">
           <button
             onClick={() => navigate(`/verify?roll=${currentRoll}`)}
-            className="btn-pill-glass flex items-center space-x-1.5 px-4 py-2 text-xs"
+            className="btn-pill-glass flex items-center space-x-2 px-5 py-2.5 text-xs font-semibold"
           >
-            <ShieldCheck className="w-3.5 h-3.5 text-[#fbbf24]" />
+            <ShieldCheck className="w-4 h-4 text-[#fbbf24]" />
             <span>Verify Proof</span>
           </button>
           <button
             onClick={handlePrint}
-            className="btn-pill-white flex items-center space-x-1.5 px-4 py-2 text-xs"
+            className="btn-pill-white flex items-center space-x-2 px-5 py-2.5 text-xs font-bold active:scale-95"
           >
-            <Printer className="w-3.5 h-3.5" />
+            <Printer className="w-4 h-4" />
             <span>Print Marksheet</span>
           </button>
         </div>

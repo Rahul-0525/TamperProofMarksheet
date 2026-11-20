@@ -182,25 +182,25 @@ export const VerifyPortal: React.FC = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-10">
-      {/* Header */}
-      <div className="text-center mb-8 sm:mb-10 fly-in is-revealed">
-        <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-white/[0.08] border border-white/15 text-pine-100 text-xs font-bold mb-4 shadow-sm">
-          <Building2 className="w-3.5 h-3.5 text-[#fbbf24]" />
+    <div className="max-w-5xl mx-auto px-4 sm:px-8 lg:px-10 py-10 sm:py-16 space-y-10 sm:space-y-12">
+      {/* Header - Spacey & Relaxed */}
+      <div className="text-center mb-10 sm:mb-14 fly-in is-revealed">
+        <div className="inline-flex items-center space-x-2.5 px-4 py-2 rounded-full bg-white/[0.08] border border-white/18 text-pine-100 text-xs font-bold mb-5 shadow-sm">
+          <Building2 className="w-4 h-4 text-[#fbbf24]" />
           <span>TruGrade Transcript Verifier &bull; Lovely Professional University</span>
         </div>
-        <h1 className="font-display text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight mb-3">
+        <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight mb-4">
           Public Transcript Verification
         </h1>
-        <p className="text-pine-200/80 max-w-2xl mx-auto text-xs sm:text-sm leading-relaxed px-2">
+        <p className="text-pine-200/90 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed px-4">
           Verify printed or electronic university marksheets against the immutable LPU academic ledger root.
           Validates cryptographic inclusion proofs directly in your browser.
         </p>
       </div>
 
-      {/* Input Selection in Luxury Frosted Glass */}
-      <div className="floating-action-card p-4 sm:p-8 mb-8 shadow-2xl fly-in delay-100">
-        <div className="flex flex-wrap border-b border-white/[0.08] pb-4 mb-6 gap-2 text-xs sm:text-sm font-semibold">
+      {/* Input Selection in Frosted Glass - Spacey & Relaxed */}
+      <div className="floating-action-card p-6 sm:p-10 mb-10 shadow-2xl fly-in delay-100">
+        <div className="flex flex-wrap border-b border-white/[0.1] pb-5 mb-8 gap-3 text-xs sm:text-sm font-semibold">
           <button
             onClick={() => {
               stopCamera();

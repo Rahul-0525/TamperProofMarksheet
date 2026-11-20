@@ -69,38 +69,38 @@ export const Navbar: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-50 no-print transition-all duration-300">
-      {/* Sleek LPU Top Institutional Bar (Responsive) */}
-      <div className="bg-[#0a0f09]/95 backdrop-blur-xl border-b border-white/[0.08] px-3 sm:px-6 py-1.5 text-xs text-pine-200">
+      {/* Sleek LPU Top Institutional Bar (Responsive & Spacey with Radial Mist) */}
+      <div className="navbar-top-institution px-4 sm:px-8 py-2 text-xs text-pine-200">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-2 text-[11px] truncate">
-            <span className="w-2 h-2 rounded-full bg-[#fbbf24] shadow-sm shadow-[#fbbf24]/50 flex-shrink-0 animate-pulse" />
-            <span className="font-semibold text-white truncate">Lovely Professional University</span>
+          <div className="flex items-center space-x-2.5 text-[11px] truncate">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#fbbf24] shadow-sm shadow-[#fbbf24]/50 flex-shrink-0 animate-pulse" />
+            <span className="font-semibold text-white tracking-wide truncate">Lovely Professional University</span>
             <span className="text-pine-400 hidden sm:inline">&bull;</span>
             <span className="text-pine-300 hidden sm:inline">Division of Examinations</span>
           </div>
           <div className="flex items-center space-x-2 font-mono text-[10px] flex-shrink-0">
             <span className="text-pine-400 hidden md:inline">Current View:</span>
-            <span className="text-[#fbbf24] font-bold px-2 py-0.5 bg-[#f59e0b]/15 rounded-full border border-[#f59e0b]/30">
+            <span className="text-[#fbbf24] font-bold px-2.5 py-0.5 bg-[#f59e0b]/15 rounded-full border border-[#f59e0b]/30">
               {navItems[activeIndex]?.roleBadge}
             </span>
           </div>
         </div>
       </div>
 
-      {/* Main Glass Floating Header */}
-      <div className="bg-[#141e16]/85 backdrop-blur-2xl border-b border-white/[0.08] px-4 sm:px-6 lg:px-8 shadow-lg">
-        <div className="max-w-7xl mx-auto h-16 flex items-center justify-between">
+      {/* Main Glass Floating Header with Radial Gradient Lighting */}
+      <div className="navbar-radial-glow px-4 sm:px-8 lg:px-10 shadow-xl">
+        <div className="max-w-7xl mx-auto h-18 sm:h-20 flex items-center justify-between">
           {/* TruGrade Logo */}
-          <Link to="/" className="flex items-center space-x-2.5 group select-none">
-            <div className="w-8 h-8 rounded-full bg-[#f59e0b]/20 border border-[#f59e0b]/40 flex items-center justify-center text-[#fbbf24] shadow-sm">
-              <ShieldCheck className="w-4 h-4" />
+          <Link to="/" className="flex items-center space-x-3 group select-none">
+            <div className="w-9 h-9 rounded-2xl bg-[#f59e0b]/20 border border-[#f59e0b]/40 flex items-center justify-center text-[#fbbf24] shadow-md group-hover:scale-105 transition-transform">
+              <ShieldCheck className="w-5 h-5" />
             </div>
             <div className="flex flex-col">
               <div className="flex items-center tracking-tight">
-                <span className="font-display text-xl font-black text-white group-hover:text-pine-100 transition">
+                <span className="font-display text-2xl font-black text-white group-hover:text-pine-100 transition">
                   Tru
                 </span>
-                <span className="font-display text-xl font-black text-[#fbbf24] group-hover:text-[#f59e0b] transition">
+                <span className="font-display text-2xl font-black text-[#fbbf24] group-hover:text-[#f59e0b] transition">
                   Grade
                 </span>
               </div>
@@ -110,15 +110,15 @@ export const Navbar: React.FC = () => {
             </div>
           </Link>
 
-          {/* Desktop Sliding Capsule Navigation */}
+          {/* Desktop Sliding Capsule Navigation - Spacey & Relaxed */}
           <nav
             ref={navContainerRef}
-            className="relative hidden lg:flex items-center p-1 bg-black/40 border border-white/[0.08] rounded-full overflow-x-auto shadow-inner"
+            className="relative hidden lg:flex items-center p-1.5 bg-black/35 border border-white/[0.12] rounded-full overflow-x-auto shadow-inner space-x-1"
             onMouseLeave={() => setHoverIndex(null)}
           >
             {/* The Animated Sliding Glass Pill */}
             <div
-              className="absolute top-1 bottom-1 bg-white/[0.14] border border-white/[0.25] rounded-full shadow-md pointer-events-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+              className="absolute top-1.5 bottom-1.5 bg-white/[0.16] border border-white/[0.28] rounded-full shadow-md pointer-events-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
               style={{
                 left: `${pillStyle.left}px`,
                 width: `${pillStyle.width}px`,
@@ -136,7 +136,7 @@ export const Navbar: React.FC = () => {
                   to={item.path}
                   ref={(el) => (itemRefs.current[idx] = el)}
                   onMouseEnter={() => setHoverIndex(idx)}
-                  className={`relative z-10 flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors duration-200 whitespace-nowrap active:scale-95 ${
+                  className={`relative z-10 flex items-center space-x-2 px-4 py-2 rounded-full text-xs font-semibold transition-colors duration-200 whitespace-nowrap active:scale-95 ${
                     isSelected || isHovered
                       ? 'text-white'
                       : 'text-pine-200/80 hover:text-white'
@@ -150,12 +150,12 @@ export const Navbar: React.FC = () => {
           </nav>
 
           {/* Right Controls: Desktop Verify Pill + Mobile Hamburger Toggle */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-3">
             <Link
               to="/verify"
-              className="hidden sm:flex btn-pill-white px-4 py-1.5 text-xs items-center space-x-1.5"
+              className="hidden sm:flex btn-pill-white px-5 py-2.5 text-xs font-bold items-center space-x-2 active:scale-95"
             >
-              <QrCode className="w-3.5 h-3.5 text-[#0e1c19]" />
+              <QrCode className="w-4 h-4 text-[#0a0f09]" />
               <span>Verify Marksheet</span>
             </Link>
 

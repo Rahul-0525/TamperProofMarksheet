@@ -131,24 +131,24 @@ export const GovernancePortal: React.FC = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
-      {/* Header */}
-      <div className="text-center mb-10 fly-in is-revealed">
-        <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-white/[0.08] border border-white/15 text-pine-100 text-xs font-bold mb-4 shadow-sm">
-          <Building2 className="w-3.5 h-3.5 text-[#fbbf24]" />
+    <div className="max-w-6xl mx-auto px-4 sm:px-8 lg:px-10 py-10 sm:py-16 space-y-10">
+      {/* Header - Spacey & Relaxed */}
+      <div className="text-center mb-10 sm:mb-14 fly-in is-revealed">
+        <div className="inline-flex items-center space-x-2.5 px-4 py-2 rounded-full bg-white/[0.08] border border-white/18 text-pine-100 text-xs font-bold mb-5 shadow-sm">
+          <Building2 className="w-4 h-4 text-[#fbbf24]" />
           <span>Lovely Professional University &bull; Executive Governance Board</span>
         </div>
-        <h1 className="font-display text-3xl sm:text-5xl font-black text-white tracking-tight mb-3">
+        <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight mb-4">
           Dual-Key Grade Governance
         </h1>
-        <p className="text-pine-200/80 max-w-2xl mx-auto text-sm leading-relaxed">
+        <p className="text-pine-200/90 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed px-4">
           Guarantees institutional integrity against unilateral grade alterations.
           Official marksheet amendments require independent Ed25519 digital signatures from both the Dean and the Controller of Examinations.
         </p>
       </div>
 
-      {/* Main Chamber Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      {/* Main Chamber Grid - Spacey & Relaxed */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-12">
         {/* Left Column: Proposals Docket */}
         <div className="lg:col-span-1 space-y-4 fly-in delay-100">
           <div className="flex items-center justify-between">

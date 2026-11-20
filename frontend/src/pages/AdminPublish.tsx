@@ -60,23 +60,23 @@ export const AdminPublish: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10">
-      {/* Header */}
-      <div className="text-center mb-10 fly-in is-revealed">
-        <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-white/[0.08] border border-white/15 text-pine-100 text-xs font-bold mb-4 shadow-sm">
-          <Building2 className="w-3.5 h-3.5 text-[#fbbf24]" />
+    <div className="max-w-4xl mx-auto px-4 sm:px-8 lg:px-10 py-10 sm:py-16 space-y-10">
+      {/* Header - Spacey & Relaxed */}
+      <div className="text-center mb-10 sm:mb-14 fly-in is-revealed">
+        <div className="inline-flex items-center space-x-2.5 px-4 py-2 rounded-full bg-white/[0.08] border border-white/18 text-pine-100 text-xs font-bold mb-5 shadow-sm">
+          <Building2 className="w-4 h-4 text-[#fbbf24]" />
           <span>Lovely Professional University &bull; Office of the Registrar</span>
         </div>
-        <h1 className="font-display text-3xl sm:text-5xl font-black text-white tracking-tight mb-3">
+        <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight mb-4">
           Publish Semester Results
         </h1>
-        <p className="text-pine-200/80 max-w-xl mx-auto text-sm leading-relaxed">
+        <p className="text-pine-200/90 max-w-xl mx-auto text-sm sm:text-base leading-relaxed px-4">
           Upload official exam score spreadsheets. TruGrade canonically serializes and hashes each record, builds the balanced Merkle tree, and locks the root into the immutable LPU academic ledger.
         </p>
       </div>
 
       {/* Main Glass Upload Box */}
-      <div className="floating-action-card p-8 sm:p-10 mb-8 shadow-2xl fly-in delay-100">
+      <div className="floating-action-card p-8 sm:p-12 mb-10 shadow-2xl fly-in delay-100">
         <form onSubmit={handlePublish}>
           <div className="border-2 border-dashed border-white/15 rounded-3xl p-10 text-center hover:border-[#f59e0b]/50 transition-all duration-300 bg-black/20">
             <UploadCloud className="w-12 h-12 text-[#fbbf24] mx-auto mb-4 animate-float" />

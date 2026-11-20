@@ -52,24 +52,24 @@ export const AuditDashboard: React.FC = () => {
   const isSecure = auditReport.status === 'SECURE';
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
-      {/* Header */}
-      <div className="text-center mb-10 fly-in is-revealed">
-        <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-white/[0.08] border border-white/15 text-pine-100 text-xs font-bold mb-4 shadow-sm">
-          <Activity className="w-3.5 h-3.5 text-[#fbbf24] animate-pulse" />
+    <div className="max-w-6xl mx-auto px-4 sm:px-8 lg:px-10 py-10 sm:py-16 space-y-10">
+      {/* Header - Spacey & Relaxed */}
+      <div className="text-center mb-10 sm:mb-14 fly-in is-revealed">
+        <div className="inline-flex items-center space-x-2.5 px-4 py-2 rounded-full bg-white/[0.08] border border-white/18 text-pine-100 text-xs font-bold mb-5 shadow-sm">
+          <Activity className="w-4 h-4 text-[#fbbf24] animate-pulse" />
           <span>TruGrade Continuous Audit Daemon &bull; Lovely Professional University</span>
         </div>
-        <h1 className="font-display text-3xl sm:text-5xl font-black text-white tracking-tight mb-3">
+        <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight mb-4">
           Database Tamper Audit Console
         </h1>
-        <p className="text-pine-200/80 max-w-2xl mx-auto text-sm leading-relaxed">
+        <p className="text-pine-200/90 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed px-4">
           Continuously cross-references relational SQL database records against the immutable Merkle ledger root.
           Isolates unauthorized direct database manipulations within milliseconds.
         </p>
       </div>
 
-      {/* Control & Trigger Dock in Luxury Frosted Glass */}
-      <div className="floating-action-card p-5 rounded-3xl mb-8 flex flex-wrap items-center justify-between gap-4 shadow-2xl fly-in delay-100">
+      {/* Control & Trigger Dock in Frosted Glass - Spacey & Relaxed */}
+      <div className="floating-action-card p-6 sm:p-8 rounded-[30px] mb-10 flex flex-wrap items-center justify-between gap-6 shadow-2xl fly-in delay-100">
         <div className="flex items-center space-x-4">
           <button
             onClick={() => runAudit(tamperSimulated)}
