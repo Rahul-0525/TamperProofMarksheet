@@ -1,12 +1,13 @@
-# 🎓 VeriMark — Tamper-Proof Exam Result Ledger
+# 🌲 TruGrade — Tamper-Proof Exam Result Ledger
 ### Code Fuzion 2026 — Problem Statement H8 (Hard • 350 Base Points)
-*Organised by Student Organisation Vizion Forge under the aegis of DYA, Student Welfare Wing, Lovely Professional University.*
+*Engineered for Lovely Professional University (LPU) &bull; Organised by Student Organisation Vizion Forge under the aegis of DYA, Student Welfare Wing.*
 
 [![Tests](https://img.shields.io/badge/pytest-7%20passed%20%7C%206%20adversarial%20passed-brightgreen.svg)](backend/tests/)
 [![Latency](https://img.shields.io/badge/proof%20latency-33.8ms%20%28target%20%3C50ms%29-blue.svg)](backend/tests/test_performance.py)
 [![Ingestion](https://img.shields.io/badge/bulk%201500%20ingestion-1.39s%20%28target%20%3C2.0s%29-blue.svg)](backend/tests/test_performance.py)
 [![Architecture](https://img.shields.io/badge/crypto-Merkle%20Tree%20%2B%20Ed25519%20Dual--Key-indigo.svg)](backend/app/crypto/)
-[![Deployment](https://img.shields.io/badge/Vercel-1--Click%20Deploy%20Ready-black.svg)](frontend/vercel.json)
+[![Design](https://img.shields.io/badge/UI-Dribbble%20Lodge%20%2B%20Muted%20Forest%20Green-emerald.svg)](frontend/)
+[![Deployment](https://img.shields.io/badge/Vercel-1--Click%20Deploy%20Ready-black.svg)](vercel.json)
 
 ---
 
@@ -26,7 +27,7 @@
 
 All targets measured live on realistic datasets (including Punjabi/Hindi UTF-8 strings, edge scores 0 & 100):
 
-| Criterion | Hackathon Requirement | VeriMark Measured Result | Status |
+| Criterion | Hackathon Requirement | TruGrade Measured Result | Status |
 | :--- | :--- | :--- | :--- |
 | **Bulk CSV Ingestion (1,500 students)** | $< 2.0\text{ seconds}$ | **1.398 seconds** | 🟢 **PASS** |
 | **Merkle Proof Generation Latency** | $< 50\text{ ms}$ | **33.81 ms** | 🟢 **PASS** |
@@ -37,17 +38,39 @@ All targets measured live on realistic datasets (including Punjabi/Hindi UTF-8 s
 
 ---
 
-## 🏛️ Enterprise Role-Isolated Architecture
+## 🌲 Modern Architectural UI & Design System
 
-To satisfy **Usability & Design (10 points)**, VeriMark decouples user experiences into 4 dedicated institutional portals:
+To satisfy **Usability & Design (10 points)**, TruGrade features a modern, luxury architectural aesthetic inspired by high-end Dribbble lodge booking interfaces and realistic nature cinematography:
+
+- **Atmospheric Background Wallpaper:** High-resolution wide-angle panoramic photograph of a misty evergreen pine forest at dawn with soft morning fog, illuminated trees, and an architectural wooden cabin with warm glowing windows.
+- **Muted Forest Green Color Palette:**
+  - `#0a0f09` (Deep Muted Forest Base)
+  - `#1f2f22` (Deep Spruce Green)
+  - `#3e5640` (Muted Evergreen Moss)
+  - `#94a789` (Soft Meadow Sage Foliage)
+  - `#7a94a1` (Misty Mountain Slate Fog)
+  - `#ced9df` (Ethereal Cloud Mist White)
+  - `#fbbf24`, `#f59e0b` (Radiant University Amber / Gold)
+- **Non-Distracting Ambient Movement:** Subtle 38s Ken Burns breathing zoom on the background photo, dual rolling mist fog waves drifting in counter-directions, and gentle hearth light pulsing from the cabin windows.
+- **Smart Camera Hardware Engine:**
+  - **Smartphones:** Automatically detects mobile browsers and invokes the **rear camera** (`{ facingMode: "environment" }`) for instant marksheet QR scanning.
+  - **Laptops / Desktops:** Uses the front webcam with **horizontal mirroring** (`transform: scaleX(-1)`) so movement and marksheets feel natural like a real mirror.
+  - Includes on-screen controls to toggle mirroring and flip between front and rear cameras.
+- **Universal Scroll Fly-in Animations:** Powered by `IntersectionObserver` and `MutationObserver` in `useScrollObserver.ts` so all cards, headers, tables, and dynamically mounted results glide smoothly into view.
+- **Minimalist Institutional Footer:** Sleek, low-profile ribbon featuring the official vector LPU crest shield, university accreditation (`NAAC A++`), and active cryptographic ledger status.
+
+---
+
+## 🏛️ Enterprise Role-Isolated Portals
 
 1. **Student & Public Credential Portal (`/` & `/marksheet/:roll_no`):**
    - Clean roll number search for students and parents.
+   - Animated flowing color gradient headline on the public ledger.
    - Official single-page printable transcript (`@media print` formatted for clean paper output) with dynamic QR code.
-   - Zero access to admin actions or database tools.
+   - Built-in 4-student cohort with instant sample pills (`2024CS001` through `2024CS004`).
 2. **Third-Party QR Verification Portal (`/verify`):**
    - Designed for corporate employers (e.g. Google, TCS HR) and foreign universities.
-   - Live webcam scanner and file uploader supporting **100% offline client-side Merkle proof verification**.
+   - Smart dual camera scanner and file uploader supporting **100% offline client-side Merkle proof verification**.
 3. **Office of the Registrar (`/admin`):**
    - Bulk CSV ingestion (`results_sample.csv`) that computes 1,500+ Merkle leaf hashes in $< 1.4$ seconds.
 4. **Executive Governance Chamber (`/governance`):**
@@ -56,8 +79,6 @@ To satisfy **Usability & Design (10 points)**, VeriMark decouples user experienc
 5. **Security Operations & Forensic Tamper Console (`/audit`):**
    - Continuous daemon that scans live database rows against the immutable Merkle Root.
    - Features the **Evaluator Break-Test Sandbox** for live judge SQL injection testing.
-
-*(For hackathon evaluators, a top Persona Switcher allows seamless switching between these institutional roles during the 5-minute live demo).*
 
 ---
 
@@ -87,7 +108,7 @@ To satisfy **Usability & Design (10 points)**, VeriMark decouples user experienc
   ```
 
 Open your browser at:
-- **Web Portal:** `http://localhost:5173`
+- **Web Portal:** `http://localhost:5173` (or `http://localhost:5174`)
 - **Interactive Swagger Docs:** `http://localhost:8000/docs`
 
 ---
@@ -115,13 +136,20 @@ python -m pytest tests/test_adversarial_suite.py -v
 
 ---
 
-## 🌐 1-Click Vercel Deployment (Mandatory Deliverable)
+## 🌐 Deploying on Vercel (1-Click Ready)
 
-The frontend is fully configured with `frontend/vercel.json` for 1-click deployment:
-1. Go to [vercel.com](https://vercel.com) and click **"Add New Project"**.
-2. Select repository: `Rahul-0525/TamperProofMarksheet`.
-3. Set **Root Directory** to `frontend`.
-4. Click **Deploy**. Vercel will build and assign a live HTTPS URL in $< 60$ seconds.
+The repository is pre-configured with both root `vercel.json` and `frontend/vercel.json` for zero-configuration deployment:
+
+### Steps:
+1. Push your repository to GitHub: `Rahul-0525/TamperProofMarksheet` (`main` branch).
+2. Log into [vercel.com](https://vercel.com) and click **"Add New Project"**.
+3. Import `TamperProofMarksheet`.
+4. In Project Settings:
+   - **Framework Preset:** Vite
+   - **Root Directory:** Select `frontend` (or leave as root, since root `vercel.json` directs the build to `frontend/dist`).
+   - **Build Command:** `npm run build`
+   - **Output Directory:** `dist`
+5. Click **Deploy**. Vercel will build and assign an active HTTPS URL in $< 50$ seconds. Client-side routing is handled through rewrite rules, preventing 404 errors on browser page reloads.
 
 ---
 
@@ -142,32 +170,17 @@ TamperProofMarksheet/
 │       ├── test_adversarial_suite.py # 6-point evaluator break-test gauntlet
 │       └── evaluator_cli.py       # Live interactive demo console
 ├── frontend/
+│   ├── public/                    # Static assets & background wallpaper
 │   ├── src/
-│   │   ├── components/            # Navbar with Persona Switcher, Proof visualizer
+│   │   ├── assets/                # Misty pine panoramic wallpaper
+│   │   ├── components/            # Navbar, FluidBackground, LpuLogo, ProofPathVisualizer
 │   │   ├── pages/                 # Home, Marksheet, Verify, Governance, Audit, Admin
 │   │   ├── services/api.ts        # Axios client with offline fallback
-│   │   └── utils/crypto.ts        # Client-side Web Crypto Merkle verifier
+│   │   └── utils/                 # Web Crypto Merkle verifier & useScrollObserver
 │   ├── package.json
-│   └── vercel.json                # Vercel SPA rewrite rules
-├── contracts/
-│   ├── CONTRACT_SPEC.md           # Single source of truth API contract
-│   ├── models.py                  # Pydantic models & canonical hashing formula
-│   └── types.ts                   # Frontend TypeScript interfaces
-├── docs/
-│   ├── EVALUATOR_DEMO_GUIDE.md    # 5-minute winning presentation script
-│   ├── ONBOARDING_AND_GIT_SETUP.md # Teammate laptop setup guide
-│   ├── BACKEND_GUIDE.md           # Backend engineering & viva guide
-│   └── FRONTEND_GUIDE.md          # Frontend architecture guide
-├── AI_DISCLOSURE.md               # Mandatory hackathon AI usage declaration
-├── sample_data/                   # Realistic test CSV datasets
-├── start_verimark.bat             # One-click system launcher (Windows)
-├── run_evaluator_console.bat      # One-click live evaluator console
-└── run_adversarial_tests.bat      # One-click test runner
+│   └── vercel.json                # Frontend SPA rewrite rules
+├── docs/                          # Comprehensive architecture and evaluator guides
+├── vercel.json                    # Root Monorepo deployment configuration
+├── README.md                      # Primary project documentation
+└── AI_DISCLOSURE.md               # Official hackathon AI declaration
 ```
-
----
-
-## 📜 Mandatory Hackathon Declarations
-- **AI Disclosure:** See [`AI_DISCLOSURE.md`](AI_DISCLOSURE.md) for full component-by-component declaration.
-- **Viva Readiness:** Every team member has reviewed the code and can explain Merkle trees, Ed25519 signatures, and tamper detection on demand.
-- **Rules Adherence:** All code is original, built during Code Fuzion 2026, and version-controlled with granular commits.
