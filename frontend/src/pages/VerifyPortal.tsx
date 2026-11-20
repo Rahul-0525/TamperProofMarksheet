@@ -11,7 +11,10 @@ import {
   FileCode,
   Sparkles,
   WifiOff,
-  RefreshCw
+  RefreshCw,
+  QrCode,
+  Layers,
+  ArrowRight
 } from 'lucide-react';
 import { CompactQRPayload, MerkleProofStep } from '../types';
 import { verifyMerkleProof, sha256 } from '../utils/crypto';
@@ -26,7 +29,6 @@ export const VerifyPortal: React.FC = () => {
   const [qrJsonInput, setQrJsonInput] = useState('');
   const [cameraActive, setCameraActive] = useState(false);
 
-  // Verification state
   const [verifying, setVerifying] = useState(false);
   const [verifiedResult, setVerifiedResult] = useState<{
     tested: boolean;
@@ -39,7 +41,6 @@ export const VerifyPortal: React.FC = () => {
     isOffline: boolean;
   } | null>(null);
 
-  // Auto-load preset if roll param present
   useEffect(() => {
     if (initialRoll) {
       loadPreset(initialRoll, false);
@@ -49,13 +50,11 @@ export const VerifyPortal: React.FC = () => {
   const runVerification = async (payload: CompactQRPayload, isTampered = false) => {
     setVerifying(true);
     try {
-      // Convert compact payload proof to full steps
       const auditSteps: MerkleProofStep[] = payload.proof.map(p => ({
         position: p.p === 'L' ? 'left' : 'right',
         hash: p.h
       }));
 
-      // Calculate verification client-side via Web Crypto
       const verification = await verifyMerkleProof(
         payload.leaf,
         auditSteps,
@@ -82,7 +81,6 @@ export const VerifyPortal: React.FC = () => {
   const loadPreset = (roll: string, tampered = false) => {
     const raw = getCompactQRPayload(roll);
     if (tampered) {
-      // Simulate modified grade or modified leaf hash
       const corruptedLeaf = raw.leaf.replace(/^[0-9a-f]{4}/, 'dead');
       const tamperedPayload: CompactQRPayload = {
         ...raw,
@@ -128,9 +126,7 @@ export const VerifyPortal: React.FC = () => {
               alert(`Scanned content: ${decodedText}`);
             }
           },
-          (error) => {
-            // Scanner frame error, normal behavior while scanning
-          }
+          () => {}
         );
       } catch (err) {
         console.warn('Camera scanner initialization:', err);
@@ -139,42 +135,42 @@ export const VerifyPortal: React.FC = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8">
+    <div className="max-w-5xl mx-auto px-4 py-10">
       {/* Header */}
-      <div className="text-center mb-8">
-        <div className="inline-flex items-center space-x-2 px-3 py-1 bg-indigo-50 border border-indigo-200 rounded-full text-indigo-700 text-xs font-semibold mb-3">
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>Client-Side Web Crypto Engine</span>
+      <div className="text-center mb-10">
+        <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs font-semibold mb-4">
+          <WifiOff className="w-3.5 h-3.5 text-emerald-400" />
+          <span>Offline Mathematical Verifier &bull; 100% Client-Side WebCrypto</span>
         </div>
-        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight sm:text-4xl">
-          Public Marksheet QR Verification Portal
+        <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-3">
+          Public QR Verification Portal
         </h1>
-        <p className="mt-2 text-slate-600 max-w-2xl mx-auto text-sm">
-          Mathematically verify any university marksheet against the append-only ledger.
-          Runs entirely in your browser using cryptographic SHA-256 Merkle inclusion proofs.
+        <p className="text-slate-400 max-w-2xl mx-auto text-sm leading-relaxed">
+          Mathematically verify printed university marksheets against the immutable Merkle ledger root.
+          Runs entirely in your browser using cryptographic SHA-256 inclusion proofs.
         </p>
       </div>
 
       {/* Input Selection Tabs */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
-        <div className="flex border-b border-slate-200 pb-4 mb-6 space-x-4">
+      <div className="glass-panel rounded-3xl border border-white/10 p-6 sm:p-8 mb-8">
+        <div className="flex border-b border-white/[0.08] pb-4 mb-6 space-x-6 text-xs sm:text-sm font-semibold">
           <button
             onClick={() => setInputMode('preset')}
-            className={`flex items-center space-x-2 pb-2 text-sm font-semibold border-b-2 transition ${
+            className={`flex items-center space-x-2 pb-2 transition border-b-2 ${
               inputMode === 'preset'
-                ? 'border-indigo-600 text-indigo-600'
-                : 'border-transparent text-slate-500 hover:text-slate-800'
+                ? 'border-indigo-500 text-indigo-400 font-bold'
+                : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
             <Sparkles className="w-4 h-4" />
-            <span>Interactive Demo Presets</span>
+            <span>Interactive Demo Scenarios</span>
           </button>
           <button
             onClick={() => setInputMode('paste')}
-            className={`flex items-center space-x-2 pb-2 text-sm font-semibold border-b-2 transition ${
+            className={`flex items-center space-x-2 pb-2 transition border-b-2 ${
               inputMode === 'paste'
-                ? 'border-indigo-600 text-indigo-600'
-                : 'border-transparent text-slate-500 hover:text-slate-800'
+                ? 'border-indigo-500 text-indigo-400 font-bold'
+                : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
             <FileCode className="w-4 h-4" />
@@ -185,55 +181,61 @@ export const VerifyPortal: React.FC = () => {
               setInputMode('scan');
               startCameraScanner();
             }}
-            className={`flex items-center space-x-2 pb-2 text-sm font-semibold border-b-2 transition ${
+            className={`flex items-center space-x-2 pb-2 transition border-b-2 ${
               inputMode === 'scan'
-                ? 'border-indigo-600 text-indigo-600'
-                : 'border-transparent text-slate-500 hover:text-slate-800'
+                ? 'border-indigo-500 text-indigo-400 font-bold'
+                : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
             <Camera className="w-4 h-4" />
-            <span>Webcam / Scanner</span>
+            <span>Webcam Scanner</span>
           </button>
         </div>
 
-        {/* Tab 1: Presets */}
+        {/* Tab 1: Demo Presets */}
         {inputMode === 'preset' && (
           <div>
-            <p className="text-xs text-slate-500 mb-4">
-              Select a test scenario to evaluate both positive verification and tamper detection:
+            <p className="text-xs text-slate-400 mb-4">
+              Select a test scenario to evaluate genuine verification vs tamper detection:
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <button
                 onClick={() => loadPreset('2024CS001', false)}
-                className="p-3 text-left rounded-xl border border-emerald-200 bg-emerald-50/50 hover:bg-emerald-50 transition"
+                className="p-4 text-left rounded-2xl border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 transition group"
               >
-                <div className="flex items-center space-x-2 text-emerald-800 font-bold text-sm mb-1">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  <span>Valid: Aarav (2024CS001)</span>
+                <div className="flex items-center space-x-2 text-emerald-400 font-bold text-xs sm:text-sm mb-1">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  <span>Genuine: Aarav (2024CS001)</span>
                 </div>
-                <p className="text-xs text-emerald-700">Verifies genuine marksheet and full audit path to root.</p>
+                <p className="text-[11px] text-slate-400 group-hover:text-slate-300">
+                  Verifies authentic marksheet and calculates full Merkle inclusion path.
+                </p>
               </button>
 
               <button
                 onClick={() => loadPreset('2024CS002', false)}
-                className="p-3 text-left rounded-xl border border-emerald-200 bg-emerald-50/50 hover:bg-emerald-50 transition"
+                className="p-4 text-left rounded-2xl border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 transition group"
               >
-                <div className="flex items-center space-x-2 text-emerald-800 font-bold text-sm mb-1">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  <span>Valid: Diya (2024CS002)</span>
+                <div className="flex items-center space-x-2 text-emerald-400 font-bold text-xs sm:text-sm mb-1">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  <span>Genuine: Diya (2024CS002)</span>
                 </div>
-                <p className="text-xs text-emerald-700">Left-sibling audit path verification.</p>
+                <p className="text-[11px] text-slate-400 group-hover:text-slate-300">
+                  Verifies alternate sibling positioning along the binary tree.
+                </p>
               </button>
 
               <button
                 onClick={() => loadPreset('2024CS001', true)}
-                className="p-3 text-left rounded-xl border border-rose-200 bg-rose-50/50 hover:bg-rose-50 transition"
+                className="p-4 text-left rounded-2xl border border-rose-500/20 bg-rose-500/5 hover:bg-rose-500/10 transition group"
               >
-                <div className="flex items-center space-x-2 text-rose-800 font-bold text-sm mb-1">
-                  <XCircle className="w-4 h-4 text-rose-600" />
+                <div className="flex items-center space-x-2 text-rose-400 font-bold text-xs sm:text-sm mb-1">
+                  <XCircle className="w-4 h-4 text-rose-400" />
                   <span>Simulate Forged Marksheet</span>
                 </div>
-                <p className="text-xs text-rose-700">Altered marks or forged QR code triggers immediate red flag.</p>
+                <p className="text-[11px] text-slate-400 group-hover:text-slate-300">
+                  Altered marks or forged QR code triggers immediate cryptographic failure.
+                </p>
               </button>
             </div>
           </div>
@@ -243,32 +245,32 @@ export const VerifyPortal: React.FC = () => {
         {inputMode === 'paste' && (
           <form onSubmit={handleJsonSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-slate-300 mb-2">
                 Compact QR Code Payload (JSON)
               </label>
               <textarea
                 rows={5}
                 value={qrJsonInput}
                 onChange={(e) => setQrJsonInput(e.target.value)}
-                placeholder='{"v":1,"roll":"2024CS001","leaf":"...","root":"...","proof":[]}'
-                className="w-full p-3 font-mono text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                placeholder='{"v":1,"roll":"2024CS001","leaf":"...","root":"...","proof":[...]}'
+                className="w-full p-4 bg-white/[0.03] border border-white/10 rounded-2xl font-mono text-xs text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
             <button
               type="submit"
-              className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-semibold hover:bg-indigo-700 transition"
+              className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold transition shadow-md shadow-indigo-600/30"
             >
               Verify Payload Now
             </button>
           </form>
         )}
 
-        {/* Tab 3: Webcam / Scanner */}
+        {/* Tab 3: Webcam Scanner */}
         {inputMode === 'scan' && (
           <div className="text-center py-4">
-            <div id="qr-reader" className="max-w-sm mx-auto overflow-hidden rounded-xl border border-slate-300"></div>
-            <p className="text-xs text-slate-500 mt-2">
-              Point your webcam at a printed VeriMark marksheet QR code.
+            <div id="qr-reader" className="max-w-sm mx-auto overflow-hidden rounded-2xl border border-white/10 bg-black/40" />
+            <p className="text-xs text-slate-400 mt-4">
+              Hold the printed marksheet QR code in front of your camera to scan.
             </p>
           </div>
         )}
@@ -276,60 +278,94 @@ export const VerifyPortal: React.FC = () => {
 
       {/* Verification Result Showcase */}
       {verifiedResult && (
-        <div className="space-y-6">
-          {/* Main Status Banner */}
+        <div className="space-y-8 animate-fadeIn">
+          {/* Hero Result Banner */}
           <div
-            className={`p-6 sm:p-8 rounded-2xl shadow-xl border flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-6 ${
+            className={`p-8 rounded-3xl border transition relative overflow-hidden ${
               verifiedResult.isValid
-                ? 'bg-gradient-to-br from-emerald-900 to-slate-900 text-white border-emerald-500/50'
-                : 'bg-gradient-to-br from-rose-950 to-slate-900 text-white border-rose-500/50'
+                ? 'glass-panel border-emerald-500/40 glow-emerald'
+                : 'glass-panel border-rose-500/50 glow-rose'
             }`}
           >
-            <div className={`p-4 rounded-2xl flex-shrink-0 ${
-              verifiedResult.isValid ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'
-            }`}>
-              {verifiedResult.isValid ? (
-                <ShieldCheck className="w-16 h-16" />
-              ) : (
-                <ShieldAlert className="w-16 h-16 animate-pulse" />
-              )}
-            </div>
-
-            <div className="text-center sm:text-left flex-grow">
-              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-2">
-                <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
-                  verifiedResult.isValid ? 'bg-emerald-500 text-slate-950' : 'bg-rose-500 text-white'
-                }`}>
-                  {verifiedResult.isValid ? 'AUTHENTIC MARKSHEET' : 'FORGERY / TAMPER DETECTED'}
-                </span>
-                <span className="flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 text-xs border border-slate-700">
-                  <WifiOff className="w-3 h-3 text-indigo-400" />
-                  <span>Verified 100% Client-Side</span>
-                </span>
+            <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-6 text-center sm:text-left">
+              <div className={`p-4 rounded-2xl flex-shrink-0 ${
+                verifiedResult.isValid ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/20 text-rose-400'
+              }`}>
+                {verifiedResult.isValid ? (
+                  <ShieldCheck className="w-14 h-14" />
+                ) : (
+                  <ShieldAlert className="w-14 h-14 animate-pulse" />
+                )}
               </div>
 
-              <h2 className="text-2xl font-bold">
-                {verifiedResult.isValid
-                  ? `Cryptographic Proof Verified for Roll No: ${verifiedResult.roll}`
-                  : `Integrity Check Failed: Invalid Root Reconstruction`}
-              </h2>
+              <div>
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-2">
+                  <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                    verifiedResult.isValid ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300'
+                  }`}>
+                    {verifiedResult.isValid ? 'VERIFICATION SUCCESSFUL' : 'FORGERY / TAMPER DETECTED'}
+                  </span>
+                  <span className="text-slate-400 text-xs font-mono">&bull; Candidate: {verifiedResult.roll}</span>
+                </div>
 
-              <p className="mt-2 text-sm text-slate-300 max-w-2xl leading-relaxed">
-                {verifiedResult.isValid
-                  ? `Every subject grade and student detail is mathematically anchored to the university's immutable ledger root. The canonical leaf hash produces an exact match through the Merkle audit tree.`
-                  : `Warning! The scanned leaf hash does not resolve to the active published ledger root. The grades on this document have either been altered or forged.`}
-              </p>
+                <h3 className="text-2xl font-extrabold text-white mb-2">
+                  {verifiedResult.isValid
+                    ? '100% Cryptographically Authentic Marksheet'
+                    : 'Cryptographic Hash Mismatch — Invalid Transcript'}
+                </h3>
+
+                <p className="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-2xl">
+                  {verifiedResult.isValid
+                    ? 'The student transcript leaf hash connects directly to the published University Merkle Root along a valid inclusion path. The marks on this transcript are authentic.'
+                    : 'The scanned marksheet has either been altered after publication, or the QR payload has been tampered with. The computed root does not match the active university ledger.'}
+                </p>
+              </div>
+            </div>
+
+            {/* Hashes Comparison Grid */}
+            <div className="mt-8 pt-6 border-t border-white/10 grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-xs">
+              <div className="bg-white/[0.03] p-4 rounded-xl border border-white/[0.06]">
+                <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">
+                  Expected Active Ledger Root
+                </span>
+                <span className="text-emerald-400 break-all select-all font-semibold">
+                  {verifiedResult.expectedRoot}
+                </span>
+              </div>
+              <div className={`p-4 rounded-xl border ${
+                verifiedResult.isValid
+                  ? 'bg-white/[0.03] border-white/[0.06] text-emerald-400'
+                  : 'bg-rose-950/40 border-rose-500/30 text-rose-300'
+              }`}>
+                <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">
+                  Computed Root from Marksheet Proof
+                </span>
+                <span className="break-all select-all font-semibold">
+                  {verifiedResult.computedRoot}
+                </span>
+              </div>
             </div>
           </div>
 
-          {/* Interactive Merkle Tree Visualizer */}
-          <ProofPathVisualizer
-            leafHash={verifiedResult.leafHash}
-            steps={verifiedResult.steps}
-            computedRoot={verifiedResult.computedRoot}
-            expectedRoot={verifiedResult.expectedRoot}
-            isValid={verifiedResult.isValid}
-          />
+          {/* Interactive Merkle Path Visualizer */}
+          {verifiedResult.steps.length > 0 && (
+            <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-white/10">
+              <h4 className="text-sm font-bold text-white mb-2 flex items-center space-x-2">
+                <Layers className="w-4 h-4 text-indigo-400" />
+                <span>Step-by-Step Merkle Audit Path ({verifiedResult.steps.length} Steps)</span>
+              </h4>
+              <p className="text-xs text-slate-400 mb-6">
+                Visualizing how the candidate's canonical leaf climbed the binary hash tree to reconstruct the ledger root:
+              </p>
+              <ProofPathVisualizer
+                leafHash={verifiedResult.leafHash}
+                expectedRoot={verifiedResult.expectedRoot}
+                computedRoot={verifiedResult.computedRoot}
+                isValid={verifiedResult.isValid}
+                steps={verifiedResult.steps}
+              />
+            </div>
+          )}
         </div>
       )}
     </div>
