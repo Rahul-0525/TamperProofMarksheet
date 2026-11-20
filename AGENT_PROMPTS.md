@@ -83,6 +83,19 @@ CRITICAL INSTRUCTIONS:
      - Live visual status: Green ("Ledger Intact - No Tampering") vs flashing Red alert ("Direct DB Tamper Detected!").
      - Lists tampered rows with exact student roll number and discrepancy explanation.
 3. Configure API base URL via environment variable `VITE_API_URL` or `NEXT_PUBLIC_API_URL` defaulting to `http://localhost:8000/api`.
+4. Integration Status (Merged with Backend `77af7c3`):
+   - All 4 core pages are fully scaffolded and verified inside `/frontend`:
+     * `MarksheetView.tsx` (`/marksheet/:roll_no`)
+     * `VerifyPortal.tsx` (`/verify`)
+     * `GovernancePortal.tsx` (`/governance`)
+     * `AuditDashboard.tsx` (`/audit`)
+   - `services/api.ts` is connected to FastAPI backend routes:
+     * `GET /api/results/{roll_no}` & `/proof`
+     * `POST /api/results/verify`
+     * `GET /api/governance/corrections` & `POST /propose-correction` & `POST /sign-correction`
+     * `GET /api/audit/integrity-check` & `POST /audit/simulate-tamper`
+   - Client-side offline Web Crypto verification is fully enabled.
+   - Zero-config Vercel SPA rewrites configured in `frontend/vercel.json`.
 Do not modify files in `/backend` or `/contracts`.
 ```
 
