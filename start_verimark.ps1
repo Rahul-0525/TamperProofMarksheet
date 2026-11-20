@@ -5,10 +5,10 @@ Write-Host "====================================================================
 Write-Host ""
 
 Write-Host "[1/2] Launching FastAPI Backend on http://localhost:8000..." -ForegroundColor Green
-Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd backend; uvicorn app.main:app --reload --port 8000"
+Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd backend; .\venv\Scripts\uvicorn.exe app.main:app --reload --port 8000"
 
 Write-Host "[2/2] Launching React+Vite Frontend on http://localhost:5173..." -ForegroundColor Green
-Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd frontend; npm run dev"
+Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd frontend; npm.cmd run dev"
 
 Write-Host ""
 Write-Host "=====================================================================" -ForegroundColor Cyan
