@@ -60,51 +60,53 @@
   border-bottom: 1px solid rgba(206, 217, 223, 0.1);
 }
 
-/* Rounded Exterior Hero Frame (Matches Dribbble container) - Spacey & Airy */
+/* Rounded Exterior Hero Frame (Matches Dribbble container) - Translucent Frosted Glass */
 .lodge-card-frame {
-  background: linear-gradient(175deg, rgba(42, 66, 52, 0.65) 0%, rgba(24, 38, 29, 0.8) 100%);
-  border: 1px solid rgba(206, 217, 223, 0.2);
-  border-top: 1px solid rgba(206, 217, 223, 0.38);
+  background: rgba(32, 54, 42, 0.42);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-top: 1px solid rgba(255, 255, 255, 0.45);
   border-radius: 40px;
   box-shadow: 
-    0 35px 80px -20px rgba(0, 0, 0, 0.45),
-    0 0 0 1px rgba(206, 217, 223, 0.08);
+    0 35px 80px -20px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
-/* Floating Dark Frosted Booking/Action Card - Spacey & Relaxed */
+/* Floating Dark Frosted Booking/Action Card - High-Contrast Glass */
 .floating-action-card {
-  background: rgba(36, 58, 46, 0.72);
+  background: rgba(28, 48, 38, 0.78);
   backdrop-filter: blur(28px);
   -webkit-backdrop-filter: blur(28px);
-  border: 1px solid rgba(206, 217, 223, 0.18);
-  border-top: 1px solid rgba(206, 217, 223, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-top: 1px solid rgba(255, 255, 255, 0.45);
   border-radius: 32px;
   box-shadow: 
-    0 25px 55px -12px rgba(0, 0, 0, 0.4),
-    0 1px 0 rgba(206, 217, 223, 0.15) inset;
+    0 25px 55px -12px rgba(0, 0, 0, 0.35),
+    0 1px 0 rgba(255, 255, 255, 0.18) inset;
 }
 
 /* Sunken Inset Pill Input Channel - Spacey Padding */
 .inset-pill-field {
-  background: rgba(18, 30, 23, 0.65);
-  border: 1px solid rgba(206, 217, 223, 0.14);
-  border-top: 1px solid rgba(0, 0, 0, 0.35);
-  border-bottom: 1px solid rgba(206, 217, 223, 0.22);
+  background: rgba(16, 28, 22, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-top: 1px solid rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 20px;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(14px);
   transition: all 0.2s ease;
 }
 
 .inset-pill-field:focus-within {
-  border-color: rgba(245, 158, 11, 0.6);
-  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.25), inset 0 2px 4px rgba(0, 0, 0, 0.45);
+  border-color: rgba(245, 158, 11, 0.7);
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.35);
 }
 
 /* Crisp Solid White Pill Button (Book Now / Action) */
 .btn-pill-white {
   background: #FFFFFF;
-  color: #0a0f09;
+  color: #0e1e18;
   font-weight: 700;
   border-radius: 9999px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -112,21 +114,21 @@
 }
 
 .btn-pill-white:hover {
-  background: #ced9df;
-  box-shadow: 0 6px 20px rgba(206, 217, 223, 0.35);
+  background: #F8FAFC;
+  box-shadow: 0 6px 22px rgba(255, 255, 255, 0.35);
   transform: translateY(-1px);
 }
 
 .btn-pill-white:active {
   transform: translateY(1px);
-  background: #b8c7cf;
+  background: #E2E8F0;
 }
 
 /* Glass Pill Button (Transparent outline) */
 .btn-pill-glass {
-  background: rgba(206, 217, 223, 0.1);
-  border: 1px solid rgba(206, 217, 223, 0.2);
-  color: #ced9df;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
   font-weight: 600;
   border-radius: 9999px;
   backdrop-filter: blur(12px);
@@ -134,22 +136,96 @@
 }
 
 .btn-pill-glass:hover {
-  background: rgba(206, 217, 223, 0.18);
-  border-color: rgba(206, 217, 223, 0.4);
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.45);
   color: #FFFFFF;
   transform: translateY(-1px);
 }
 
 /* Frosted Glass Tiles for Feature Cards - Generous Space */
 .glass-card-hover {
-  background: rgba(38, 62, 48, 0.62);
+  background: rgba(34, 56, 44, 0.68);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(206, 217, 223, 0.16);
-  border-top: 1px solid rgba(206, 217, 223, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-top: 1px solid rgba(255, 255, 255, 0.38);
   border-radius: 32px;
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card-hover:hover {
+  border-color: rgba(245, 158, 11, 0.4);
+  border-top-color: rgba(245, 158, 11, 0.7);
+  box-shadow: 0 25px 50px -12px rgba(245, 158, 11, 0.2);
+  transform: translateY(-3px);
+}
+
+/* Warm Interior Window Glow Simulation */
+.cabin-window-glow {
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.35) 0%, rgba(217, 119, 6, 0.16) 50%, transparent 80%);
+  filter: blur(45px);
+}
+
+/* ==========================================================
+   NON-DISTRACTING BACKGROUND AMBIENT MOTION & MIST WAVES
+   ========================================================== */
+@keyframes subtle-ken-burns {
+  0% {
+    transform: scale(1.02) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: scale(1.05) translate3d(-10px, -8px, 0);
+  }
+  100% {
+    transform: scale(1.02) translate3d(0, 0, 0);
+  }
+}
+
+.animate-subtle-ken-burns {
+  animation: subtle-ken-burns 38s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+/* Horizontal Rolling Mist Waves (Non-distracting, slow drifting fog) */
+@keyframes mist-roll-left {
+  0% {
+    transform: translate3d(-4%, 0, 0) scaleY(1);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translate3d(4%, -10px, 0) scaleY(1.05);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate3d(-4%, 0, 0) scaleY(1);
+    opacity: 0.35;
+  }
+}
+
+@keyframes mist-roll-right {
+  0% {
+    transform: translate3d(5%, 0, 0) scaleY(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate3d(-5%, 12px, 0) scaleY(1.08);
+    opacity: 0.55;
+  }
+  100% {
+    transform: translate3d(5%, 0, 0) scaleY(1);
+    opacity: 0.3;
+  }
+}
+
+.animate-mist-wave-1 {
+  animation: mist-roll-left 26s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.animate-mist-wave-2 {
+  animation: mist-roll-right 32s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
 .glass-card-hover:hover {
