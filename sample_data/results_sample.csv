@@ -1,0 +1,21 @@
+roll_no,student_name,course,semester,academic_year,subject_code,subject_name,marks_obtained,max_marks,grade
+2024CS001,Aarav Sharma,B.Tech CSE,5,2025-2026,CS501,Operating Systems,88,100,A
+2024CS001,Aarav Sharma,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,92,100,A+
+2024CS001,Aarav Sharma,B.Tech CSE,5,2025-2026,CS503,Computer Networks,84,100,A
+2024CS001,Aarav Sharma,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,79,100,B+
+2024CS002,Diya Patel,B.Tech CSE,5,2025-2026,CS501,Operating Systems,95,100,O
+2024CS002,Diya Patel,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,90,100,A+
+2024CS002,Diya Patel,B.Tech CSE,5,2025-2026,CS503,Computer Networks,91,100,A+
+2024CS002,Diya Patel,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,88,100,A
+2024CS003,Rohan Verma,B.Tech CSE,5,2025-2026,CS501,Operating Systems,68,100,B
+2024CS003,Rohan Verma,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,72,100,B+
+2024CS003,Rohan Verma,B.Tech CSE,5,2025-2026,CS503,Computer Networks,65,100,C
+2024CS003,Rohan Verma,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,70,100,B
+2024CS004,Ananya Iyer,B.Tech CSE,5,2025-2026,CS501,Operating Systems,82,100,A
+2024CS004,Ananya Iyer,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,86,100,A
+2024CS004,Ananya Iyer,B.Tech CSE,5,2025-2026,CS503,Computer Networks,89,100,A
+2024CS004,Ananya Iyer,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,84,100,A
+2024CS005,Vikram Singh,B.Tech CSE,5,2025-2026,CS501,Operating Systems,45,100,P
+2024CS005,Vikram Singh,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,52,100,P
+2024CS005,Vikram Singh,B.Tech CSE,5,2025-2026,CS503,Computer Networks,48,100,P
+2024CS005,Vikram Singh,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,50,100,P
