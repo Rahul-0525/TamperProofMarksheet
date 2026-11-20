@@ -64,22 +64,22 @@ export const MarksheetView: React.FC = () => {
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
       {/* Sleek Action & Selector Bar (Hidden during print) */}
-      <div className="no-print mb-8 glass-card p-4 rounded-2xl border border-white/90 shadow-md flex flex-wrap items-center justify-between gap-4 fly-in is-revealed">
-        {/* Search Box */}
+      <div className="no-print mb-8 floating-action-card p-4 rounded-3xl flex flex-wrap items-center justify-between gap-4 fly-in is-revealed">
+        {/* Search Box with Sunken Inset Input */}
         <form onSubmit={handleSearch} className="flex items-center space-x-2 flex-grow max-w-md">
-          <div className="relative flex-grow">
-            <Search className="w-4 h-4 text-[#801336]/60 absolute left-3.5 top-3" />
+          <div className="inset-pill-field relative flex-grow flex items-center px-3.5 py-1.5">
+            <Search className="w-4 h-4 text-pine-300 mr-2 flex-shrink-0" />
             <input
               type="text"
               value={searchRoll}
               onChange={(e) => setSearchRoll(e.target.value)}
-              placeholder="Search Registration / Roll No (e.g., 2024CS001)"
-              className="w-full pl-10 pr-3 py-2 bg-white/70 text-[#2D142C] border border-[#801336]/15 rounded-xl text-xs font-mono uppercase focus:ring-2 focus:ring-[#EE4540] focus:outline-none transition placeholder:text-[#510A32]/40"
+              placeholder="Search Roll No (e.g., 2024CS001)"
+              className="bg-transparent text-white font-mono uppercase text-xs focus:outline-none w-full placeholder:text-pine-400/60"
             />
           </div>
           <button
             type="submit"
-            className="px-4 py-2 bg-gradient-to-r from-[#EE4540] to-[#C72C41] hover:from-[#f05652] hover:to-[#d6354a] text-white rounded-xl text-xs font-bold transition shadow-md shadow-[#EE4540]/25 active:scale-95"
+            className="btn-pill-white px-5 py-2 text-xs"
           >
             Search
           </button>
@@ -87,7 +87,7 @@ export const MarksheetView: React.FC = () => {
 
         {/* Quick-Pick Selector */}
         <div className="flex items-center space-x-1.5 text-xs">
-          <span className="text-[#510A32]/70 text-[11px] mr-1 hidden sm:inline">Roll:</span>
+          <span className="text-pine-300 text-[11px] mr-1 hidden sm:inline">Roll:</span>
           {MOCK_STUDENTS.map((s) => (
             <button
               key={s.roll_no}
@@ -95,10 +95,10 @@ export const MarksheetView: React.FC = () => {
                 setSearchRoll(s.roll_no);
                 navigate(`/marksheet/${s.roll_no}`);
               }}
-              className={`px-2.5 py-1 rounded-lg font-mono text-[11px] transition active:scale-95 ${
+              className={`px-3 py-1 rounded-full font-mono text-[11px] transition active:scale-95 ${
                 s.roll_no === currentRoll
-                  ? 'bg-gradient-to-r from-[#EE4540] to-[#C72C41] text-white font-bold shadow-md shadow-[#EE4540]/25'
-                  : 'bg-white/70 text-[#510A32] hover:text-[#2D142C] border border-[#801336]/10 hover:bg-white'
+                  ? 'btn-pill-white'
+                  : 'bg-white/[0.06] hover:bg-white/[0.12] text-pine-200'
               }`}
             >
               {s.roll_no}
@@ -110,14 +110,14 @@ export const MarksheetView: React.FC = () => {
         <div className="flex items-center space-x-2">
           <button
             onClick={() => navigate(`/verify?roll=${currentRoll}`)}
-            className="flex items-center space-x-1.5 px-4 py-2 bg-[#EE4540]/10 text-[#C72C41] border border-[#EE4540]/30 hover:bg-[#EE4540]/20 rounded-xl text-xs font-semibold transition active:scale-95 shadow-sm"
+            className="btn-pill-glass flex items-center space-x-1.5 px-4 py-2 text-xs"
           >
-            <ShieldCheck className="w-3.5 h-3.5 text-[#EE4540]" />
+            <ShieldCheck className="w-3.5 h-3.5 text-[#fbbf24]" />
             <span>Verify Proof</span>
           </button>
           <button
             onClick={handlePrint}
-            className="flex items-center space-x-1.5 px-4 py-2 bg-gradient-to-r from-[#EE4540] to-[#C72C41] hover:from-[#f05652] hover:to-[#d6354a] text-white rounded-xl text-xs font-bold transition shadow-lg shadow-[#EE4540]/30 active:scale-95"
+            className="btn-pill-white flex items-center space-x-1.5 px-4 py-2 text-xs"
           >
             <Printer className="w-3.5 h-3.5" />
             <span>Print Marksheet</span>
@@ -126,23 +126,23 @@ export const MarksheetView: React.FC = () => {
       </div>
 
       {loading || !student ? (
-        <div className="glass-card rounded-3xl p-16 text-center border border-white/90 shadow-md">
-          <div className="animate-spin w-8 h-8 border-3 border-[#EE4540] border-t-transparent rounded-full mx-auto mb-4" />
-          <p className="text-[#510A32]/75 text-sm font-medium">Retrieving official LPU transcript...</p>
+        <div className="floating-action-card rounded-3xl p-16 text-center shadow-xl">
+          <div className="animate-spin w-8 h-8 border-3 border-[#fbbf24] border-t-transparent rounded-full mx-auto mb-4" />
+          <p className="text-pine-200 text-sm font-medium">Retrieving official LPU transcript...</p>
         </div>
       ) : (
         /* Formal High-Prestige Academic Transcript Card */
-        <div className="print-card bg-white text-slate-900 rounded-3xl shadow-2xl border border-[#801336]/15 overflow-hidden relative fly-in is-revealed">
-          {/* Top LPU Coral to Plum Gradient Ribbon */}
-          <div className="h-3.5 bg-gradient-to-r from-[#EE4540] via-[#C72C41] via-[#801336] to-[#2D142C]" />
+        <div className="print-card bg-white text-slate-900 rounded-3xl shadow-2xl border border-slate-300 overflow-hidden relative fly-in is-revealed">
+          {/* Top Amber & Pine Ribbon */}
+          <div className="h-3.5 bg-gradient-to-r from-[#d97706] via-[#f59e0b] to-[#0e1c19]" />
 
           <div className="p-8 sm:p-12">
             {/* Header / University Crest */}
             <div className="border-b-2 border-slate-900 pb-6 mb-8 text-center relative">
               <div className="flex justify-center mb-3">
-                <div className="w-16 h-16 rounded-2xl bg-[#2D142C] flex items-center justify-center text-white border-2 border-[#EE4540] shadow-lg">
+                <div className="w-16 h-16 rounded-2xl bg-[#0e1c19] flex items-center justify-center text-white border-2 border-[#f59e0b] shadow-lg">
                   <div className="flex flex-col items-center">
-                    <span className="font-display font-black text-xs text-[#EE4540]">LPU</span>
+                    <span className="font-display font-black text-xs text-[#fbbf24]">LPU</span>
                     <span className="text-[8px] font-bold text-slate-300">ESTD 2005</span>
                   </div>
                 </div>
@@ -150,7 +150,7 @@ export const MarksheetView: React.FC = () => {
               <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 font-display">
                 LOVELY PROFESSIONAL UNIVERSITY
               </h1>
-              <p className="text-xs font-bold tracking-widest text-[#C72C41] uppercase mt-1">
+              <p className="text-xs font-bold tracking-widest text-[#d97706] uppercase mt-1">
                 Division of Academic Affairs &bull; Office of Examinations
               </p>
               <p className="text-[11px] text-slate-500 font-medium mt-0.5">
@@ -170,7 +170,7 @@ export const MarksheetView: React.FC = () => {
                 </div>
                 <div>
                   <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold block">Registration / Roll No</span>
-                  <span className="font-bold font-mono text-[#C72C41] text-base">{student.roll_no}</span>
+                  <span className="font-bold font-mono text-[#d97706] text-base">{student.roll_no}</span>
                 </div>
                 <div>
                   <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold block">Degree &amp; Program</span>
@@ -212,11 +212,11 @@ export const MarksheetView: React.FC = () => {
               </div>
             </div>
 
-            {/* Course Grade Table */}
-            <div className="mb-8 overflow-hidden rounded-xl border border-slate-300">
-              <table className="w-full text-left border-collapse text-xs">
+            {/* Course Grade Table (Mobile Scrollable) */}
+            <div className="mb-8 overflow-x-auto rounded-xl border border-slate-300">
+              <table className="w-full min-w-[560px] text-left border-collapse text-xs">
                 <thead>
-                  <tr className="bg-[#2D142C] text-white uppercase text-[10px] tracking-wider font-semibold">
+                  <tr className="bg-[#0e1c19] text-white uppercase text-[10px] tracking-wider font-semibold">
                     <th className="py-3 px-4">Subject Code</th>
                     <th className="py-3 px-4">Course Title</th>
                     <th className="py-3 px-4 text-center">Max Marks</th>
@@ -232,7 +232,7 @@ export const MarksheetView: React.FC = () => {
                       <td className="py-3 px-4 text-slate-800">{sub.subject_name}</td>
                       <td className="py-3 px-4 text-center text-slate-600">{sub.max_marks}</td>
                       <td className="py-3 px-4 text-center font-bold text-slate-900">{sub.marks_obtained}</td>
-                      <td className="py-3 px-4 text-center font-bold text-[#C72C41]">{sub.grade}</td>
+                      <td className="py-3 px-4 text-center font-bold text-[#d97706]">{sub.grade}</td>
                       <td className="py-3 px-4 text-center">
                         <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
                           PASSED
@@ -254,7 +254,7 @@ export const MarksheetView: React.FC = () => {
               </div>
               <div>
                 <span className="text-xs uppercase text-slate-500 font-bold block">Semester SGPA</span>
-                <span className="font-extrabold text-[#C72C41] text-lg">{student.gpa.toFixed(2)} / 10.0</span>
+                <span className="font-extrabold text-[#d97706] text-lg">{student.gpa.toFixed(2)} / 10.0</span>
               </div>
               <div>
                 <span className="text-xs uppercase text-slate-500 font-bold block">Percentage</span>
@@ -271,18 +271,18 @@ export const MarksheetView: React.FC = () => {
             </div>
 
             {/* Cryptographic Ledger Record */}
-            <div className="p-4 bg-[#2D142C] text-white rounded-2xl font-mono text-[11px] space-y-2 border border-[#510A32]/40 shadow-inner">
-              <div className="flex items-center space-x-2 text-[#EE4540] font-semibold mb-1">
+            <div className="p-4 bg-[#0e1c19] text-white rounded-2xl font-mono text-[11px] space-y-2 border border-white/10 shadow-inner">
+              <div className="flex items-center space-x-2 text-[#fbbf24] font-semibold mb-1">
                 <Lock className="w-3.5 h-3.5" />
                 <span className="uppercase tracking-wider text-[10px]">TruGrade Cryptographic Record</span>
               </div>
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between text-slate-300 gap-1 border-t border-[#510A32]/40 pt-2">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between text-slate-300 gap-1 border-t border-white/[0.08] pt-2">
                 <span>Canonical Leaf Hash:</span>
-                <span className="text-[#EE4540] break-all select-all">{student.leaf_hash}</span>
+                <span className="text-[#fbbf24] break-all select-all font-semibold">{student.leaf_hash}</span>
               </div>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between text-slate-300 gap-1">
                 <span>Active University Ledger Root:</span>
-                <span className="text-emerald-400 break-all select-all">
+                <span className="text-emerald-400 break-all select-all font-semibold">
                   {(student as any)?.root_hash || baseQr.root}
                 </span>
               </div>
@@ -307,7 +307,7 @@ export const MarksheetView: React.FC = () => {
                 </div>
               </div>
               <div className="hidden sm:block">
-                <div className="h-10 flex items-end justify-center font-mono text-[10px] text-[#C72C41] font-bold">
+                <div className="h-10 flex items-end justify-center font-mono text-[10px] text-[#d97706] font-bold">
                   SEALED IN TRUGRADE LEDGER
                 </div>
                 <div className="border-t border-slate-400 pt-1 font-semibold uppercase text-[10px]">

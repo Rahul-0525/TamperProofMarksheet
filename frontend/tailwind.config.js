@@ -12,51 +12,29 @@ export default {
         mono: ['"JetBrains Mono"', 'monospace'],
       },
       colors: {
-        palette: {
-          coral: '#EE4540',
-          crimson: '#C72C41',
-          ruby: '#801336',
-          plum: '#510A32',
-          eggplant: '#2D142C',
+        pine: {
+          950: '#0a1412',
+          900: '#0e1c19',
+          850: '#132420',
+          800: '#182d28',
+          700: '#223d37',
+          600: '#2f524a',
+          500: '#3e6a60',
+          400: '#548c7f',
+          300: '#75b0a3',
+          200: '#a2cfc5',
+          100: '#d1ebe4',
         },
-        light: {
-          bg: '#FAF6F8',
-          card: 'rgba(255, 255, 255, 0.82)',
-          surface: '#FFFFFF',
-          border: 'rgba(81, 10, 50, 0.08)',
+        warmAmber: {
+          glow: '#fbbf24',
+          accent: '#f59e0b',
+          deep: '#d97706',
         }
       },
-      animation: {
-        'slide-up': 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-        'fade-in': 'fadeIn 0.5s ease-out forwards',
-        'fluid-float-1': 'fluidBlob1 22s ease-in-out infinite alternate',
-        'fluid-float-2': 'fluidBlob2 28s ease-in-out infinite alternate',
-        'fluid-float-3': 'fluidBlob3 25s ease-in-out infinite alternate',
-      },
-      keyframes: {
-        slideUp: {
-          '0%': { opacity: '0', transform: 'translateY(24px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
-        },
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-        fluidBlob1: {
-          '0%': { transform: 'translate(0px, 0px) scale(1)' },
-          '50%': { transform: 'translate(80px, 50px) scale(1.15) rotate(15deg)' },
-          '100%': { transform: 'translate(-40px, 80px) scale(0.95) rotate(-10deg)' },
-        },
-        fluidBlob2: {
-          '0%': { transform: 'translate(0px, 0px) scale(1.1) rotate(0deg)' },
-          '50%': { transform: 'translate(-70px, -60px) scale(0.9) rotate(-20deg)' },
-          '100%': { transform: 'translate(50px, -30px) scale(1.05) rotate(15deg)' },
-        },
-        fluidBlob3: {
-          '0%': { transform: 'translate(0px, 0px) scale(0.95)' },
-          '50%': { transform: 'translate(60px, -40px) scale(1.1) rotate(10deg)' },
-          '100%': { transform: 'translate(-50px, 40px) scale(1) rotate(-15deg)' },
-        },
+      boxShadow: {
+        'cabin-glow': '0 0 60px -10px rgba(245, 158, 11, 0.25)',
+        'glass-panel': '0 20px 40px -15px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15)',
+        'pill-white': '0 4px 14px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.1)',
       }
     },
   },

@@ -7,20 +7,25 @@ import {
   AlertTriangle,
   FileSpreadsheet,
   Home as HomeIcon,
+  ShieldCheck,
+  Menu,
+  X,
+  ChevronRight
 } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const location = useLocation();
   const navContainerRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { label: 'Public Portal', path: '/', icon: HomeIcon, roleBadge: 'STUDENT / PUBLIC' },
-    { label: 'Marksheet', path: '/marksheet/2024CS001', icon: FileText, roleBadge: 'TRANSCRIPT' },
-    { label: 'Verify Portal', path: '/verify', icon: QrCode, roleBadge: 'THIRD-PARTY / HR' },
-    { label: 'Governance Chamber', path: '/governance', icon: Lock, roleBadge: 'DEAN & CONTROLLER' },
-    { label: 'Tamper Auditor', path: '/audit', icon: AlertTriangle, roleBadge: 'SECURITY / AUDITOR' },
-    { label: 'Registrar Terminal', path: '/admin', icon: FileSpreadsheet, roleBadge: 'REGISTRAR ADMIN' },
+    { label: 'Public Portal', path: '/', icon: HomeIcon, roleBadge: 'STUDENT / PUBLIC', desc: 'University results search' },
+    { label: 'Marksheet', path: '/marksheet/2024CS001', icon: FileText, roleBadge: 'TRANSCRIPT', desc: 'Official grade transcript' },
+    { label: 'Verify Portal', path: '/verify', icon: QrCode, roleBadge: 'THIRD-PARTY / HR', desc: 'QR cryptographic proof' },
+    { label: 'Governance Chamber', path: '/governance', icon: Lock, roleBadge: 'DEAN & CONTROLLER', desc: 'Dual-key Ed25519 signing' },
+    { label: 'Tamper Auditor', path: '/audit', icon: AlertTriangle, roleBadge: 'SECURITY / AUDITOR', desc: 'Direct SQL tamper detection' },
+    { label: 'Registrar Terminal', path: '/admin', icon: FileSpreadsheet, roleBadge: 'REGISTRAR ADMIN', desc: 'Batch Merkle tree publishing' },
   ];
 
   const getActiveIndex = () => {
@@ -45,6 +50,7 @@ export const Navbar: React.FC = () => {
 
   useEffect(() => {
     setActiveIndex(getActiveIndex());
+    setMobileMenuOpen(false); // close drawer on route change
   }, [location.pathname]);
 
   // Update sliding pill position dynamically based on active or hovered item
@@ -63,54 +69,56 @@ export const Navbar: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-50 no-print transition-all duration-300">
-      {/* Sleek LPU Top Bar with Deep Eggplant & Coral Accent */}
-      <div className="bg-[#2D142C] text-slate-300 px-4 py-1.5 text-xs border-b border-[#510A32]/30">
+      {/* Sleek LPU Top Institutional Bar (Responsive) */}
+      <div className="bg-[#0b1714]/95 backdrop-blur-xl border-b border-white/[0.06] px-3 sm:px-6 py-1.5 text-xs text-pine-200">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-2 text-[11px]">
-            <span className="w-2 h-2 rounded-full bg-[#EE4540] animate-pulse" />
-            <span className="font-semibold text-white">Lovely Professional University</span>
-            <span className="text-slate-500">&bull;</span>
-            <span className="text-slate-300">Division of Student Welfare &amp; Academic Examinations</span>
+          <div className="flex items-center space-x-2 text-[11px] truncate">
+            <span className="w-2 h-2 rounded-full bg-[#f59e0b] shadow-sm shadow-[#f59e0b]/50 flex-shrink-0" />
+            <span className="font-semibold text-white truncate">Lovely Professional University</span>
+            <span className="text-pine-400 hidden sm:inline">&bull;</span>
+            <span className="text-pine-300 hidden sm:inline">Division of Examinations</span>
           </div>
-          <div className="hidden md:flex items-center space-x-2 font-mono text-[10px]">
-            <span className="text-slate-400">Current Portal:</span>
-            <span className="text-[#EE4540] font-bold px-2 py-0.5 bg-[#EE4540]/15 rounded border border-[#EE4540]/25">
+          <div className="flex items-center space-x-2 font-mono text-[10px] flex-shrink-0">
+            <span className="text-pine-400 hidden md:inline">Current View:</span>
+            <span className="text-[#fbbf24] font-bold px-2 py-0.5 bg-[#f59e0b]/15 rounded-full border border-[#f59e0b]/30">
               {navItems[activeIndex]?.roleBadge}
             </span>
           </div>
         </div>
       </div>
 
-      {/* Main Glassy Frosted Navigation Bar in Lighter Aesthetic */}
-      <div className="glass-frosted-nav px-4 sm:px-6 lg:px-8">
+      {/* Main Glass Floating Header */}
+      <div className="bg-[#0d1c18]/85 backdrop-blur-2xl border-b border-white/[0.08] px-4 sm:px-6 lg:px-8 shadow-lg">
         <div className="max-w-7xl mx-auto h-16 flex items-center justify-between">
-          {/* TruGrade Wordmark Logo */}
-          <Link to="/" className="flex items-center space-x-3 group select-none">
+          {/* TruGrade Logo */}
+          <Link to="/" className="flex items-center space-x-2.5 group select-none">
+            <div className="w-8 h-8 rounded-full bg-[#f59e0b]/20 border border-[#f59e0b]/40 flex items-center justify-center text-[#fbbf24] shadow-sm">
+              <ShieldCheck className="w-4 h-4" />
+            </div>
             <div className="flex flex-col">
               <div className="flex items-center tracking-tight">
-                <span className="font-display text-2xl font-black text-[#2D142C] group-hover:text-[#510A32] transition">
+                <span className="font-display text-xl font-black text-white group-hover:text-pine-100 transition">
                   Tru
                 </span>
-                <span className="font-display text-2xl font-black text-[#EE4540] group-hover:text-[#C72C41] transition">
+                <span className="font-display text-xl font-black text-[#fbbf24] group-hover:text-[#f59e0b] transition">
                   Grade
                 </span>
-                <span className="w-1.5 h-1.5 rounded-full bg-[#C72C41] ml-1 self-end mb-1.5 group-hover:scale-125 transition" />
               </div>
-              <span className="text-[9px] font-bold tracking-wider uppercase text-[#801336]/80 font-mono -mt-1">
+              <span className="text-[9px] font-semibold tracking-wider uppercase text-pine-300 font-mono -mt-1 hidden sm:block">
                 LPU Academic Ledger
               </span>
             </div>
           </Link>
 
-          {/* Smooth Sliding Pill Navigation Menu */}
+          {/* Desktop Sliding Capsule Navigation */}
           <nav
             ref={navContainerRef}
-            className="relative flex items-center p-1 bg-[#2D142C]/[0.04] border border-[#801336]/10 rounded-xl overflow-x-auto shadow-sm"
+            className="relative hidden lg:flex items-center p-1 bg-black/40 border border-white/[0.08] rounded-full overflow-x-auto shadow-inner"
             onMouseLeave={() => setHoverIndex(null)}
           >
-            {/* The Animated Sliding Pill with Coral to Ruby Gradient */}
+            {/* The Animated Sliding Glass Pill */}
             <div
-              className="absolute top-1 bottom-1 bg-gradient-to-r from-[#EE4540] to-[#C72C41] rounded-lg shadow-md shadow-[#EE4540]/30 pointer-events-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+              className="absolute top-1 bottom-1 bg-white/[0.14] border border-white/[0.25] rounded-full shadow-md pointer-events-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
               style={{
                 left: `${pillStyle.left}px`,
                 width: `${pillStyle.width}px`,
@@ -128,10 +136,10 @@ export const Navbar: React.FC = () => {
                   to={item.path}
                   ref={(el) => (itemRefs.current[idx] = el)}
                   onMouseEnter={() => setHoverIndex(idx)}
-                  className={`relative z-10 flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors duration-200 whitespace-nowrap active:scale-95 ${
+                  className={`relative z-10 flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors duration-200 whitespace-nowrap active:scale-95 ${
                     isSelected || isHovered
                       ? 'text-white'
-                      : 'text-[#510A32] hover:text-[#2D142C]'
+                      : 'text-pine-200/80 hover:text-white'
                   }`}
                 >
                   <Icon className="w-3.5 h-3.5" />
@@ -140,8 +148,91 @@ export const Navbar: React.FC = () => {
               );
             })}
           </nav>
+
+          {/* Right Controls: Desktop Verify Pill + Mobile Hamburger Toggle */}
+          <div className="flex items-center space-x-2">
+            <Link
+              to="/verify"
+              className="hidden sm:flex btn-pill-white px-4 py-1.5 text-xs items-center space-x-1.5"
+            >
+              <QrCode className="w-3.5 h-3.5 text-[#0e1c19]" />
+              <span>Verify Marksheet</span>
+            </Link>
+
+            {/* Mobile Hamburger Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden p-2 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-white border border-white/10 transition active:scale-95"
+              aria-label="Toggle navigation menu"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5 text-[#fbbf24]" /> : <Menu className="w-5 h-5 text-white" />}
+            </button>
+          </div>
         </div>
       </div>
+
+      {/* Mobile Drawer Menu (Full Touch-Friendly Experience) */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden fixed inset-x-0 top-[88px] bottom-0 bg-black/80 backdrop-blur-2xl z-40 p-4 overflow-y-auto animate-fadeIn border-t border-white/10">
+          <div className="max-w-md mx-auto space-y-2.5 pb-20">
+            <div className="px-2 py-1 text-[11px] font-bold uppercase tracking-wider text-pine-400">
+              Select Portal Mode
+            </div>
+
+            {navItems.map((item, idx) => {
+              const isSelected = activeIndex === idx;
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center justify-between p-3.5 rounded-2xl border transition-all duration-200 active:scale-[0.98] ${
+                    isSelected
+                      ? 'bg-[#18362d] border-[#fbbf24]/50 shadow-lg'
+                      : 'bg-white/[0.05] border-white/[0.08] hover:bg-white/[0.1]'
+                  }`}
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className={`p-2.5 rounded-xl ${
+                      isSelected ? 'bg-[#fbbf24]/20 text-[#fbbf24]' : 'bg-white/[0.08] text-white'
+                    }`}>
+                      <Icon className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="flex items-center space-x-2">
+                        <span className="font-bold text-sm text-white">{item.label}</span>
+                        {isSelected && (
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#fbbf24] animate-pulse" />
+                        )}
+                      </div>
+                      <p className="text-[11px] text-pine-300">{item.desc}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-white/[0.08] text-pine-200">
+                      {item.roleBadge.split('/')[0]}
+                    </span>
+                    <ChevronRight className="w-4 h-4 text-pine-400" />
+                  </div>
+                </Link>
+              );
+            })}
+
+            <div className="pt-4">
+              <Link
+                to="/verify"
+                onClick={() => setMobileMenuOpen(false)}
+                className="btn-pill-white w-full py-3 text-xs font-bold flex items-center justify-center space-x-2"
+              >
+                <QrCode className="w-4 h-4 text-[#0e1c19]" />
+                <span>Open Instant QR Scanner</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 };
