@@ -1,0 +1,33 @@
+roll_no,student_name,course,semester,academic_year,subject_code,subject_name,marks_obtained,max_marks,grade
+2026AI101,Kabir Singhania,B.Tech AI & ML,6,2025-2026,AI601,Deep Learning Architectures,96,100,O
+2026AI101,Kabir Singhania,B.Tech AI & ML,6,2025-2026,AI602,Natural Language Processing,94,100,O
+2026AI101,Kabir Singhania,B.Tech AI & ML,6,2025-2026,AI603,Reinforcement Learning,98,100,O
+2026AI101,Kabir Singhania,B.Tech AI & ML,6,2025-2026,AI604,Computer Vision Systems,96,100,O
+2026AI102,Zara Khan,B.Tech AI & ML,6,2025-2026,AI601,Deep Learning Architectures,88,100,A+
+2026AI102,Zara Khan,B.Tech AI & ML,6,2025-2026,AI602,Natural Language Processing,91,100,A+
+2026AI102,Zara Khan,B.Tech AI & ML,6,2025-2026,AI603,Reinforcement Learning,85,100,A
+2026AI102,Zara Khan,B.Tech AI & ML,6,2025-2026,AI604,Computer Vision Systems,90,100,A+
+2026AI103,Ishaan Malhotra,B.Tech AI & ML,6,2025-2026,AI601,Deep Learning Architectures,82,100,A
+2026AI103,Ishaan Malhotra,B.Tech AI & ML,6,2025-2026,AI602,Natural Language Processing,86,100,A
+2026AI103,Ishaan Malhotra,B.Tech AI & ML,6,2025-2026,AI603,Reinforcement Learning,84,100,A
+2026AI103,Ishaan Malhotra,B.Tech AI & ML,6,2025-2026,AI604,Computer Vision Systems,84,100,A
+2026AI104,Tanvi Sen,B.Tech AI & ML,6,2025-2026,AI601,Deep Learning Architectures,78,100,B+
+2026AI104,Tanvi Sen,B.Tech AI & ML,6,2025-2026,AI602,Natural Language Processing,82,100,A
+2026AI104,Tanvi Sen,B.Tech AI & ML,6,2025-2026,AI603,Reinforcement Learning,80,100,A
+2026AI104,Tanvi Sen,B.Tech AI & ML,6,2025-2026,AI604,Computer Vision Systems,78,100,B+
+2026AI105,Reyansh Joshi,B.Tech AI & ML,6,2025-2026,AI601,Deep Learning Architectures,70,100,B+
+2026AI105,Reyansh Joshi,B.Tech AI & ML,6,2025-2026,AI602,Natural Language Processing,75,100,A
+2026AI105,Reyansh Joshi,B.Tech AI & ML,6,2025-2026,AI603,Reinforcement Learning,72,100,B+
+2026AI105,Reyansh Joshi,B.Tech AI & ML,6,2025-2026,AI604,Computer Vision Systems,75,100,A
+2026AI106,Avani Desai,B.Tech AI & ML,6,2025-2026,AI601,Deep Learning Architectures,65,100,B
+2026AI106,Avani Desai,B.Tech AI & ML,6,2025-2026,AI602,Natural Language Processing,68,100,B+
+2026AI106,Avani Desai,B.Tech AI & ML,6,2025-2026,AI603,Reinforcement Learning,70,100,B+
+2026AI106,Avani Desai,B.Tech AI & ML,6,2025-2026,AI604,Computer Vision Systems,67,100,B+
+2026AI107,Advaith Pillai,B.Tech AI & ML,6,2025-2026,AI601,Deep Learning Architectures,52,100,B
+2026AI107,Advaith Pillai,B.Tech AI & ML,6,2025-2026,AI602,Natural Language Processing,58,100,B
+2026AI107,Advaith Pillai,B.Tech AI & ML,6,2025-2026,AI603,Reinforcement Learning,55,100,B
+2026AI107,Advaith Pillai,B.Tech AI & ML,6,2025-2026,AI604,Computer Vision Systems,59,100,B
+2026AI108,Simran Kaur,B.Tech AI & ML,6,2025-2026,AI601,Deep Learning Architectures,98,100,O
+2026AI108,Simran Kaur,B.Tech AI & ML,6,2025-2026,AI602,Natural Language Processing,97,100,O
+2026AI108,Simran Kaur,B.Tech AI & ML,6,2025-2026,AI603,Reinforcement Learning,99,100,O
+2026AI108,Simran Kaur,B.Tech AI & ML,6,2025-2026,AI604,Computer Vision Systems,98,100,O

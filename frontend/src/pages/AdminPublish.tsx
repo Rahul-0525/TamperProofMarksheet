@@ -113,14 +113,24 @@ export const AdminPublish: React.FC = () => {
           )}
 
           <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
-            <a
-              href="/sample_data/results_sample.csv"
-              download="results_sample.csv"
-              className="text-xs text-pine-200 hover:text-white font-medium underline inline-flex items-center space-x-1"
-            >
-              <FileText className="w-3.5 h-3.5 text-[#fbbf24]" />
-              <span>Download sample 55-student CSV for live testing</span>
-            </a>
+            <div className="flex flex-wrap items-center gap-4">
+              <a
+                href="/sample_data/test_upload_cohort.csv"
+                download="test_upload_cohort.csv"
+                className="text-xs text-[#fbbf24] hover:text-white font-bold underline inline-flex items-center space-x-1.5"
+              >
+                <FileText className="w-3.5 h-3.5 text-[#fbbf24]" />
+                <span>Download Fresh AI & ML Cohort (2026AI101 - 2026AI108)</span>
+              </a>
+              <a
+                href="/sample_data/results_sample.csv"
+                download="results_sample.csv"
+                className="text-xs text-pine-300 hover:text-white font-medium underline inline-flex items-center space-x-1"
+              >
+                <FileText className="w-3.5 h-3.5 text-pine-300" />
+                <span>55-Student CSE Cohort</span>
+              </a>
+            </div>
 
             <button
               type="submit"
