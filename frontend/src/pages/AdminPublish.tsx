@@ -172,12 +172,23 @@ export const AdminPublish: React.FC = () => {
             </div>
           </div>
 
-          <div className="mt-6 flex justify-end">
+          <div className="mt-6 flex flex-wrap justify-end gap-3">
+            {publishResult.total_students >= 19 && (
+              <button
+                type="button"
+                onClick={() => navigate('/marksheet/2024CS019')}
+                className="btn-pill-glass px-5 py-2.5 text-xs font-semibold flex items-center space-x-2"
+              >
+                <span>Inspect Roll 19 (Dev Deshmukh)</span>
+                <ArrowRight className="w-4 h-4 text-[#fbbf24]" />
+              </button>
+            )}
             <button
+              type="button"
               onClick={() => navigate(`/marksheet/${publishResult.sample_roll_no || '2024CS001'}`)}
               className="btn-pill-white px-5 py-2.5 text-xs font-bold transition flex items-center space-x-2 shadow-lg active:scale-95"
             >
-              <span>Inspect First Published Marksheet</span>
+              <span>Inspect First Marksheet ({publishResult.sample_roll_no || '2024CS001'})</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>

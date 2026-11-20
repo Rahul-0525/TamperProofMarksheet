@@ -10,8 +10,10 @@ import {
   MOCK_PROOFS,
   MOCK_CORRECTIONS,
   MOCK_AUDIT_SECURE,
-  MOCK_AUDIT_TAMPERED
+  MOCK_AUDIT_TAMPERED,
+  PUBLISHED_ROOT_HASH
 } from '../utils/mockData';
+import { parseCSVAndBuildLedger } from '../utils/crypto';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
 
@@ -25,6 +27,63 @@ const client = axios.create({
 
 let backendConnected = false;
 
+function findStudentLocally(rollNo: string): StudentResult | null {
+  let customStudents: StudentResult[] = [];
+  try {
+    const raw = localStorage.getItem('trugrade_custom_students');
+    if (raw) customStudents = JSON.parse(raw);
+  } catch (e) {}
+
+  const all = [...customStudents, ...MOCK_STUDENTS];
+  const norm = (rollNo || '').toLowerCase().trim();
+
+  // 1. Exact match
+  const exact = all.find(s => s.roll_no.toLowerCase() === norm);
+  if (exact) return exact;
+
+  // 2. Numeric shorthand match (e.g., "19" -> "2024CS019")
+  if (/^\d+$/.test(norm)) {
+    const padded = norm.padStart(3, '0');
+    const matchNum = all.find(s => s.roll_no.endsWith(padded));
+    if (matchNum) return matchNum;
+  }
+
+  // 3. Substring match
+  const partial = all.find(s => s.roll_no.toLowerCase().includes(norm));
+  if (partial) return partial;
+
+  return null;
+}
+
+function findProofLocally(rollNo: string): MerkleProofResponse | null {
+  let customProofs: Record<string, MerkleProofResponse> = {};
+  try {
+    const raw = localStorage.getItem('trugrade_custom_proofs');
+    if (raw) customProofs = JSON.parse(raw);
+  } catch (e) {}
+
+  const allProofs = { ...MOCK_PROOFS, ...customProofs };
+  const norm = (rollNo || '').toLowerCase().trim();
+
+  // 1. Exact key match
+  if (allProofs[rollNo]) return allProofs[rollNo];
+  const exact = Object.values(allProofs).find(p => p.roll_no.toLowerCase() === norm);
+  if (exact) return exact;
+
+  // 2. Numeric shorthand
+  if (/^\d+$/.test(norm)) {
+    const padded = norm.padStart(3, '0');
+    const matchNum = Object.values(allProofs).find(p => p.roll_no.endsWith(padded));
+    if (matchNum) return matchNum;
+  }
+
+  // 3. Substring match
+  const partial = Object.values(allProofs).find(p => p.roll_no.toLowerCase().includes(norm));
+  if (partial) return partial;
+
+  return null;
+}
+
 export const api = {
   /**
    * Fetch student result by roll number
@@ -35,10 +94,20 @@ export const api = {
       backendConnected = true;
       return response.data;
     } catch (err) {
-      console.warn(`[TruGrade] Backend not reachable at ${API_BASE_URL}, using mock student data for ${rollNo}`);
-      const mock = MOCK_STUDENTS.find(s => s.roll_no.toLowerCase() === rollNo.toLowerCase());
-      if (mock) return mock;
-      return MOCK_STUDENTS[0];
+      console.warn(`[TruGrade] Backend not reachable at ${API_BASE_URL}, querying local Merkle cohort for ${rollNo}`);
+      const student = findStudentLocally(rollNo);
+      if (student) {
+        let activeRoot = PUBLISHED_ROOT_HASH;
+        try {
+          const customRoot = localStorage.getItem('trugrade_custom_root');
+          if (customRoot) activeRoot = customRoot;
+        } catch (e) {}
+        return {
+          ...student,
+          root_hash: activeRoot
+        };
+      }
+      throw new Error(`Student with roll number "${rollNo}" not found in active academic ledger.`);
     }
   },
 
@@ -51,9 +120,10 @@ export const api = {
       backendConnected = true;
       return response.data;
     } catch (err) {
-      console.warn(`[TruGrade] Backend not reachable, using mock proof for ${rollNo}`);
-      const mock = MOCK_PROOFS[rollNo] || MOCK_PROOFS['2024CS001'];
-      return mock;
+      console.warn(`[TruGrade] Backend not reachable, querying local proof store for ${rollNo}`);
+      const proof = findProofLocally(rollNo);
+      if (proof) return proof;
+      return MOCK_PROOFS['2024CS001'];
     }
   },
 
@@ -168,6 +238,7 @@ export const api = {
 
   /**
    * Upload CSV and publish new semester result batch to Merkle Ledger
+   * Fully functional with live backend OR client-side Web Crypto on Vercel
    */
   async publishBatch(file: File): Promise<{
     batch_id: string;
@@ -176,6 +247,26 @@ export const api = {
     published_at: string;
     sample_roll_no?: string;
   }> {
+    // 1. Parse client-side first so all student records are instantly available in-browser
+    const csvText = await file.text();
+    const clientBatch = await parseCSVAndBuildLedger(csvText);
+
+    try {
+      localStorage.setItem('trugrade_custom_students', JSON.stringify(clientBatch.students));
+      localStorage.setItem('trugrade_custom_proofs', JSON.stringify(clientBatch.proofs));
+      localStorage.setItem('trugrade_custom_root', clientBatch.root_hash);
+      localStorage.setItem('trugrade_custom_batch', JSON.stringify({
+        batch_id: clientBatch.batch_id,
+        total_students: clientBatch.total_students,
+        root_hash: clientBatch.root_hash,
+        published_at: clientBatch.published_at,
+        sample_roll_no: clientBatch.sample_roll_no
+      }));
+    } catch (e) {
+      console.warn('[TruGrade] Could not cache batch to localStorage:', e);
+    }
+
+    // 2. Also post to backend if accessible
     const formData = new FormData();
     formData.append('file', file);
     try {
@@ -187,13 +278,13 @@ export const api = {
       backendConnected = true;
       return response.data;
     } catch (err) {
-      console.warn('[TruGrade] Backend publish-batch failed or unreachable, simulating publish response');
+      console.info('[TruGrade] Backend offline/Vercel: Batch minted client-side with native Web Crypto!');
       return {
-        batch_id: `batch-${Math.random().toString(16).substring(2, 10)}`,
-        total_students: 55,
-        root_hash: 'c4e9988689a368ef964f581229e5590b92776878dd6ef7192d963ea2532f9434',
-        published_at: new Date().toISOString(),
-        sample_roll_no: '2024CS001'
+        batch_id: clientBatch.batch_id,
+        total_students: clientBatch.total_students,
+        root_hash: clientBatch.root_hash,
+        published_at: clientBatch.published_at,
+        sample_roll_no: clientBatch.sample_roll_no
       };
     }
   },

@@ -251,7 +251,7 @@ export const VerifyPortal: React.FC = () => {
             <p className="text-xs text-pine-200 mb-4 font-semibold">
               Select a test scenario to evaluate genuine verification vs tamper detection:
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
               <button
                 onClick={() => loadPreset('2024CS001', false)}
                 className="inset-pill-field p-4 text-left flex flex-col justify-between group active:scale-95"
@@ -259,10 +259,25 @@ export const VerifyPortal: React.FC = () => {
                 <div>
                   <div className="flex items-center space-x-2 text-[#fbbf24] font-bold text-xs sm:text-sm mb-1">
                     <CheckCircle2 className="w-4 h-4 text-[#fbbf24]" />
-                    <span>Genuine: Aarav (2024CS001)</span>
+                    <span>Aarav (2024CS001)</span>
                   </div>
                   <p className="text-[11px] text-pine-200/80 group-hover:text-white">
                     Verifies authentic marksheet and calculates full Merkle inclusion path.
+                  </p>
+                </div>
+              </button>
+
+              <button
+                onClick={() => loadPreset('2024CS019', false)}
+                className="inset-pill-field p-4 text-left flex flex-col justify-between group active:scale-95 border-amber-400/40"
+              >
+                <div>
+                  <div className="flex items-center space-x-2 text-[#fbbf24] font-bold text-xs sm:text-sm mb-1">
+                    <CheckCircle2 className="w-4 h-4 text-[#fbbf24]" />
+                    <span>Dev Deshmukh (019)</span>
+                  </div>
+                  <p className="text-[11px] text-pine-200/80 group-hover:text-white">
+                    Roll 19 from uploaded semester CSV with 6-level Merkle path.
                   </p>
                 </div>
               </button>
@@ -274,7 +289,7 @@ export const VerifyPortal: React.FC = () => {
                 <div>
                   <div className="flex items-center space-x-2 text-[#fbbf24] font-bold text-xs sm:text-sm mb-1">
                     <CheckCircle2 className="w-4 h-4 text-[#fbbf24]" />
-                    <span>Genuine: Diya (2024CS002)</span>
+                    <span>Diya (2024CS002)</span>
                   </div>
                   <p className="text-[11px] text-pine-200/80 group-hover:text-white">
                     Verifies alternate sibling positioning along the binary hash tree.
@@ -289,7 +304,7 @@ export const VerifyPortal: React.FC = () => {
                 <div>
                   <div className="flex items-center space-x-2 text-rose-300 font-bold text-xs sm:text-sm mb-1">
                     <XCircle className="w-4 h-4 text-rose-400" />
-                    <span>Simulate Forged Marksheet</span>
+                    <span>Simulate Forgery</span>
                   </div>
                   <p className="text-[11px] text-rose-200/80 group-hover:text-rose-100">
                     Altered marks or forged QR code triggers immediate cryptographic failure.

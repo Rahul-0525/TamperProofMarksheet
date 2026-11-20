@@ -12,10 +12,14 @@ import {
   Building2,
   Calendar,
   Hash,
+  AlertCircle,
+  FileSpreadsheet
 } from 'lucide-react';
 import { StudentResult, CompactQRPayload } from '../types';
 import { api } from '../services/api';
-import { getCompactQRPayload, MOCK_STUDENTS } from '../utils/mockData';
+import { getCompactQRPayload } from '../utils/mockData';
+
+const POPULAR_ROLLS = ['2024CS001', '2024CS002', '2024CS003', '2024CS004', '2024CS019', '2024CS055'];
 
 export const MarksheetView: React.FC = () => {
   const { roll_no } = useParams<{ roll_no: string }>();
@@ -25,18 +29,23 @@ export const MarksheetView: React.FC = () => {
   const [student, setStudent] = useState<StudentResult | null>(null);
   const [searchRoll, setSearchRoll] = useState(currentRoll);
   const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
+    setSearchRoll(currentRoll);
     loadStudent(currentRoll);
   }, [currentRoll]);
 
   const loadStudent = async (roll: string) => {
     setLoading(true);
+    setErrorMsg('');
     try {
       const data = await api.getStudentResult(roll);
       setStudent(data);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
+      setStudent(null);
+      setErrorMsg(err?.message || `Student with roll number "${roll}" not found in current ledger.`);
     } finally {
       setLoading(false);
     }
@@ -44,8 +53,15 @@ export const MarksheetView: React.FC = () => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (searchRoll.trim()) {
-      navigate(`/marksheet/${searchRoll.trim().toUpperCase()}`);
+    const clean = searchRoll.trim().toUpperCase();
+    if (clean) {
+      // Smart normalizer: if user enters just a number like "19", expand to "2024CS019"
+      if (/^\d+$/.test(clean)) {
+        const padded = clean.padStart(3, '0');
+        navigate(`/marksheet/2024CS${padded}`);
+      } else {
+        navigate(`/marksheet/${clean}`);
+      }
     }
   };
 
@@ -73,7 +89,7 @@ export const MarksheetView: React.FC = () => {
               type="text"
               value={searchRoll}
               onChange={(e) => setSearchRoll(e.target.value)}
-              placeholder="Search Roll No (e.g., 2024CS001)"
+              placeholder="Search Roll No (e.g., 19 or 2024CS019)"
               className="bg-transparent text-white font-mono uppercase text-xs focus:outline-none w-full placeholder:text-pine-400/60 font-semibold"
             />
           </div>
@@ -86,22 +102,22 @@ export const MarksheetView: React.FC = () => {
         </form>
 
         {/* Quick-Pick Selector */}
-        <div className="flex items-center space-x-2 text-xs">
-          <span className="text-pine-300 text-xs font-bold mr-1 hidden sm:inline">Roll:</span>
-          {MOCK_STUDENTS.map((s) => (
+        <div className="flex items-center space-x-1.5 text-xs flex-wrap gap-y-1">
+          <span className="text-pine-300 text-xs font-bold mr-1 hidden sm:inline">Rolls:</span>
+          {POPULAR_ROLLS.map((roll) => (
             <button
-              key={s.roll_no}
+              key={roll}
               onClick={() => {
-                setSearchRoll(s.roll_no);
-                navigate(`/marksheet/${s.roll_no}`);
+                setSearchRoll(roll);
+                navigate(`/marksheet/${roll}`);
               }}
-              className={`px-3.5 py-1.5 rounded-full font-mono text-xs font-bold transition active:scale-95 ${
-                s.roll_no === currentRoll
+              className={`px-3 py-1.5 rounded-full font-mono text-xs font-bold transition active:scale-95 ${
+                roll === currentRoll
                   ? 'btn-pill-white'
                   : 'bg-white/[0.06] hover:bg-white/[0.14] text-pine-200'
               }`}
             >
-              {s.roll_no}
+              {roll === '2024CS019' ? '★ 019' : roll.replace('2024CS', '')}
             </button>
           ))}
         </div>
@@ -117,7 +133,8 @@ export const MarksheetView: React.FC = () => {
           </button>
           <button
             onClick={handlePrint}
-            className="btn-pill-white flex items-center space-x-2 px-5 py-2.5 text-xs font-bold active:scale-95"
+            disabled={!student}
+            className="btn-pill-white flex items-center space-x-2 px-5 py-2.5 text-xs font-bold active:scale-95 disabled:opacity-40"
           >
             <Printer className="w-4 h-4" />
             <span>Print Marksheet</span>
@@ -125,10 +142,40 @@ export const MarksheetView: React.FC = () => {
         </div>
       </div>
 
-      {loading || !student ? (
+      {loading ? (
         <div className="floating-action-card rounded-3xl p-16 text-center shadow-xl">
           <div className="animate-spin w-8 h-8 border-3 border-[#fbbf24] border-t-transparent rounded-full mx-auto mb-4" />
           <p className="text-pine-200 text-sm font-medium">Retrieving official LPU transcript...</p>
+        </div>
+      ) : errorMsg || !student ? (
+        <div className="floating-action-card rounded-3xl p-12 text-center shadow-xl border border-rose-500/30 fly-in is-revealed">
+          <AlertCircle className="w-12 h-12 text-rose-400 mx-auto mb-4" />
+          <h3 className="font-display text-lg font-bold text-white mb-2">Student Transcript Not Found</h3>
+          <p className="text-pine-200 text-xs max-w-md mx-auto mb-6">
+            {errorMsg || `Roll number "${currentRoll}" is not indexed in the active academic ledger.`}
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <button
+              onClick={() => navigate('/marksheet/2024CS019')}
+              className="btn-pill-white px-6 py-2.5 text-xs font-bold shadow-lg active:scale-95 flex items-center space-x-2"
+            >
+              <span>View Roll 2024CS019 (Dev Deshmukh)</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+            <button
+              onClick={() => navigate('/marksheet/2024CS001')}
+              className="btn-pill-glass px-5 py-2.5 text-xs font-semibold"
+            >
+              View 2024CS001 (Aarav Sharma)
+            </button>
+            <button
+              onClick={() => navigate('/admin')}
+              className="btn-pill-glass px-5 py-2.5 text-xs font-semibold flex items-center space-x-2"
+            >
+              <FileSpreadsheet className="w-3.5 h-3.5 text-[#fbbf24]" />
+              <span>Upload CSV Batch</span>
+            </button>
+          </div>
         </div>
       ) : (
         /* Formal High-Prestige Academic Transcript Card */
