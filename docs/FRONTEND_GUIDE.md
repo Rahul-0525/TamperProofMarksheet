@@ -5,11 +5,40 @@ This document contains the exact instructions for your AI agent and the human de
 
 ---
 
-## 📋 Hackathon Target Metrics (Strict Evaluator Criteria)
-- **Vercel 1-Click Deployment:** Seamlessly deployable on Vercel with zero 404 routing errors on page refresh.
-- **Offline Proof Verification:** The QR code verifier can verify authenticity **client-side in the browser** even in airplane mode using the Web Crypto API!
-- **High-Density Marksheet Rendering:** Clean university layout with dynamic QR code and CSS `@media print` print-readiness.
-- **Visual Tamper Alerting:** Instantly alerts with visual diffing when an unauthorized database alteration is detected by the backend.
+## 🏛️ Real-World Multi-Portal Architecture & Separation of Roles
+
+To satisfy the hackathon criterion **"Usability and design (10%): Works for the real user named in the problem"**, VeriMark cleanly separates the user experience into 4 dedicated, role-isolated portals:
+
+1. **Student & Public Credential Portal (`/` and `/marksheet/:roll_no`):**
+   - **User:** Students, parents, general public.
+   - **Features:** Clean search box to look up roll numbers, formal printable transcript (`@media print` formatted for clean paper output), and the printed cryptographic QR code.
+   - **Security:** Zero access to admin actions, no database tampering tools, and no signature panels.
+
+2. **Third-Party Verification Portal (`/verify`):**
+   - **User:** Background verification agencies, corporate recruiters (e.g. Google, TCS, Infosys HR), and foreign universities.
+   - **Features:** Live webcam QR scanner and marksheet image/PDF upload. Calculates the SHA-256 leaf and climbs the Merkle audit path to verify against the published root hash.
+   - **Key Evaluator Metric:** Works **100% offline in airplane mode** via the native browser Web Crypto API!
+
+3. **Executive Governance Chamber (`/governance`):**
+   - **User:** University Leadership — **Dean of Academic Affairs** and **Controller of Examinations**.
+   - **Features:** Strict multi-signature governance docket. To prevent bribery or single-clerk manipulation, mark amendments require two independent Ed25519 digital cryptographic signatures before the database allows an update and mints a new ledger root.
+
+4. **Security Operations & Forensic Auditor Console (`/audit`):**
+   - **User:** University Vigilance Officers & **Hackathon Judges**.
+   - **Features:** Real-time continuous audit daemon that scans all SQL records against the immutable Merkle Root. Includes the **Evaluator Break-Test Sandbox** where judges can inject direct SQL mutations (`UPDATE subject_marks SET marks_obtained = 99`) and immediately watch the daemon sound the alarm and pinpoint the exact modified roll number and subject.
+
+5. **Office of the Registrar (`/admin`):**
+   - **User:** Examination Branch Registrar.
+   - **Features:** Bulk CSV ingestion (`results_sample.csv`) that computes 1,500+ Merkle leaf hashes in $< 2$ seconds and publishes the batch.
+
+---
+
+## 🎙️ How to Present This Architecture to Evaluators (Winning Script)
+
+When the judges evaluate your project, explain the UI separation like this:
+
+> *"Judges, in a real university production deployment, these 4 portals are physically decoupled into separate micro-frontends hosted on isolated internal subdomains: `results.university.edu` for students, `verify.university.edu` for employers, `board.internal.edu` for the Dean & Controller, and `audit.security.edu` for vigilance.*  
+> *For the purpose of this 5-minute hackathon evaluation, our top header includes an **Institutional Persona Switcher** so you can seamlessly evaluate each actor's view without the friction of logging into 4 separate laptops."*
 
 ---
 

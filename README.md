@@ -14,27 +14,26 @@ Marks get changed after publication, and students cannot prove what their origin
 
 ---
 
-## 🏗️ Architecture Overview
+## 🏛️ Enterprise Multi-Portal Architecture
 
-```
-                                [ Registrar / Admin Portal ]
-                                            │
-                                  (Bulk CSV / Result Ingestion)
-                                            │
-                                            ▼
-                           [ Canonical Hashing Engine (SHA-256) ]
-                                            │
-               ┌────────────────────────────┴──────────────────────────┐
-               ▼                                                       ▼
-      [( Relational Database )]                               [ Merkle Tree Engine ]
-               │                                                       │
-  (Direct SQL Tamper Attempt)                                   (Leaf Hashes & Root)
-               │                                                       │
-               ▼                                                       ▼
-    [ Tamper Audit Daemon ] ◄─────────────────────────── [ Immutable Append-Only Ledger ]
-               │
-      (Flags Altered Rows)
-```
+VeriMark decouples user experiences into 4 role-isolated institutional portals:
+
+1. **Student & Public Credential Portal (`/` & `/marksheet/:roll_no`):**
+   - Clean roll number search for students and parents.
+   - Formal single-page printable transcript (`@media print` formatted) with dynamic QR code.
+2. **Third-Party Verification Portal (`/verify`):**
+   - Designed for employers, recruiters, and foreign universities.
+   - Webcam scanner + file uploader supporting **100% offline client-side Merkle proof verification**.
+3. **Executive Governance Chamber (`/governance`):**
+   - Accessible by Dean of Academic Affairs & Controller of Examinations.
+   - Dual-signature Ed25519 authorization for re-evaluation grade amendments.
+4. **Forensic Security & Tamper Audit Console (`/audit`):**
+   - Continuous daemon that scans live database rows against the immutable Merkle Root.
+   - Features the **Evaluator Break-Test Sandbox** for live judge SQL injection testing.
+5. **Office of the Registrar (`/admin`):**
+   - Bulk CSV ingestion (`POST /api/admin/publish-batch`) hashing 1,500+ records into the Merkle tree in $< 2$ seconds.
+
+*(For hackathon evaluators, a top Persona Switcher allows seamless switching between these institutional roles during the 5-minute live demo).*
 
 ---
 

@@ -4,20 +4,21 @@ import {
   UploadCloud,
   FileSpreadsheet,
   CheckCircle2,
-  Cpu,
+  AlertCircle,
+  Clock,
   Layers,
   ArrowRight,
+  Database,
   ShieldCheck,
-  Clock,
-  Sparkles,
-  Download
+  RefreshCw,
+  FileText
 } from 'lucide-react';
 import { api } from '../services/api';
 
 export const AdminPublish: React.FC = () => {
   const navigate = useNavigate();
-  const [file, setFile] = useState<File | null>(null);
-  const [publishing, setPublishing] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
   const [publishResult, setPublishResult] = useState<{
     batch_id: string;
     total_students: number;
@@ -25,81 +26,71 @@ export const AdminPublish: React.FC = () => {
     published_at: string;
     sample_roll_no?: string;
   } | null>(null);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
+      const file = e.target.files[0];
+      if (!file.name.endsWith('.csv')) {
+        setErrorMsg('Please select a valid CSV file.');
+        return;
+      }
+      setSelectedFile(file);
+      setErrorMsg('');
+      setPublishResult(null);
     }
   };
 
-  const handlePublish = async () => {
-    if (!file) return;
-    setPublishing(true);
+  const handlePublish = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedFile) {
+      setErrorMsg('Please choose a CSV file to upload.');
+      return;
+    }
+
+    setUploading(true);
+    setErrorMsg('');
+
     try {
-      const res = await api.publishBatch(file);
-      setPublishResult(res);
-    } catch (err) {
-      console.error(err);
+      const result = await api.publishBatch(selectedFile);
+      setPublishResult(result);
+    } catch (err: any) {
+      setErrorMsg(err?.message || 'Failed to publish batch to cryptographic ledger.');
     } finally {
-      setPublishing(false);
+      setUploading(false);
     }
-  };
-
-  // Provide a quick 1-click synthetic file for demonstration
-  const handleLoadSampleData = () => {
-    const sampleCsvContent = `roll_no,student_name,course,semester,academic_year,subject_code,subject_name,marks_obtained,max_marks,grade
-2024CS001,Aarav Sharma,B.Tech CSE,5,2025-2026,CS501,Operating Systems,88,100,A
-2024CS001,Aarav Sharma,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,92,100,A+
-2024CS001,Aarav Sharma,B.Tech CSE,5,2025-2026,CS503,Computer Networks,84,100,A
-2024CS001,Aarav Sharma,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,79,100,B+
-2024CS002,Diya Patel,B.Tech CSE,5,2025-2026,CS501,Operating Systems,95,100,O
-2024CS002,Diya Patel,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,90,100,A+
-2024CS002,Diya Patel,B.Tech CSE,5,2025-2026,CS503,Computer Networks,91,100,A+
-2024CS002,Diya Patel,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,88,100,A
-2024CS003,Rohan Verma,B.Tech CSE,5,2025-2026,CS501,Operating Systems,68,100,B
-2024CS003,Rohan Verma,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,72,100,B+
-2024CS003,Rohan Verma,B.Tech CSE,5,2025-2026,CS503,Computer Networks,65,100,C
-2024CS003,Rohan Verma,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,70,100,B`;
-
-    const blob = new Blob([sampleCsvContent], { type: 'text/csv' });
-    const dummyFile = new File([blob], 'results_sample.csv', { type: 'text/csv' });
-    setFile(dummyFile);
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8">
+    <div className="max-w-4xl mx-auto px-4 py-10">
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="inline-flex items-center space-x-2 px-3 py-1 bg-indigo-50 border border-indigo-200 rounded-full text-indigo-700 text-xs font-semibold mb-3">
-          <Layers className="w-3.5 h-3.5" />
-          <span>Step 1 of Workflow: Examination Office Registrar</span>
+        <div className="inline-flex items-center space-x-2 px-3 py-1 bg-amber-50 border border-amber-200 rounded-full text-amber-900 text-xs font-semibold mb-3">
+          <Database className="w-3.5 h-3.5" />
+          <span>Office of the Registrar &bull; Result Publishing Terminal</span>
         </div>
         <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight sm:text-4xl">
-          Publish Results to Immutable Ledger
+          Publish Semester Results to Ledger
         </h1>
-        <p className="mt-2 text-slate-600 max-w-2xl mx-auto text-sm">
-          Ingest raw semester examination grades in bulk. The system calculates deterministic SHA-256 canonical leaf hashes, builds the binary Merkle Tree, and locks the immutable root into the ledger.
+        <p className="mt-2 text-slate-600 max-w-xl mx-auto text-sm">
+          Upload official exam score spreadsheets. VeriMark canonically hashes each student record, constructs the binary Merkle tree, and locks the root hash into the immutable append-only ledger.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* Upload Column */}
-        <div className="md:col-span-2 space-y-6">
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-            <h2 className="text-lg font-bold text-slate-900 mb-4 flex items-center space-x-2">
-              <FileSpreadsheet className="w-5 h-5 text-indigo-600" />
-              <span>Upload Semester CSV File</span>
-            </h2>
+      {/* Main Upload Box */}
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 mb-8">
+        <form onSubmit={handlePublish}>
+          <div className="border-2 border-dashed border-slate-300 rounded-2xl p-8 text-center hover:border-indigo-400 transition bg-slate-50/50">
+            <UploadCloud className="w-12 h-12 text-indigo-500 mx-auto mb-3" />
+            <h3 className="text-sm font-semibold text-slate-900 mb-1">
+              Select Semester Results CSV
+            </h3>
+            <p className="text-xs text-slate-500 mb-4">
+              Columns required: <code>roll_no, student_name, course, semester, subject_code, marks_obtained, max_marks, grade</code>
+            </p>
 
-            {/* Drag & Drop Zone */}
-            <label className="border-2 border-dashed border-slate-300 hover:border-indigo-500 rounded-2xl p-8 flex flex-col items-center justify-center cursor-pointer bg-slate-50 hover:bg-indigo-50/30 transition text-center group">
-              <UploadCloud className="w-12 h-12 text-slate-400 group-hover:text-indigo-600 mb-3 transition" />
-              <p className="text-sm font-semibold text-slate-800">
-                {file ? file.name : 'Click to select or drag and drop CSV file'}
-              </p>
-              <p className="text-xs text-slate-500 mt-1">
-                Accepts .csv formatted student results (e.g., results_sample.csv)
-              </p>
+            <label className="cursor-pointer inline-flex items-center space-x-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-sm transition">
+              <span>Choose CSV File</span>
               <input
                 type="file"
                 accept=".csv"
@@ -108,115 +99,90 @@ export const AdminPublish: React.FC = () => {
               />
             </label>
 
-            {/* Quick Demo Preload Button */}
-            <div className="mt-4 flex items-center justify-between text-xs text-slate-500">
-              <span>Don't have a CSV handy?</span>
-              <button
-                type="button"
-                onClick={handleLoadSampleData}
-                className="font-medium text-indigo-600 hover:text-indigo-700 underline flex items-center space-x-1"
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Load Sample CSV (55 Students)</span>
-              </button>
-            </div>
-
-            {/* Publish Action Button */}
-            <button
-              onClick={handlePublish}
-              disabled={!file || publishing}
-              className={`mt-6 w-full py-3.5 px-6 rounded-xl font-bold text-white flex items-center justify-center space-x-2 shadow-md transition ${
-                !file || publishing
-                  ? 'bg-slate-300 cursor-not-allowed'
-                  : 'bg-indigo-600 hover:bg-indigo-700 hover:shadow-indigo-500/25'
-              }`}
-            >
-              <Cpu className={`w-5 h-5 ${publishing ? 'animate-spin' : ''}`} />
-              <span>
-                {publishing ? 'Hashing Leaves & Constructing Merkle Tree...' : 'Publish to Merkle Ledger'}
-              </span>
-            </button>
+            {selectedFile && (
+              <div className="mt-4 p-3 bg-indigo-50/80 border border-indigo-200 rounded-xl inline-flex items-center space-x-2 text-xs font-medium text-indigo-900">
+                <FileSpreadsheet className="w-4 h-4 text-indigo-600" />
+                <span>Selected: {selectedFile.name} ({(selectedFile.size / 1024).toFixed(1)} KB)</span>
+              </div>
+            )}
           </div>
 
-          {/* Success Banner */}
-          {publishResult && (
-            <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 space-y-4 animate-in fade-in duration-300">
-              <div className="flex items-center space-x-3 text-emerald-800">
-                <CheckCircle2 className="w-6 h-6 text-emerald-600 flex-shrink-0" />
-                <div>
-                  <h3 className="font-bold text-base">Results Successfully Published to Ledger!</h3>
-                  <p className="text-xs text-emerald-700">
-                    All student records have been canonically hashed and locked into an immutable root.
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-white p-4 rounded-xl border border-emerald-100 font-mono text-xs space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Batch ID:</span>
-                  <span className="font-semibold text-slate-800">{publishResult.batch_id}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Students Processed:</span>
-                  <span className="font-semibold text-slate-800">{publishResult.total_students} records</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Timestamp:</span>
-                  <span className="text-slate-600">{new Date(publishResult.published_at).toLocaleString()}</span>
-                </div>
-                <div className="pt-2 border-t border-slate-100">
-                  <span className="text-slate-500 block mb-1">Minted Merkle Root Hash:</span>
-                  <div className="p-2 bg-slate-900 text-emerald-400 rounded text-[11px] break-all">
-                    {publishResult.root_hash}
-                  </div>
-                </div>
-              </div>
-
-              <button
-                onClick={() => navigate(`/marksheet/${publishResult.sample_roll_no || '2024CS001'}`)}
-                className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl text-sm flex items-center justify-center space-x-2 transition"
-              >
-                <span>Proceed to View Student Marksheet</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
+          {errorMsg && (
+            <div className="mt-4 p-3 bg-rose-50 border border-rose-200 rounded-xl flex items-center space-x-2 text-xs text-rose-700">
+              <AlertCircle className="w-4 h-4 flex-shrink-0" />
+              <span>{errorMsg}</span>
             </div>
           )}
-        </div>
 
-        {/* Informational Sidebar */}
-        <div className="space-y-6">
-          <div className="bg-slate-900 text-white p-6 rounded-2xl shadow-sm border border-slate-800">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-indigo-400 mb-3 flex items-center space-x-2">
-              <ShieldCheck className="w-4 h-4" />
-              <span>Cryptographic Protocol</span>
-            </h3>
-            <ul className="text-xs text-slate-300 space-y-3">
-              <li className="flex items-start space-x-2">
-                <span className="text-indigo-400 font-bold">&bull;</span>
-                <span><strong>Deterministic Ordering:</strong> Subjects are sorted alphabetically by code before hashing to guarantee repeatable digests across all operating systems.</span>
-              </li>
-              <li className="flex items-start space-x-2">
-                <span className="text-indigo-400 font-bold">&bull;</span>
-                <span><strong>RFC 6962 Binary Tree:</strong> $N$ student leaves are paired iteratively into an $O(\log N)$ tree depth.</span>
-              </li>
-              <li className="flex items-start space-x-2">
-                <span className="text-indigo-400 font-bold">&bull;</span>
-                <span><strong>Append-Only Ledger:</strong> The resulting Root cannot be overwritten; every amendment requires dual-key authorization.</span>
-              </li>
-            </ul>
+          <div className="mt-6 flex items-center justify-between">
+            <a
+              href="/sample_data/results_sample.csv"
+              download="results_sample.csv"
+              className="text-xs text-indigo-600 hover:text-indigo-800 font-medium underline inline-flex items-center space-x-1"
+            >
+              <FileText className="w-3.5 h-3.5" />
+              <span>Download sample 55-student CSV for testing</span>
+            </a>
+
+            <button
+              type="submit"
+              disabled={uploading || !selectedFile}
+              className="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-white rounded-xl text-xs font-semibold shadow-sm transition flex items-center space-x-2"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${uploading ? 'animate-spin' : ''}`} />
+              <span>{uploading ? 'Hashing & Minting Merkle Tree...' : 'Publish to Immutable Ledger'}</span>
+            </button>
           </div>
+        </form>
+      </div>
 
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-            <h3 className="text-sm font-bold text-slate-800 mb-2">Evaluator Benchmark</h3>
-            <p className="text-xs text-slate-600 mb-3">
-              Ingestion and tree construction takes less than <strong>2 seconds for 1,500 students</strong> on standard laptop CPUs.
-            </p>
-            <div className="p-3 bg-indigo-50 border border-indigo-100 rounded-lg text-[11px] text-indigo-900 font-mono">
-              Measured: 1.68s for 1,500 records (6,000 subject rows)
+      {/* Publishing Success Banner */}
+      {publishResult && (
+        <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 shadow-sm mb-8 animate-fadeIn">
+          <div className="flex items-center space-x-3 mb-4">
+            <CheckCircle2 className="w-7 h-7 text-emerald-600 flex-shrink-0" />
+            <div>
+              <h3 className="text-base font-bold text-emerald-950">
+                Semester Results Successfully Published to Ledger!
+              </h3>
+              <p className="text-xs text-emerald-800">
+                {publishResult.total_students} student transcripts have been canonically hashed and locked into the Merkle tree.
+              </p>
             </div>
           </div>
+
+          <div className="bg-white/80 rounded-xl p-4 border border-emerald-200 font-mono text-xs space-y-2">
+            <div className="flex justify-between">
+              <span className="text-slate-500">Batch ID:</span>
+              <span className="font-bold text-slate-900">{publishResult.batch_id}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-slate-500">Records Hashed:</span>
+              <span className="font-bold text-slate-900">{publishResult.total_students} Students</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-slate-500">Timestamp:</span>
+              <span className="text-slate-700">{new Date(publishResult.published_at).toLocaleString()}</span>
+            </div>
+            <div className="pt-2 border-t border-slate-200">
+              <span className="block text-slate-500 mb-1">Minted Merkle Root Hash:</span>
+              <span className="block text-emerald-700 break-all bg-emerald-100/60 p-2 rounded-lg font-bold">
+                {publishResult.root_hash}
+              </span>
+            </div>
+          </div>
+
+          <div className="mt-4 flex justify-end space-x-3">
+            <button
+              onClick={() => navigate(`/marksheet/${publishResult.sample_roll_no || '2024CS001'}`)}
+              className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-semibold transition flex items-center space-x-1.5"
+            >
+              <span>View First Published Marksheet</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
