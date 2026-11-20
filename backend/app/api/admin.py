@@ -169,7 +169,9 @@ async def publish_batch(
         db.query(Student).delete()
         db.flush()
 
-        # Persist new batch into DB
+        # Persist new batch into DB using high-speed bulk insertion
+        student_records = []
+        subject_records = []
         for item in processed_students:
             sm = item["student_model"]
             db_student = Student(
@@ -188,8 +190,7 @@ async def publish_batch(
                 batch_id=batch_id,
                 is_active=True
             )
-            db.add(db_student)
-            db.flush()
+            student_records.append(db_student)
 
             for s in item["raw_subjects"]:
                 db_subject = SubjectMark(
@@ -200,7 +201,10 @@ async def publish_batch(
                     max_marks=s["max_marks"],
                     grade=s["grade"]
                 )
-                db.add(db_subject)
+                subject_records.append(db_subject)
+
+        db.add_all(student_records)
+        db.add_all(subject_records)
 
         # Create LedgerHead
         ledger_head = LedgerHead(
