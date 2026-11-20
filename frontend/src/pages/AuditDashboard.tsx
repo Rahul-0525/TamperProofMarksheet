@@ -38,9 +38,16 @@ export const AuditDashboard: React.FC = () => {
     }
   };
 
-  const toggleTamperSimulation = () => {
+  const toggleTamperSimulation = async () => {
     const nextState = !tamperSimulated;
     setTamperSimulated(nextState);
+    if (nextState) {
+      await api.simulateTamper({
+        roll_no: '2024CS003',
+        subject_code: 'CS501',
+        tampered_marks: 99.0
+      });
+    }
     runAudit(nextState);
   };
 

@@ -23,6 +23,23 @@ export const GovernancePortal: React.FC = () => {
   const [signing, setSigning] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
+  // Load from backend if available
+  useEffect(() => {
+    loadCorrections();
+  }, []);
+
+  const loadCorrections = async () => {
+    try {
+      const data = await api.getCorrections();
+      if (data && data.length > 0) {
+        setCorrections(data);
+        if (!selectedCorrId) setSelectedCorrId(data[0].correction_id);
+      }
+    } catch (err) {
+      console.warn('Using default corrections list');
+    }
+  };
+
   // New Proposal Modal
   const [showModal, setShowModal] = useState(false);
   const [newRoll, setNewRoll] = useState('2024CS002');
@@ -79,24 +96,36 @@ export const GovernancePortal: React.FC = () => {
     }
   };
 
-  const handleAddProposal = (e: React.FormEvent) => {
+  const handleAddProposal = async (e: React.FormEvent) => {
     e.preventDefault();
-    const newCorr: CorrectionRequest = {
-      correction_id: `corr-${Math.random().toString(16).substring(2, 8)}`,
-      roll_no: newRoll,
-      student_name: 'Diya Patel',
-      subject_code: newSubject,
-      old_marks: 91,
-      new_marks: Number(newMarks),
-      reason: newReason,
-      proposed_by: 'Academic Scrutiny Committee',
-      created_at: new Date().toISOString(),
-      status: 'AWAITING_APPROVALS'
-    };
+    try {
+      const res = await api.proposeCorrection({
+        roll_no: newRoll,
+        subject_code: newSubject,
+        new_marks: Number(newMarks),
+        reason: newReason,
+        proposed_by: 'Academic Scrutiny Committee'
+      });
 
-    setCorrections([newCorr, ...corrections]);
-    setSelectedCorrId(newCorr.correction_id);
-    setShowModal(false);
+      const newCorr: CorrectionRequest = {
+        correction_id: res.correction_id,
+        roll_no: newRoll,
+        student_name: 'Cohort Student',
+        subject_code: newSubject,
+        old_marks: 91,
+        new_marks: Number(newMarks),
+        reason: newReason,
+        proposed_by: 'Academic Scrutiny Committee',
+        created_at: new Date().toISOString(),
+        status: 'AWAITING_APPROVALS'
+      };
+
+      setCorrections([newCorr, ...corrections]);
+      setSelectedCorrId(newCorr.correction_id);
+      setShowModal(false);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (

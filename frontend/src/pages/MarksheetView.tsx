@@ -51,7 +51,12 @@ export const MarksheetView: React.FC = () => {
     window.print();
   };
 
-  const qrPayload: CompactQRPayload = getCompactQRPayload(student?.roll_no || currentRoll);
+  const baseQr = getCompactQRPayload(student?.roll_no || currentRoll);
+  const qrPayload: CompactQRPayload = {
+    ...baseQr,
+    root: (student as any)?.root_hash || baseQr.root,
+    leaf: student?.leaf_hash || baseQr.leaf
+  };
   const qrString = JSON.stringify(qrPayload);
 
   return (

@@ -23,17 +23,16 @@ const client = axios.create({
   }
 });
 
-// Flag to track whether backend is connected
-let backendAvailable = false;
+let backendConnected = false;
 
 export const api = {
   /**
    * Fetch student result by roll number
    */
-  async getStudentResult(rollNo: string): Promise<StudentResult> {
+  async getStudentResult(rollNo: string): Promise<StudentResult & { root_hash?: string }> {
     try {
-      const response = await client.get<StudentResult>(`/results/${rollNo}`);
-      backendAvailable = true;
+      const response = await client.get(`/results/${rollNo}`);
+      backendConnected = true;
       return response.data;
     } catch (err) {
       console.warn(`[VeriMark] Backend not reachable at ${API_BASE_URL}, using mock student data for ${rollNo}`);
@@ -49,7 +48,7 @@ export const api = {
   async getMerkleProof(rollNo: string): Promise<MerkleProofResponse> {
     try {
       const response = await client.get<MerkleProofResponse>(`/results/${rollNo}/proof`);
-      backendAvailable = true;
+      backendConnected = true;
       return response.data;
     } catch (err) {
       console.warn(`[VeriMark] Backend not reachable, using mock proof for ${rollNo}`);
@@ -59,7 +58,7 @@ export const api = {
   },
 
   /**
-   * Verify proof against the backend API
+   * Server-side proof verification
    */
   async verifyProofOnline(payload: {
     leaf_hash: string;
@@ -68,11 +67,10 @@ export const api = {
   }): Promise<{ verified: boolean; calculated_root: string; expected_root: string }> {
     try {
       const response = await client.post('/results/verify', payload);
-      backendAvailable = true;
+      backendConnected = true;
       return response.data;
     } catch (err) {
       console.warn(`[VeriMark] Backend not reachable, verifying locally`);
-      // Local fallback handled in components using crypto.ts
       throw err;
     }
   },
@@ -83,10 +81,32 @@ export const api = {
   async getCorrections(): Promise<CorrectionRequest[]> {
     try {
       const response = await client.get<CorrectionRequest[]>('/governance/corrections');
-      backendAvailable = true;
+      backendConnected = true;
       return response.data;
     } catch (err) {
       return MOCK_CORRECTIONS;
+    }
+  },
+
+  /**
+   * Propose a new grade correction
+   */
+  async proposeCorrection(payload: {
+    roll_no: string;
+    subject_code: string;
+    new_marks: number;
+    reason: string;
+    proposed_by: string;
+  }): Promise<{ correction_id: string; status: string }> {
+    try {
+      const response = await client.post('/governance/propose-correction', payload);
+      backendConnected = true;
+      return response.data;
+    } catch (err) {
+      return {
+        correction_id: `corr-${Math.random().toString(16).substring(2, 8)}`,
+        status: 'AWAITING_APPROVALS'
+      };
     }
   },
 
@@ -98,16 +118,16 @@ export const api = {
     signer_role: 'DEAN' | 'CONTROLLER';
     signature: string;
     public_key: string;
-  }): Promise<{ status: string; message: string }> {
+  }): Promise<{ status: string; message?: string; both_signed?: boolean; new_root_hash?: string }> {
     try {
       const response = await client.post('/governance/sign-correction', payload);
-      backendAvailable = true;
+      backendConnected = true;
       return response.data;
     } catch (err) {
-      // Local simulation for demo
       return {
         status: payload.signer_role === 'DEAN' ? 'AWAITING_SECOND_APPROVAL' : 'APPROVED',
-        message: 'Signature recorded successfully in simulation mode'
+        message: 'Signature recorded successfully in simulation mode',
+        both_signed: payload.signer_role === 'CONTROLLER'
       };
     }
   },
@@ -121,14 +141,32 @@ export const api = {
         return MOCK_AUDIT_TAMPERED;
       }
       const response = await client.get<IntegrityCheckResponse>('/audit/integrity-check');
-      backendAvailable = true;
+      backendConnected = true;
       return response.data;
     } catch (err) {
       return simulatedTamper ? MOCK_AUDIT_TAMPERED : MOCK_AUDIT_SECURE;
     }
   },
 
-  isBackendAvailable(): boolean {
-    return backendAvailable;
+  /**
+   * Simulate SQL Injection / Direct DB modification on live backend
+   */
+  async simulateTamper(payload: {
+    roll_no: string;
+    subject_code: string;
+    tampered_marks: number;
+  }): Promise<any> {
+    try {
+      const response = await client.post('/audit/simulate-tamper', payload);
+      backendConnected = true;
+      return response.data;
+    } catch (err) {
+      console.warn('[VeriMark] Backend simulate-tamper offline, using client simulation');
+      return { message: 'Simulated locally' };
+    }
+  },
+
+  isBackendConnected(): boolean {
+    return backendConnected;
   }
 };
