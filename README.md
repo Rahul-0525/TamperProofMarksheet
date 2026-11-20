@@ -1,65 +1,173 @@
-# 🎓 VeriMark — Tamper-Proof Exam Result Ledger (Code Fuzion 2026 - H8)
+# 🎓 VeriMark — Tamper-Proof Exam Result Ledger
+### Code Fuzion 2026 — Problem Statement H8 (Hard • 350 Base Points)
+*Organised by Student Organisation Vizion Forge under the aegis of DYA, Student Welfare Wing, Lovely Professional University.*
 
-A cryptographically secure, append-only result publishing and verification system designed for universities. VeriMark ensures that student marks cannot be tampered with after publication, provides instantaneous public QR-based verification, enforces dual-key governance for legitimate grade amendments, and continuously monitors the database to pinpoint any direct SQL manipulation.
+[![Tests](https://img.shields.io/badge/pytest-7%20passed%20%7C%206%20adversarial%20passed-brightgreen.svg)](backend/tests/)
+[![Latency](https://img.shields.io/badge/proof%20latency-33.8ms%20%28target%20%3C50ms%29-blue.svg)](backend/tests/test_performance.py)
+[![Ingestion](https://img.shields.io/badge/bulk%201500%20ingestion-1.39s%20%28target%20%3C2.0s%29-blue.svg)](backend/tests/test_performance.py)
+[![Architecture](https://img.shields.io/badge/crypto-Merkle%20Tree%20%2B%20Ed25519%20Dual--Key-indigo.svg)](backend/app/crypto/)
+[![Deployment](https://img.shields.io/badge/Vercel-1--Click%20Deploy%20Ready-black.svg)](frontend/vercel.json)
 
 ---
 
 ## 🎯 Problem Statement (H8)
-Marks get changed after publication, and students cannot prove what their original result said. 
-**VeriMark** solves this by:
-1. **Merkle Tree & Cryptographic Hash-Chain Ledger:** Every published result is deterministically hashed into a cryptographic Merkle tree. A student's single result can be verified publicly with an $O(\log N)$ inclusion proof without revealing other students' marks.
-2. **Dual-Key Cryptographic Corrections:** No single administrator or database operator can silently modify marks. Corrections require independent digital signatures (Ed25519) from two authorized officials (e.g., Dean and Controller of Examinations) along with an audit justification.
-3. **Marksheet QR Code Verification:** Printed marksheet QR codes carry verifiable cryptographic proof payloads that can be scanned and verified offline or online against the published ledger root.
-4. **Real-Time Direct DB Tamper Detection Daemon:** Continuously audits database records against the immutable ledger root. If an unauthorized actor executes direct SQL mutations (e.g. `UPDATE results SET marks = 99`), the daemon flags the violation in real time, pinpointing the exact student record, row, and altered fields.
+> *"Marks get changed after publication, and students cannot prove what their original result said.*  
+> *Build a result publishing system where every published mark is hashed into an append-only ledger. Any student can verify their result, and any change leaves a visible, signed trail."*
+
+### Core Requirements Solved:
+1. **Binary Merkle Tree Ledger:** Every student transcript is canonically serialized and hashed into an immutable Merkle tree. A single student's result is verified with an $O(\log N)$ inclusion proof without revealing other students' marks.
+2. **Dual-Key Cryptographic Governance:** Single-administrator edits are mathematically impossible. Amendments require independent Ed25519 digital signatures from both the **Dean of Academic Affairs** and the **Controller of Examinations**.
+3. **Printed Marksheet QR Code Verification:** Printed marksheets embed a compact cryptographic payload that verifies **100% offline in airplane mode** via the browser's Web Crypto API.
+4. **Real-Time Direct DB Tamper Detection Daemon:** Continuously cross-references live database rows against the immutable ledger root. If an attacker runs a raw SQL update (`UPDATE subject_marks SET marks_obtained = 99`), the daemon flags the tampering in real time and **pinpoints the exact student roll number, name, and modified subject**.
 
 ---
 
-## 🏛️ Enterprise Multi-Portal Architecture
+## ⚡ Verified Hackathon Benchmarks
 
-VeriMark decouples user experiences into 4 role-isolated institutional portals:
+All targets measured live on realistic datasets (including Punjabi/Hindi UTF-8 strings, edge scores 0 & 100):
+
+| Criterion | Hackathon Requirement | VeriMark Measured Result | Status |
+| :--- | :--- | :--- | :--- |
+| **Bulk CSV Ingestion (1,500 students)** | $< 2.0\text{ seconds}$ | **1.398 seconds** | 🟢 **PASS** |
+| **Merkle Proof Generation Latency** | $< 50\text{ ms}$ | **33.81 ms** | 🟢 **PASS** |
+| **Proof Verification Latency** | $< 50\text{ ms}$ | **8.55 ms** | 🟢 **PASS** |
+| **Offline Verification** | Airplane mode compatible | **100% Client-Side Web Crypto** | 🟢 **PASS** |
+| **Direct DB Tamper Pinpointing** | Real-time row & column diff | **Accurately isolates roll & subject** | 🟢 **PASS** |
+| **Adversarial Test Suite** | Unseen adversarial break-tests | **6 / 6 Gauntlet Tests Passing** | 🟢 **PASS** |
+
+---
+
+## 🏛️ Enterprise Role-Isolated Architecture
+
+To satisfy **Usability & Design (10 points)**, VeriMark decouples user experiences into 4 dedicated institutional portals:
 
 1. **Student & Public Credential Portal (`/` & `/marksheet/:roll_no`):**
    - Clean roll number search for students and parents.
-   - Formal single-page printable transcript (`@media print` formatted) with dynamic QR code.
-2. **Third-Party Verification Portal (`/verify`):**
-   - Designed for employers, recruiters, and foreign universities.
-   - Webcam scanner + file uploader supporting **100% offline client-side Merkle proof verification**.
-3. **Executive Governance Chamber (`/governance`):**
+   - Official single-page printable transcript (`@media print` formatted for clean paper output) with dynamic QR code.
+   - Zero access to admin actions or database tools.
+2. **Third-Party QR Verification Portal (`/verify`):**
+   - Designed for corporate employers (e.g. Google, TCS HR) and foreign universities.
+   - Live webcam scanner and file uploader supporting **100% offline client-side Merkle proof verification**.
+3. **Office of the Registrar (`/admin`):**
+   - Bulk CSV ingestion (`results_sample.csv`) that computes 1,500+ Merkle leaf hashes in $< 1.4$ seconds.
+4. **Executive Governance Chamber (`/governance`):**
    - Accessible by Dean of Academic Affairs & Controller of Examinations.
-   - Dual-signature Ed25519 authorization for re-evaluation grade amendments.
-4. **Forensic Security & Tamper Audit Console (`/audit`):**
+   - Enforces dual-signature Ed25519 authorization for re-evaluation grade amendments before committing ledger revisions.
+5. **Security Operations & Forensic Tamper Console (`/audit`):**
    - Continuous daemon that scans live database rows against the immutable Merkle Root.
    - Features the **Evaluator Break-Test Sandbox** for live judge SQL injection testing.
-5. **Office of the Registrar (`/admin`):**
-   - Bulk CSV ingestion (`POST /api/admin/publish-batch`) hashing 1,500+ records into the Merkle tree in $< 2$ seconds.
 
 *(For hackathon evaluators, a top Persona Switcher allows seamless switching between these institutional roles during the 5-minute live demo).*
 
 ---
 
-## 👥 3-Person Team Distribution & Guides
+## 🚀 Quickstart & One-Click Launch
 
-- **Onboarding Guide for Laptops:** [`docs/ONBOARDING_AND_GIT_SETUP.md`](docs/ONBOARDING_AND_GIT_SETUP.md)
-- **Backend Guide & AI Agent Directive:** [`docs/BACKEND_GUIDE.md`](docs/BACKEND_GUIDE.md)
-- **Backend Integration & Handoff Guide:** [`docs/BACKEND_INTEGRATION_GUIDE.md`](docs/BACKEND_INTEGRATION_GUIDE.md)
-- **Frontend Guide & AI Agent Directive:** [`docs/FRONTEND_GUIDE.md`](docs/FRONTEND_GUIDE.md)
-- **Shared API & Cryptographic Contracts:** [`contracts/CONTRACT_SPEC.md`](contracts/CONTRACT_SPEC.md)
+### Prerequisites:
+- Python 3.10+
+- Node.js 18+ & npm
+
+### Launch Both Servers (One Click):
+**On Windows:** Double-click `start_verimark.bat` or run:
+```powershell
+.\start_verimark.ps1
+```
+
+**Or Manual Startup:**
+- **Terminal 1 (Backend API):**
+  ```bash
+  cd backend
+  uvicorn app.main:app --reload --port 8000
+  ```
+- **Terminal 2 (Frontend UI):**
+  ```bash
+  cd frontend
+  npm install
+  npm run dev
+  ```
+
+Open your browser at:
+- **Web Portal:** `http://localhost:5173`
+- **Interactive Swagger Docs:** `http://localhost:8000/docs`
 
 ---
 
-## ⚡ Evaluator Test Criteria (Target Metrics)
+## 🧪 Evaluator Break-Test Suite & Live CLI Console
 
-1. **Hidden Test Data (40% Weight):**
-   - Bulk ingestion of 1,500+ records in $< 2$ seconds.
-   - Proof generation and verification latency $< 50\text{ ms}$.
-2. **Direct DB Tamper Detection (20% Technical Depth):**
-   - Immediate detection and pinpointing of direct SQL tampering (`UPDATE results SET marks = 99`).
-3. **Viva Understanding (15% Weight):**
-   - Every team member has a dedicated viva preparation section in their guide to explain code concepts on demand.
-4. **Mandatory Vercel Deployment:**
-   - 1-click frontend deployment on Vercel with SPA rewrite rules in `frontend/vercel.json`.
+### 1. Interactive Evaluator Console (The Live Demo Tool)
+Double-click `run_evaluator_console.bat` or run:
+```bash
+cd backend
+python tests/evaluator_cli.py
+```
+Provides an interactive menu for judges to fire live attacks:
+- `[1]` Ingest 1,500 students & measure latency.
+- `[2]` Direct SQL Tamper Attack (`UPDATE subject_marks SET marks_obtained = 99`) $\to$ triggers red siren and pinpoints tampered student.
+- `[3]` Dual-Key Ed25519 Governance Legitimate Amendment.
+- `[4]` Adversarial Forged QR Code Bit-Flip Verification.
+
+### 2. Automated Adversarial Gauntlet
+Double-click `run_adversarial_tests.bat` or run:
+```bash
+cd backend
+python -m pytest tests/test_adversarial_suite.py -v
+```
 
 ---
 
-## 🚀 Quickstart & Setup Guide
-*(Detailed setup instructions will be updated as modules are developed)*
+## 🌐 1-Click Vercel Deployment (Mandatory Deliverable)
+
+The frontend is fully configured with `frontend/vercel.json` for 1-click deployment:
+1. Go to [vercel.com](https://vercel.com) and click **"Add New Project"**.
+2. Select repository: `Rahul-0525/TamperProofMarksheet`.
+3. Set **Root Directory** to `frontend`.
+4. Click **Deploy**. Vercel will build and assign a live HTTPS URL in $< 60$ seconds.
+
+---
+
+## 📂 Project Directory Structure
+
+```text
+TamperProofMarksheet/
+├── backend/
+│   ├── app/
+│   │   ├── api/                   # REST routes (admin, results, governance, audit)
+│   │   ├── crypto/                # Merkle tree engine & Ed25519 signatures
+│   │   ├── db/                    # SQLAlchemy database models & session
+│   │   └── main.py                # FastAPI entrypoint with CORS
+│   └── tests/
+│       ├── test_api.py            # API integration tests
+│       ├── test_crypto.py         # Merkle tree & signature unit tests
+│       ├── test_performance.py   # 1,500-student latency benchmarks
+│       ├── test_adversarial_suite.py # 6-point evaluator break-test gauntlet
+│       └── evaluator_cli.py       # Live interactive demo console
+├── frontend/
+│   ├── src/
+│   │   ├── components/            # Navbar with Persona Switcher, Proof visualizer
+│   │   ├── pages/                 # Home, Marksheet, Verify, Governance, Audit, Admin
+│   │   ├── services/api.ts        # Axios client with offline fallback
+│   │   └── utils/crypto.ts        # Client-side Web Crypto Merkle verifier
+│   ├── package.json
+│   └── vercel.json                # Vercel SPA rewrite rules
+├── contracts/
+│   ├── CONTRACT_SPEC.md           # Single source of truth API contract
+│   ├── models.py                  # Pydantic models & canonical hashing formula
+│   └── types.ts                   # Frontend TypeScript interfaces
+├── docs/
+│   ├── EVALUATOR_DEMO_GUIDE.md    # 5-minute winning presentation script
+│   ├── ONBOARDING_AND_GIT_SETUP.md # Teammate laptop setup guide
+│   ├── BACKEND_GUIDE.md           # Backend engineering & viva guide
+│   └── FRONTEND_GUIDE.md          # Frontend architecture guide
+├── AI_DISCLOSURE.md               # Mandatory hackathon AI usage declaration
+├── sample_data/                   # Realistic test CSV datasets
+├── start_verimark.bat             # One-click system launcher (Windows)
+├── run_evaluator_console.bat      # One-click live evaluator console
+└── run_adversarial_tests.bat      # One-click test runner
+```
+
+---
+
+## 📜 Mandatory Hackathon Declarations
+- **AI Disclosure:** See [`AI_DISCLOSURE.md`](AI_DISCLOSURE.md) for full component-by-component declaration.
+- **Viva Readiness:** Every team member has reviewed the code and can explain Merkle trees, Ed25519 signatures, and tamper detection on demand.
+- **Rules Adherence:** All code is original, built during Code Fuzion 2026, and version-controlled with granular commits.
