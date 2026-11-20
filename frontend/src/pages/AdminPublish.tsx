@@ -5,14 +5,10 @@ import {
   FileSpreadsheet,
   CheckCircle2,
   AlertCircle,
-  Clock,
-  Layers,
   ArrowRight,
   Database,
-  ShieldCheck,
   RefreshCw,
   FileText,
-  Sparkles,
   Building2
 } from 'lucide-react';
 import { api } from '../services/api';
@@ -64,34 +60,34 @@ export const AdminPublish: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10 page-enter">
+    <div className="max-w-4xl mx-auto px-4 py-10">
       {/* Header */}
-      <div className="text-center mb-10">
-        <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#ff6b00]/10 border border-[#ff6b00]/25 text-[#ff8a34] text-xs font-semibold mb-4">
-          <Building2 className="w-3.5 h-3.5 text-[#ff6b00]" />
+      <div className="text-center mb-10 fly-in is-revealed">
+        <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-[#EE4540]/30 text-[#801336] text-xs font-semibold mb-4 shadow-sm">
+          <Building2 className="w-3.5 h-3.5 text-[#EE4540]" />
           <span>Lovely Professional University &bull; Office of the Registrar</span>
         </div>
-        <h1 className="font-display text-3xl sm:text-5xl font-black text-white tracking-tight mb-3">
+        <h1 className="font-display text-3xl sm:text-5xl font-black text-[#2D142C] tracking-tight mb-3">
           Publish Semester Results
         </h1>
-        <p className="text-slate-400 max-w-xl mx-auto text-sm leading-relaxed">
+        <p className="text-[#510A32]/75 max-w-xl mx-auto text-sm leading-relaxed">
           Upload official exam score spreadsheets. TruGrade canonically serializes and hashes each record, builds the balanced Merkle tree, and locks the root into the immutable LPU academic ledger.
         </p>
       </div>
 
-      {/* Main Glass Upload Box */}
-      <div className="glass-card rounded-3xl border border-white/10 p-8 sm:p-10 mb-8 shadow-2xl">
+      {/* Main Glass Upload Box in Lighter Aesthetics */}
+      <div className="glass-card rounded-3xl border border-white/90 p-8 sm:p-10 mb-8 shadow-xl fly-in delay-100">
         <form onSubmit={handlePublish}>
-          <div className="border-2 border-dashed border-white/10 rounded-2xl p-10 text-center hover:border-[#ff6b00]/40 transition-all duration-300 bg-white/[0.02]">
-            <UploadCloud className="w-12 h-12 text-[#ff6b00] mx-auto mb-4 animate-float" />
-            <h3 className="font-display text-base font-bold text-white mb-1">
+          <div className="border-2 border-dashed border-[#801336]/20 rounded-2xl p-10 text-center hover:border-[#EE4540]/60 transition-all duration-300 bg-white/50">
+            <UploadCloud className="w-12 h-12 text-[#EE4540] mx-auto mb-4 animate-float" />
+            <h3 className="font-display text-base font-bold text-[#2D142C] mb-1">
               Select Semester Results CSV
             </h3>
-            <p className="text-xs text-slate-400 mb-6 font-mono">
+            <p className="text-xs text-[#510A32]/70 mb-6 font-mono">
               Columns: roll_no, student_name, course, semester, subject_code, marks_obtained, max_marks, grade
             </p>
 
-            <label className="cursor-pointer inline-flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-[#ff6b00] to-[#ea580c] hover:from-[#ff7a1a] hover:to-[#f97316] text-white rounded-xl text-xs font-bold shadow-lg shadow-[#ff6b00]/30 transition active:scale-95">
+            <label className="cursor-pointer inline-flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-[#EE4540] to-[#C72C41] hover:from-[#f05652] hover:to-[#d6354a] text-white rounded-xl text-xs font-bold shadow-lg shadow-[#EE4540]/30 transition active:scale-95">
               <span>Choose CSV File</span>
               <input
                 type="file"
@@ -102,15 +98,15 @@ export const AdminPublish: React.FC = () => {
             </label>
 
             {selectedFile && (
-              <div className="mt-6 p-3 bg-[#ff6b00]/10 border border-[#ff6b00]/20 rounded-xl inline-flex items-center space-x-2 text-xs font-medium text-[#ff8a34] font-mono">
-                <FileSpreadsheet className="w-4 h-4 text-[#ff6b00]" />
+              <div className="mt-6 p-3 bg-[#EE4540]/10 border border-[#EE4540]/25 rounded-xl inline-flex items-center space-x-2 text-xs font-medium text-[#C72C41] font-mono shadow-sm">
+                <FileSpreadsheet className="w-4 h-4 text-[#EE4540]" />
                 <span>Selected: {selectedFile.name} ({(selectedFile.size / 1024).toFixed(1)} KB)</span>
               </div>
             )}
           </div>
 
           {errorMsg && (
-            <div className="mt-4 p-3 bg-rose-500/10 border border-rose-500/20 rounded-xl flex items-center space-x-2 text-xs text-rose-300">
+            <div className="mt-4 p-3 bg-rose-50 border border-rose-200 rounded-xl flex items-center space-x-2 text-xs text-[#C72C41]">
               <AlertCircle className="w-4 h-4 flex-shrink-0" />
               <span>{errorMsg}</span>
             </div>
@@ -120,7 +116,7 @@ export const AdminPublish: React.FC = () => {
             <a
               href="/sample_data/results_sample.csv"
               download="results_sample.csv"
-              className="text-xs text-[#ff8a34] hover:text-[#ffa35d] font-medium underline inline-flex items-center space-x-1"
+              className="text-xs text-[#C72C41] hover:text-[#EE4540] font-medium underline inline-flex items-center space-x-1"
             >
               <FileText className="w-3.5 h-3.5" />
               <span>Download sample 55-student CSV for live testing</span>
@@ -129,7 +125,7 @@ export const AdminPublish: React.FC = () => {
             <button
               type="submit"
               disabled={uploading || !selectedFile}
-              className="px-6 py-3 bg-gradient-to-r from-[#ff6b00] to-[#ea580c] hover:from-[#ff7a1a] hover:to-[#f97316] disabled:opacity-40 text-white font-bold rounded-xl text-xs shadow-lg shadow-[#ff6b00]/30 transition flex items-center space-x-2 active:scale-95"
+              className="px-6 py-3 bg-gradient-to-r from-[#EE4540] to-[#C72C41] hover:from-[#f05652] hover:to-[#d6354a] disabled:opacity-40 text-white font-bold rounded-xl text-xs shadow-lg shadow-[#EE4540]/30 transition flex items-center space-x-2 active:scale-95"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${uploading ? 'animate-spin' : ''}`} />
               <span>{uploading ? 'Hashing & Minting Merkle Tree...' : 'Publish to Immutable Ledger'}</span>
@@ -140,37 +136,37 @@ export const AdminPublish: React.FC = () => {
 
       {/* Success Banner */}
       {publishResult && (
-        <div className="glass-card rounded-3xl p-6 sm:p-8 border border-emerald-500/30 shadow-2xl mb-8 animate-fadeIn">
+        <div className="glass-card rounded-3xl p-6 sm:p-8 border border-emerald-400 bg-emerald-50/50 shadow-xl mb-8 fly-in is-revealed">
           <div className="flex items-center space-x-4 mb-6">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/25 flex items-center justify-center text-emerald-700">
               <CheckCircle2 className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="font-display text-lg font-bold text-white">
+              <h3 className="font-display text-lg font-bold text-[#2D142C]">
                 Semester Results Minted to Ledger!
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-[#510A32]/75">
                 {publishResult.total_students} student transcripts have been canonically hashed and locked into the Merkle tree.
               </p>
             </div>
           </div>
 
-          <div className="bg-white/[0.03] rounded-2xl p-5 border border-white/[0.06] font-mono text-xs space-y-3">
-            <div className="flex justify-between border-b border-white/[0.04] pb-2">
-              <span className="text-slate-400">Batch ID:</span>
-              <span className="font-bold text-white">{publishResult.batch_id}</span>
+          <div className="bg-white/90 rounded-2xl p-5 border border-slate-200 font-mono text-xs space-y-3 shadow-sm">
+            <div className="flex justify-between border-b border-slate-100 pb-2">
+              <span className="text-slate-500">Batch ID:</span>
+              <span className="font-bold text-[#2D142C]">{publishResult.batch_id}</span>
             </div>
-            <div className="flex justify-between border-b border-white/[0.04] pb-2">
-              <span className="text-slate-400">Records Processed:</span>
-              <span className="font-bold text-emerald-400">{publishResult.total_students} Students</span>
+            <div className="flex justify-between border-b border-slate-100 pb-2">
+              <span className="text-slate-500">Records Processed:</span>
+              <span className="font-bold text-emerald-700">{publishResult.total_students} Students</span>
             </div>
-            <div className="flex justify-between border-b border-white/[0.04] pb-2">
-              <span className="text-slate-400">Commit Timestamp:</span>
-              <span className="text-slate-300">{new Date(publishResult.published_at).toLocaleString()}</span>
+            <div className="flex justify-between border-b border-slate-100 pb-2">
+              <span className="text-slate-500">Commit Timestamp:</span>
+              <span className="text-slate-700">{new Date(publishResult.published_at).toLocaleString()}</span>
             </div>
             <div className="pt-1">
-              <span className="block text-slate-400 mb-1.5">Minted Merkle Root Hash:</span>
-              <span className="block text-emerald-400 break-all select-all bg-emerald-500/10 p-3 rounded-xl border border-emerald-500/20 font-bold">
+              <span className="block text-slate-500 mb-1.5">Minted Merkle Root Hash:</span>
+              <span className="block text-emerald-800 break-all select-all bg-emerald-50 p-3 rounded-xl border border-emerald-200 font-bold">
                 {publishResult.root_hash}
               </span>
             </div>

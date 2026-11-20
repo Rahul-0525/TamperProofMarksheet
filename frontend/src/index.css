@@ -3,14 +3,20 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    background-color: #08090c;
-    color: #f1f5f9;
+    background-color: #FAF6F8;
+    color: #2D142C;
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow-x: hidden;
   }
   
   h1, h2, h3, h4, .font-display {
     font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+    color: #2D142C;
   }
 
   code, pre, .font-mono {
@@ -18,94 +24,180 @@
   }
 }
 
-/* Glassy White Frosted Finishes */
+/* ==========================================================
+   HOLLOW EFFECT & FLUID BACKGROUND SYSTEM
+   ========================================================== */
+
+/* Ambient concave lighting / hollow depth */
+.bg-hollow-stage {
+  background: 
+    radial-gradient(ellipse 90% 65% at 50% 15%, rgba(255, 255, 255, 0.95) 0%, rgba(250, 246, 248, 0.7) 45%, rgba(243, 233, 237, 0.85) 100%),
+    linear-gradient(180deg, #FFFFFF 0%, #FAF6F8 50%, #F5ECF0 100%);
+  position: relative;
+}
+
+/* Fluid Animated Gradient Blobs in Lighter Tones */
+.fluid-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(100px);
+  pointer-events: none;
+  opacity: 0.55;
+  mix-blend-mode: multiply;
+  will-change: transform;
+}
+
+.fluid-orb-coral {
+  background: radial-gradient(circle, rgba(238, 69, 64, 0.35) 0%, rgba(238, 69, 64, 0.05) 70%, transparent 100%);
+}
+
+.fluid-orb-ruby {
+  background: radial-gradient(circle, rgba(199, 44, 65, 0.28) 0%, rgba(199, 44, 65, 0.04) 70%, transparent 100%);
+}
+
+.fluid-orb-plum {
+  background: radial-gradient(circle, rgba(128, 19, 54, 0.2) 0%, rgba(81, 10, 50, 0.03) 70%, transparent 100%);
+}
+
+.fluid-orb-peach {
+  background: radial-gradient(circle, rgba(255, 140, 120, 0.35) 0%, rgba(255, 140, 120, 0.05) 70%, transparent 100%);
+}
+
+/* ==========================================================
+   GLASSMORPHISM & FROSTED SURFACES (LIGHT THEME)
+   ========================================================== */
+
 .glass-frosted-nav {
-  background: rgba(18, 20, 28, 0.75);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(81, 10, 50, 0.06);
+  box-shadow: 0 4px 20px -2px rgba(45, 20, 44, 0.04), 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .glass-card {
-  background: rgba(18, 20, 28, 0.65);
+  background: rgba(255, 255, 255, 0.78);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 
+    0 20px 40px -15px rgba(81, 10, 50, 0.06),
+    0 1px 3px 0 rgba(45, 20, 44, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .glass-card-hover {
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card-hover:hover {
-  border-color: rgba(255, 107, 0, 0.35);
-  box-shadow: 0 20px 40px -10px rgba(255, 107, 0, 0.12);
-  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(238, 69, 64, 0.35);
+  box-shadow: 
+    0 25px 50px -12px rgba(238, 69, 64, 0.12),
+    0 4px 12px 0 rgba(199, 44, 65, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  transform: translateY(-4px);
 }
 
-/* Orange Glows */
-.glow-orange {
-  box-shadow: 0 0 40px -10px rgba(255, 107, 0, 0.3);
+/* Pill / Glow highlights */
+.glow-coral {
+  box-shadow: 0 10px 25px -5px rgba(238, 69, 64, 0.35);
 }
 
-.glow-orange-sm {
-  box-shadow: 0 4px 20px -2px rgba(255, 107, 0, 0.35);
+.glow-coral-sm {
+  box-shadow: 0 4px 15px -2px rgba(238, 69, 64, 0.28);
 }
 
-/* Smooth Entrance Animation */
-.page-enter {
-  animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+/* ==========================================================
+   SCROLL "FLY-IN" FLUID ANIMATION SYSTEM
+   ========================================================== */
+
+.fly-in {
+  opacity: 0;
+  transform: translateY(36px) scale(0.97);
+  filter: blur(3px);
+  transition: 
+    opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity, filter;
 }
 
-@keyframes slideUpFade {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.fly-in.is-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0px);
 }
 
-/* Custom Scrollbar */
+.fly-in-left {
+  opacity: 0;
+  transform: translateX(-40px) scale(0.97);
+  filter: blur(3px);
+  transition: 
+    opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity, filter;
+}
+
+.fly-in-left.is-revealed {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  filter: blur(0px);
+}
+
+.fly-in-right {
+  opacity: 0;
+  transform: translateX(40px) scale(0.97);
+  filter: blur(3px);
+  transition: 
+    opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity, filter;
+}
+
+.fly-in-right.is-revealed {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  filter: blur(0px);
+}
+
+.delay-100 { transition-delay: 100ms; }
+.delay-150 { transition-delay: 150ms; }
+.delay-200 { transition-delay: 200ms; }
+.delay-250 { transition-delay: 250ms; }
+.delay-300 { transition-delay: 300ms; }
+.delay-400 { transition-delay: 400ms; }
+
+/* Custom Scrollbar in Coral & Plum */
 ::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #08090c;
+  background: #FAF6F8;
 }
 ::-webkit-scrollbar-thumb {
-  background: #232733;
+  background: rgba(128, 19, 54, 0.2);
   border-radius: 9999px;
+  border: 2px solid #FAF6F8;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #ff6b00;
+  background: #EE4540;
 }
 
-/* Print Specific Styling */
+/* Print Specific */
 @media print {
   body {
     background-color: white !important;
     color: black !important;
   }
-  
   .no-print {
     display: none !important;
   }
-  
   .print-only {
     display: block !important;
-  }
-
-  .print-card {
-    background: white !important;
-    color: black !important;
-    box-shadow: none !important;
-    border: 1px solid #cbd5e1 !important;
-    page-break-inside: avoid;
   }
 }
