@@ -1,5 +1,5 @@
 /**
- * VeriMark — Frontend TypeScript Contracts
+ * TruGrade — Frontend TypeScript Contracts
  * Single Source of Truth for Data Types & API Payloads
  */
 

@@ -1,20 +1,19 @@
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
-  ShieldCheck,
   FileText,
   QrCode,
   Lock,
   AlertTriangle,
   FileSpreadsheet,
   Home as HomeIcon,
-  Layers,
-  Sparkles,
-  Cpu
+  ChevronRight
 } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const location = useLocation();
+  const navContainerRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
   const navItems = [
     { label: 'Public Portal', path: '/', icon: HomeIcon, roleBadge: 'STUDENT / PUBLIC' },
@@ -25,75 +24,116 @@ export const Navbar: React.FC = () => {
     { label: 'Registrar Terminal', path: '/admin', icon: FileSpreadsheet, roleBadge: 'REGISTRAR ADMIN' },
   ];
 
-  const isActive = (path: string) => {
-    if (path === '/' && location.pathname === '/') return true;
-    if (path !== '/' && path.startsWith('/marksheet') && location.pathname.startsWith('/marksheet')) return true;
-    if (path !== '/' && location.pathname === path) return true;
-    return false;
+  const getActiveIndex = () => {
+    if (location.pathname === '/') return 0;
+    if (location.pathname.startsWith('/marksheet')) return 1;
+    if (location.pathname === '/verify') return 2;
+    if (location.pathname === '/governance') return 3;
+    if (location.pathname === '/audit') return 4;
+    if (location.pathname === '/admin') return 5;
+    return 0;
   };
 
-  const activeItem = navItems.find(item => isActive(item.path)) || navItems[0];
+  const [activeIndex, setActiveIndex] = useState(getActiveIndex());
+  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+  const [pillStyle, setPillStyle] = useState<{ left: number; width: number; opacity: number }>({
+    left: 0,
+    width: 0,
+    opacity: 0,
+  });
+
+  const targetIndex = hoverIndex !== null ? hoverIndex : activeIndex;
+
+  useEffect(() => {
+    setActiveIndex(getActiveIndex());
+  }, [location.pathname]);
+
+  // Update sliding pill position dynamically based on active or hovered item
+  useEffect(() => {
+    const activeEl = itemRefs.current[targetIndex];
+    if (activeEl && navContainerRef.current) {
+      const containerRect = navContainerRef.current.getBoundingClientRect();
+      const elRect = activeEl.getBoundingClientRect();
+      setPillStyle({
+        left: elRect.left - containerRect.left,
+        width: elRect.width,
+        opacity: 1,
+      });
+    }
+  }, [targetIndex, location.pathname]);
 
   return (
     <header className="sticky top-0 z-50 no-print transition-all duration-300">
-      {/* Sleek Top Banner: Role Architecture Indicator */}
-      <div className="bg-[#080c14]/90 backdrop-blur-md border-b border-white/[0.06] px-4 py-1.5 text-center text-[11px] text-slate-400 flex items-center justify-between">
-        <div className="flex items-center space-x-2 mx-auto">
-          <span className="flex h-1.5 w-1.5 rounded-full bg-indigo-400 animate-pulse" />
-          <span>
-            <strong className="text-slate-200">Decoupled Enterprise Architecture:</strong> In production, each portal is isolated on internal subdomains (<code className="text-indigo-300">results.edu</code>, <code className="text-indigo-300">verify.edu</code>, <code className="text-indigo-300">board.edu</code>, <code className="text-indigo-300">audit.edu</code>).
-          </span>
-        </div>
-        <div className="hidden lg:flex items-center space-x-2 font-mono text-[10px]">
-          <span className="text-slate-500">Active Context:</span>
-          <span className="text-emerald-400 font-semibold px-2 py-0.5 bg-emerald-500/10 rounded-full border border-emerald-500/20">
-            {activeItem.roleBadge}
-          </span>
+      {/* Sleek LPU Top Bar */}
+      <div className="bg-[#050608]/90 backdrop-blur-xl border-b border-white/[0.06] px-4 py-1.5 text-xs text-slate-400">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center space-x-2 text-[11px]">
+            <span className="w-2 h-2 rounded-full bg-[#ff6b00]" />
+            <span className="font-semibold text-slate-300">Lovely Professional University</span>
+            <span className="text-slate-600">&bull;</span>
+            <span className="text-slate-400">Division of Student Welfare &amp; Academic Examinations</span>
+          </div>
+          <div className="hidden md:flex items-center space-x-2 font-mono text-[10px]">
+            <span className="text-slate-500">Current Portal:</span>
+            <span className="text-[#ff8a34] font-semibold px-2 py-0.5 bg-[#ff6b00]/10 rounded border border-[#ff6b00]/20">
+              {navItems[activeIndex]?.roleBadge}
+            </span>
+          </div>
         </div>
       </div>
 
-      {/* Main Floating Glass Dock Navbar */}
-      <div className="px-4 sm:px-6 lg:px-8 py-3">
-        <div className="max-w-7xl mx-auto glass-dock rounded-2xl px-4 sm:px-6 h-16 flex items-center justify-between">
-          {/* Logo & University Identity */}
-          <Link to="/" className="flex items-center space-x-3 group">
-            <div className="relative">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-sky-400 p-[1px] shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition">
-                <div className="w-full h-full bg-[#0b0f19] rounded-[11px] flex items-center justify-center">
-                  <ShieldCheck className="w-5 h-5 text-indigo-400 group-hover:scale-110 transition duration-300" />
-                </div>
+      {/* Main Glassy Frosted Navigation Bar */}
+      <div className="glass-frosted-nav px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto h-16 flex items-center justify-between">
+          {/* TruGrade Wordmark Logo */}
+          <Link to="/" className="flex items-center space-x-3 group select-none">
+            <div className="flex flex-col">
+              <div className="flex items-center tracking-tight">
+                <span className="font-display text-2xl font-black text-white group-hover:text-slate-100 transition">
+                  Tru
+                </span>
+                <span className="font-display text-2xl font-black text-[#ff6b00] group-hover:text-[#ff8533] transition">
+                  Grade
+                </span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#ff6b00] ml-1 self-end mb-1.5 group-hover:scale-125 transition" />
               </div>
-              <span className="absolute -bottom-1 -right-1 flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+              <span className="text-[9px] font-semibold tracking-wider uppercase text-slate-400 font-mono -mt-1">
+                LPU Academic Ledger
               </span>
-            </div>
-            <div>
-              <div className="flex items-center space-x-2">
-                <span className="font-bold text-base tracking-tight text-white group-hover:text-indigo-200 transition">
-                  VeriMark
-                </span>
-                <span className="px-2 py-0.5 text-[9px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-400/20 rounded-md tracking-wider">
-                  H8 LEDGER
-                </span>
-              </div>
-              <p className="text-[10px] text-slate-400 font-medium">Cryptographic Result Authority</p>
             </div>
           </Link>
 
-          {/* Navigation Pill Dock */}
-          <nav className="flex items-center space-x-1 p-1 bg-white/[0.03] border border-white/[0.06] rounded-xl overflow-x-auto">
-            {navItems.map((item) => {
-              const active = isActive(item.path);
+          {/* Smooth Sliding Pill Navigation Menu */}
+          <nav
+            ref={navContainerRef}
+            className="relative flex items-center p-1 bg-black/40 border border-white/[0.08] rounded-xl overflow-x-auto shadow-inner"
+            onMouseLeave={() => setHoverIndex(null)}
+          >
+            {/* The Animated Sliding Pill */}
+            <div
+              className="absolute top-1 bottom-1 bg-gradient-to-r from-[#ff6b00] to-[#ea580c] rounded-lg shadow-lg shadow-[#ff6b00]/25 pointer-events-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+              style={{
+                left: `${pillStyle.left}px`,
+                width: `${pillStyle.width}px`,
+                opacity: pillStyle.opacity,
+              }}
+            />
+
+            {navItems.map((item, idx) => {
+              const isSelected = activeIndex === idx;
               const Icon = item.icon;
               return (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 whitespace-nowrap ${
-                    active
-                      ? 'bg-gradient-to-r from-indigo-600 to-indigo-500 text-white shadow-md shadow-indigo-600/30 font-semibold'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
+                  ref={(el) => (itemRefs.current[idx] = el)}
+                  onMouseEnter={() => setHoverIndex(idx)}
+                  className={`relative z-10 flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors duration-200 whitespace-nowrap active:scale-95 ${
+                    isSelected
+                      ? 'text-white'
+                      : hoverIndex === idx
+                      ? 'text-white'
+                      : 'text-slate-400 hover:text-slate-200'
                   }`}
                 >
                   <Icon className="w-3.5 h-3.5" />
@@ -102,14 +142,6 @@ export const Navbar: React.FC = () => {
               );
             })}
           </nav>
-
-          {/* Live Ledger Status Pill */}
-          <div className="hidden xl:flex items-center space-x-3">
-            <div className="flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-[11px] text-emerald-300 font-medium">
-              <Cpu className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
-              <span>Ledger Active &bull; 1.4s Batch</span>
-            </div>
-          </div>
         </div>
       </div>
     </header>

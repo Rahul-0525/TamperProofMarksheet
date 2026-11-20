@@ -12,7 +12,8 @@ import {
   Cpu,
   Layers,
   Sparkles,
-  Zap
+  Zap,
+  Building2
 } from 'lucide-react';
 import { IntegrityCheckResponse } from '../types';
 import { api } from '../services/api';
@@ -58,14 +59,14 @@ export const AuditDashboard: React.FC = () => {
   const isSecure = auditReport.status === 'SECURE';
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
+    <div className="max-w-6xl mx-auto px-4 py-10 page-enter">
       {/* Header */}
       <div className="text-center mb-10">
-        <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs font-semibold mb-4">
-          <Activity className="w-3.5 h-3.5 text-rose-400 animate-pulse" />
-          <span>Real-Time Cryptographic Auditor &bull; Security Operations</span>
+        <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#ff6b00]/10 border border-[#ff6b00]/25 text-[#ff8a34] text-xs font-semibold mb-4">
+          <Activity className="w-3.5 h-3.5 text-[#ff6b00] animate-pulse" />
+          <span>TruGrade Continuous Audit Daemon &bull; Lovely Professional University</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-3">
+        <h1 className="font-display text-3xl sm:text-5xl font-black text-white tracking-tight mb-3">
           Database Tamper Audit Console
         </h1>
         <p className="text-slate-400 max-w-2xl mx-auto text-sm leading-relaxed">
@@ -75,12 +76,12 @@ export const AuditDashboard: React.FC = () => {
       </div>
 
       {/* Control & Trigger Dock */}
-      <div className="glass-panel p-5 rounded-2xl border border-white/10 mb-8 flex flex-wrap items-center justify-between gap-4">
+      <div className="glass-card p-5 rounded-2xl border border-white/10 mb-8 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center space-x-4">
           <button
             onClick={() => runAudit(tamperSimulated)}
             disabled={loading}
-            className="flex items-center space-x-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold transition shadow-lg shadow-indigo-600/30 active:scale-95 disabled:opacity-50"
+            className="flex items-center space-x-2 px-5 py-2.5 bg-gradient-to-r from-[#ff6b00] to-[#ea580c] hover:from-[#ff7a1a] hover:to-[#f97316] text-white font-bold rounded-xl text-xs transition shadow-lg shadow-[#ff6b00]/30 active:scale-95 disabled:opacity-50"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
             <span>{loading ? 'Auditing Database...' : 'Run Integrity Audit'}</span>
@@ -91,12 +92,12 @@ export const AuditDashboard: React.FC = () => {
           </span>
         </div>
 
-        {/* Live Attack Simulator Toggle (The Judge Test Sandbox) */}
-        <div className="flex items-center space-x-3 bg-white/[0.04] p-1.5 rounded-xl border border-white/[0.08]">
+        {/* Live Attack Simulator Toggle (The Evaluator Sandbox) */}
+        <div className="flex items-center space-x-3 bg-black/40 p-1.5 rounded-xl border border-white/[0.08]">
           <span className="text-xs font-semibold text-slate-300 pl-2">Evaluator Attack Sandbox:</span>
           <button
             onClick={toggleTamperSimulation}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center space-x-1.5 ${
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center space-x-1.5 active:scale-95 ${
               tamperSimulated
                 ? 'bg-rose-600 text-white shadow-lg shadow-rose-600/30'
                 : 'bg-white/[0.05] text-slate-300 hover:bg-white/[0.1] border border-white/[0.08]'
@@ -112,8 +113,8 @@ export const AuditDashboard: React.FC = () => {
       <div
         className={`p-8 rounded-3xl border mb-8 transition-all duration-300 relative overflow-hidden ${
           isSecure
-            ? 'glass-panel border-emerald-500/30 glow-emerald'
-            : 'glass-panel border-rose-500/50 glow-rose animate-glow'
+            ? 'glass-card border-emerald-500/30'
+            : 'glass-card border-rose-500/50'
         }`}
       >
         <div className="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6 text-center md:text-left">
@@ -137,13 +138,13 @@ export const AuditDashboard: React.FC = () => {
               <span className="text-slate-400 text-xs font-mono">&bull; Scanned {auditReport.total_records} Records</span>
             </div>
 
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">
+            <h2 className="font-display text-2xl sm:text-3xl font-black text-white mb-2">
               {isSecure
                 ? 'Cryptographic Ledger Matches Database Records'
                 : 'Unauthorized Direct Database Manipulation Detected!'}
             </h2>
 
-            <p className="text-slate-300 text-xs sm:text-sm max-w-2xl leading-relaxed">
+            <p className="text-slate-300 text-xs sm:text-sm max-w-2xl leading-relaxed font-normal">
               {isSecure
                 ? 'Every student record in the SQL database recomputes to the exact published Merkle root. No direct database alterations or illicit mark inflations have occurred.'
                 : 'Raw database rows were mutated outside the authorized dual-key governance protocol. The recomputed Merkle root deviates from the immutable published root.'}
@@ -178,13 +179,13 @@ export const AuditDashboard: React.FC = () => {
 
       {/* Discrepancy Breakdown Table (Shown when tampered) */}
       {!isSecure && auditReport.tampered_records.length > 0 && (
-        <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-rose-500/30 mb-8 animate-fadeIn">
+        <div className="glass-card rounded-3xl p-6 sm:p-8 border border-rose-500/30 mb-8 animate-fadeIn">
           <div className="flex items-center space-x-3 mb-6">
             <div className="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center">
               <AlertOctagon className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-white">
+              <h3 className="font-display text-lg font-bold text-white">
                 Pinpointed Database Discrepancies ({auditReport.tampered_records.length})
               </h3>
               <p className="text-xs text-slate-400">

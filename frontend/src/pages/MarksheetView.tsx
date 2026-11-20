@@ -7,13 +7,12 @@ import {
   CheckCircle,
   Award,
   Search,
-  ExternalLink,
   Lock,
   ArrowRight,
-  Sparkles,
   Building2,
   Calendar,
-  Hash
+  Hash,
+  Download
 } from 'lucide-react';
 import { StudentResult, CompactQRPayload } from '../types';
 import { api } from '../services/api';
@@ -22,7 +21,7 @@ import { getCompactQRPayload, MOCK_STUDENTS } from '../utils/mockData';
 export const MarksheetView: React.FC = () => {
   const { roll_no } = useParams<{ roll_no: string }>();
   const navigate = useNavigate();
-  const currentRoll = roll_no || '2024CS001';
+  const currentRoll = roll_no ? roll_no.toUpperCase() : '2024CS001';
 
   const [student, setStudent] = useState<StudentResult | null>(null);
   const [searchRoll, setSearchRoll] = useState(currentRoll);
@@ -47,7 +46,7 @@ export const MarksheetView: React.FC = () => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchRoll.trim()) {
-      navigate(`/marksheet/${searchRoll.trim()}`);
+      navigate(`/marksheet/${searchRoll.trim().toUpperCase()}`);
     }
   };
 
@@ -64,9 +63,9 @@ export const MarksheetView: React.FC = () => {
   const qrString = JSON.stringify(qrPayload);
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8">
+    <div className="max-w-5xl mx-auto px-4 py-8 page-enter">
       {/* Sleek Action & Selector Bar (Hidden during print) */}
-      <div className="no-print mb-8 glass-panel p-4 rounded-2xl border border-white/10 flex flex-wrap items-center justify-between gap-4">
+      <div className="no-print mb-8 glass-card p-4 rounded-2xl border border-white/10 flex flex-wrap items-center justify-between gap-4">
         {/* Search Box */}
         <form onSubmit={handleSearch} className="flex items-center space-x-2 flex-grow max-w-md">
           <div className="relative flex-grow">
@@ -75,21 +74,21 @@ export const MarksheetView: React.FC = () => {
               type="text"
               value={searchRoll}
               onChange={(e) => setSearchRoll(e.target.value)}
-              placeholder="Search Roll No (e.g., 2024CS001)"
-              className="w-full pl-10 pr-3 py-2 bg-white/[0.04] text-white border border-white/[0.08] rounded-xl text-xs font-mono uppercase focus:ring-2 focus:ring-indigo-500 focus:outline-none transition"
+              placeholder="Search Registration / Roll No (e.g., 2024CS001)"
+              className="w-full pl-10 pr-3 py-2 bg-white/[0.04] text-white border border-white/[0.08] rounded-xl text-xs font-mono uppercase focus:ring-2 focus:ring-[#ff6b00] focus:outline-none transition"
             />
           </div>
           <button
             type="submit"
-            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold transition shadow-md shadow-indigo-600/20"
+            className="px-4 py-2 bg-gradient-to-r from-[#ff6b00] to-[#ea580c] hover:from-[#ff7a1a] hover:to-[#f97316] text-white rounded-xl text-xs font-bold transition shadow-md shadow-[#ff6b00]/25 active:scale-95"
           >
-            Load
+            Search
           </button>
         </form>
 
         {/* Quick-Pick Selector */}
         <div className="flex items-center space-x-1.5 text-xs">
-          <span className="text-slate-400 text-[11px] mr-1">Switch:</span>
+          <span className="text-slate-400 text-[11px] mr-1 hidden sm:inline">Roll:</span>
           {MOCK_STUDENTS.map((s) => (
             <button
               key={s.roll_no}
@@ -97,9 +96,9 @@ export const MarksheetView: React.FC = () => {
                 setSearchRoll(s.roll_no);
                 navigate(`/marksheet/${s.roll_no}`);
               }}
-              className={`px-2.5 py-1 rounded-lg font-mono text-[11px] transition ${
+              className={`px-2.5 py-1 rounded-lg font-mono text-[11px] transition active:scale-95 ${
                 s.roll_no === currentRoll
-                  ? 'bg-indigo-600 text-white font-bold shadow-sm'
+                  ? 'bg-gradient-to-r from-[#ff6b00] to-[#ea580c] text-white font-bold shadow-md shadow-[#ff6b00]/25'
                   : 'bg-white/[0.03] text-slate-300 hover:text-white border border-white/[0.06] hover:bg-white/[0.08]'
               }`}
             >
@@ -112,48 +111,54 @@ export const MarksheetView: React.FC = () => {
         <div className="flex items-center space-x-2">
           <button
             onClick={() => navigate(`/verify?roll=${currentRoll}`)}
-            className="flex items-center space-x-1.5 px-4 py-2 bg-emerald-600/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-600/30 rounded-xl text-xs font-semibold transition"
+            className="flex items-center space-x-1.5 px-4 py-2 bg-[#ff6b00]/10 text-[#ff8a34] border border-[#ff6b00]/30 hover:bg-[#ff6b00]/20 rounded-xl text-xs font-semibold transition active:scale-95"
           >
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+            <ShieldCheck className="w-3.5 h-3.5 text-[#ff6b00]" />
             <span>Verify Proof</span>
           </button>
           <button
             onClick={handlePrint}
-            className="flex items-center space-x-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold transition shadow-lg shadow-indigo-600/30"
+            className="flex items-center space-x-1.5 px-4 py-2 bg-gradient-to-r from-[#ff6b00] to-[#ea580c] hover:from-[#ff7a1a] hover:to-[#f97316] text-white rounded-xl text-xs font-bold transition shadow-lg shadow-[#ff6b00]/30 active:scale-95"
           >
             <Printer className="w-3.5 h-3.5" />
-            <span>Print Transcript</span>
+            <span>Print Marksheet</span>
           </button>
         </div>
       </div>
 
       {loading || !student ? (
-        <div className="glass-panel rounded-3xl p-16 text-center border border-white/10">
-          <div className="animate-spin w-8 h-8 border-3 border-indigo-400 border-t-transparent rounded-full mx-auto mb-4" />
-          <p className="text-slate-400 text-sm font-medium">Retrieving official ledger transcript...</p>
+        <div className="glass-card rounded-3xl p-16 text-center border border-white/10">
+          <div className="animate-spin w-8 h-8 border-3 border-[#ff6b00] border-t-transparent rounded-full mx-auto mb-4" />
+          <p className="text-slate-400 text-sm font-medium">Retrieving official LPU transcript...</p>
         </div>
       ) : (
         /* Formal High-Prestige Academic Transcript Card */
         <div className="print-card bg-white text-slate-900 rounded-3xl shadow-2xl border border-slate-200 overflow-hidden relative">
-          {/* Top Gold & Indigo Crest Ribbon */}
-          <div className="h-3 bg-gradient-to-r from-indigo-800 via-blue-700 to-amber-600" />
+          {/* Top LPU Orange & Obsidian Crest Ribbon */}
+          <div className="h-3.5 bg-gradient-to-r from-[#ff6b00] via-[#ea580c] to-[#08090c]" />
 
           <div className="p-8 sm:p-12">
-            {/* Header / Crest */}
+            {/* Header / University Crest */}
             <div className="border-b-2 border-slate-900 pb-6 mb-8 text-center relative">
               <div className="flex justify-center mb-3">
-                <div className="w-16 h-16 rounded-full bg-slate-900 flex items-center justify-center text-white border-2 border-amber-400 shadow-md">
-                  <Award className="w-8 h-8 text-amber-300" />
+                <div className="w-16 h-16 rounded-2xl bg-[#08090c] flex items-center justify-center text-white border-2 border-[#ff6b00] shadow-lg">
+                  <div className="flex flex-col items-center">
+                    <span className="font-display font-black text-xs text-[#ff6b00]">LPU</span>
+                    <span className="text-[8px] font-bold text-slate-300">ESTD 2005</span>
+                  </div>
                 </div>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold uppercase tracking-wide text-slate-900 font-serif">
-                National Institute of Technology
+              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 font-display">
+                LOVELY PROFESSIONAL UNIVERSITY
               </h1>
-              <p className="text-xs font-bold tracking-widest text-slate-600 uppercase mt-1">
-                Office of Examinations &bull; Cryptographic Ledger Division
+              <p className="text-xs font-bold tracking-widest text-[#ea580c] uppercase mt-1">
+                Division of Academic Affairs &bull; Office of Examinations
               </p>
-              <div className="inline-block mt-3 px-4 py-1 bg-slate-100 border border-slate-300 rounded-full text-[11px] font-bold tracking-wider uppercase text-slate-700">
-                Official Grade Report &bull; Academic Session {student.academic_year}
+              <p className="text-[11px] text-slate-500 font-medium mt-0.5">
+                Jalandhar - Delhi G.T. Road, Phagwara, Punjab 144411 &bull; NAAC A++ Accredited
+              </p>
+              <div className="inline-block mt-3 px-4 py-1 bg-slate-100 border border-slate-300 rounded-full text-[11px] font-bold tracking-wider uppercase text-slate-800">
+                Official Grade Transcript &bull; Academic Session {student.academic_year}
               </div>
             </div>
 
@@ -166,14 +171,14 @@ export const MarksheetView: React.FC = () => {
                 </div>
                 <div>
                   <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold block">Registration / Roll No</span>
-                  <span className="font-bold font-mono text-indigo-700 text-base">{student.roll_no}</span>
+                  <span className="font-bold font-mono text-[#ea580c] text-base">{student.roll_no}</span>
                 </div>
                 <div>
                   <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold block">Degree &amp; Program</span>
                   <span className="font-semibold text-slate-800">{student.course}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold block">Semester / Level</span>
+                  <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold block">Semester / Term</span>
                   <span className="font-semibold text-slate-800">Semester {student.semester}</span>
                 </div>
                 <div>
@@ -200,10 +205,10 @@ export const MarksheetView: React.FC = () => {
                   />
                 </div>
                 <div className="mt-2 text-center">
-                  <span className="text-[9px] font-bold tracking-wider text-slate-600 block uppercase">
+                  <span className="text-[9px] font-bold tracking-wider text-slate-700 block uppercase">
                     Scan to Verify Proof
                   </span>
-                  <span className="text-[8px] font-mono text-slate-400">Offline WebCrypto Capable</span>
+                  <span className="text-[8px] font-mono text-slate-500">TruGrade Digital Seal</span>
                 </div>
               </div>
             </div>
@@ -228,7 +233,7 @@ export const MarksheetView: React.FC = () => {
                       <td className="py-3 px-4 text-slate-800">{sub.subject_name}</td>
                       <td className="py-3 px-4 text-center text-slate-600">{sub.max_marks}</td>
                       <td className="py-3 px-4 text-center font-bold text-slate-900">{sub.marks_obtained}</td>
-                      <td className="py-3 px-4 text-center font-bold text-indigo-700">{sub.grade}</td>
+                      <td className="py-3 px-4 text-center font-bold text-[#ea580c]">{sub.grade}</td>
                       <td className="py-3 px-4 text-center">
                         <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
                           PASSED
@@ -249,8 +254,8 @@ export const MarksheetView: React.FC = () => {
                 </span>
               </div>
               <div>
-                <span className="text-xs uppercase text-slate-500 font-bold block">Semester GPA</span>
-                <span className="font-extrabold text-indigo-700 text-lg">{student.gpa.toFixed(2)} / 10.0</span>
+                <span className="text-xs uppercase text-slate-500 font-bold block">Semester SGPA</span>
+                <span className="font-extrabold text-[#ea580c] text-lg">{student.gpa.toFixed(2)} / 10.0</span>
               </div>
               <div>
                 <span className="text-xs uppercase text-slate-500 font-bold block">Percentage</span>
@@ -266,18 +271,18 @@ export const MarksheetView: React.FC = () => {
               </div>
             </div>
 
-            {/* Cryptographic Ledger Record (The Mathematical Guarantee) */}
-            <div className="p-4 bg-slate-900 text-white rounded-2xl font-mono text-[11px] space-y-2 border border-slate-800">
-              <div className="flex items-center space-x-2 text-indigo-300 font-semibold mb-1">
+            {/* Cryptographic Ledger Record */}
+            <div className="p-4 bg-[#08090c] text-white rounded-2xl font-mono text-[11px] space-y-2 border border-slate-800">
+              <div className="flex items-center space-x-2 text-[#ff8a34] font-semibold mb-1">
                 <Lock className="w-3.5 h-3.5" />
-                <span className="uppercase tracking-wider text-[10px]">Cryptographic Inclusion Proof Metadata</span>
+                <span className="uppercase tracking-wider text-[10px]">TruGrade Cryptographic Record</span>
               </div>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between text-slate-400 gap-1 border-t border-slate-800 pt-2">
                 <span>Canonical Leaf Hash:</span>
-                <span className="text-indigo-300 break-all select-all">{student.leaf_hash}</span>
+                <span className="text-[#ff944d] break-all select-all">{student.leaf_hash}</span>
               </div>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between text-slate-400 gap-1">
-                <span>Active Ledger Merkle Root:</span>
+                <span>Active University Ledger Root:</span>
                 <span className="text-emerald-400 break-all select-all">
                   {(student as any)?.root_hash || baseQr.root}
                 </span>
@@ -291,7 +296,7 @@ export const MarksheetView: React.FC = () => {
                   Dr. R. K. Sharma
                 </div>
                 <div className="border-t border-slate-400 pt-1 font-semibold uppercase text-[10px]">
-                  Dean of Academic Affairs
+                  Dean of Academic Affairs &bull; LPU
                 </div>
               </div>
               <div>
@@ -299,15 +304,15 @@ export const MarksheetView: React.FC = () => {
                   Prof. M. S. Gill
                 </div>
                 <div className="border-t border-slate-400 pt-1 font-semibold uppercase text-[10px]">
-                  Controller of Examinations
+                  Controller of Examinations &bull; LPU
                 </div>
               </div>
               <div className="hidden sm:block">
-                <div className="h-10 flex items-end justify-center font-mono text-[10px] text-emerald-700 font-bold">
-                  SEALED IN MERKLE LEDGER
+                <div className="h-10 flex items-end justify-center font-mono text-[10px] text-[#ea580c] font-bold">
+                  SEALED IN TRUGRADE LEDGER
                 </div>
                 <div className="border-t border-slate-400 pt-1 font-semibold uppercase text-[10px]">
-                  Immutable Record
+                  Official Academic Seal
                 </div>
               </div>
             </div>

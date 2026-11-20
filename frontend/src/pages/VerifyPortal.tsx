@@ -5,21 +5,19 @@ import {
   ShieldCheck,
   ShieldAlert,
   Camera,
-  Upload,
   CheckCircle2,
   XCircle,
   FileCode,
   Sparkles,
-  WifiOff,
-  RefreshCw,
   QrCode,
   Layers,
-  ArrowRight
+  ArrowRight,
+  Building2
 } from 'lucide-react';
 import { CompactQRPayload, MerkleProofStep } from '../types';
-import { verifyMerkleProof, sha256 } from '../utils/crypto';
+import { verifyMerkleProof } from '../utils/crypto';
 import { ProofPathVisualizer } from '../components/ProofPathVisualizer';
-import { PUBLISHED_ROOT_HASH, MOCK_PROOFS, getCompactQRPayload } from '../utils/mockData';
+import { getCompactQRPayload } from '../utils/mockData';
 
 export const VerifyPortal: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -38,7 +36,6 @@ export const VerifyPortal: React.FC = () => {
     computedRoot: string;
     expectedRoot: string;
     steps: Array<{ stepIndex: number; left: string; right: string; parent: string; position: 'left' | 'right' }>;
-    isOffline: boolean;
   } | null>(null);
 
   useEffect(() => {
@@ -68,8 +65,7 @@ export const VerifyPortal: React.FC = () => {
         leafHash: payload.leaf,
         computedRoot: verification.computedRoot,
         expectedRoot: payload.root,
-        steps: verification.steps,
-        isOffline: true
+        steps: verification.steps
       });
     } catch (err) {
       console.error('Verification error:', err);
@@ -135,41 +131,41 @@ export const VerifyPortal: React.FC = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-10">
+    <div className="max-w-5xl mx-auto px-4 py-10 page-enter">
       {/* Header */}
       <div className="text-center mb-10">
-        <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs font-semibold mb-4">
-          <WifiOff className="w-3.5 h-3.5 text-emerald-400" />
-          <span>Offline Mathematical Verifier &bull; 100% Client-Side WebCrypto</span>
+        <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#ff6b00]/10 border border-[#ff6b00]/25 text-[#ff8a34] text-xs font-semibold mb-4">
+          <Building2 className="w-3.5 h-3.5 text-[#ff6b00]" />
+          <span>TruGrade Transcript Verifier &bull; Lovely Professional University</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-3">
-          Public QR Verification Portal
+        <h1 className="font-display text-3xl sm:text-5xl font-black text-white tracking-tight mb-3">
+          Public Transcript Verification
         </h1>
         <p className="text-slate-400 max-w-2xl mx-auto text-sm leading-relaxed">
-          Mathematically verify printed university marksheets against the immutable Merkle ledger root.
-          Runs entirely in your browser using cryptographic SHA-256 inclusion proofs.
+          Verify printed or electronic university marksheets against the immutable LPU academic ledger root.
+          Validates cryptographic inclusion proofs directly in your browser.
         </p>
       </div>
 
       {/* Input Selection Tabs */}
-      <div className="glass-panel rounded-3xl border border-white/10 p-6 sm:p-8 mb-8">
+      <div className="glass-card rounded-3xl border border-white/10 p-6 sm:p-8 mb-8">
         <div className="flex border-b border-white/[0.08] pb-4 mb-6 space-x-6 text-xs sm:text-sm font-semibold">
           <button
             onClick={() => setInputMode('preset')}
             className={`flex items-center space-x-2 pb-2 transition border-b-2 ${
               inputMode === 'preset'
-                ? 'border-indigo-500 text-indigo-400 font-bold'
+                ? 'border-[#ff6b00] text-[#ff8a34] font-bold'
                 : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
             <Sparkles className="w-4 h-4" />
-            <span>Interactive Demo Scenarios</span>
+            <span>Demonstration Scenarios</span>
           </button>
           <button
             onClick={() => setInputMode('paste')}
             className={`flex items-center space-x-2 pb-2 transition border-b-2 ${
               inputMode === 'paste'
-                ? 'border-indigo-500 text-indigo-400 font-bold'
+                ? 'border-[#ff6b00] text-[#ff8a34] font-bold'
                 : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
@@ -183,7 +179,7 @@ export const VerifyPortal: React.FC = () => {
             }}
             className={`flex items-center space-x-2 pb-2 transition border-b-2 ${
               inputMode === 'scan'
-                ? 'border-indigo-500 text-indigo-400 font-bold'
+                ? 'border-[#ff6b00] text-[#ff8a34] font-bold'
                 : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
@@ -195,13 +191,13 @@ export const VerifyPortal: React.FC = () => {
         {/* Tab 1: Demo Presets */}
         {inputMode === 'preset' && (
           <div>
-            <p className="text-xs text-slate-400 mb-4">
+            <p className="text-xs text-slate-400 mb-4 font-medium">
               Select a test scenario to evaluate genuine verification vs tamper detection:
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <button
                 onClick={() => loadPreset('2024CS001', false)}
-                className="p-4 text-left rounded-2xl border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 transition group"
+                className="p-4 text-left rounded-2xl border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 transition group active:scale-95"
               >
                 <div className="flex items-center space-x-2 text-emerald-400 font-bold text-xs sm:text-sm mb-1">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400" />
@@ -214,20 +210,20 @@ export const VerifyPortal: React.FC = () => {
 
               <button
                 onClick={() => loadPreset('2024CS002', false)}
-                className="p-4 text-left rounded-2xl border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 transition group"
+                className="p-4 text-left rounded-2xl border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 transition group active:scale-95"
               >
                 <div className="flex items-center space-x-2 text-emerald-400 font-bold text-xs sm:text-sm mb-1">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                   <span>Genuine: Diya (2024CS002)</span>
                 </div>
                 <p className="text-[11px] text-slate-400 group-hover:text-slate-300">
-                  Verifies alternate sibling positioning along the binary tree.
+                  Verifies alternate sibling positioning along the binary hash tree.
                 </p>
               </button>
 
               <button
                 onClick={() => loadPreset('2024CS001', true)}
-                className="p-4 text-left rounded-2xl border border-rose-500/20 bg-rose-500/5 hover:bg-rose-500/10 transition group"
+                className="p-4 text-left rounded-2xl border border-rose-500/20 bg-rose-500/5 hover:bg-rose-500/10 transition group active:scale-95"
               >
                 <div className="flex items-center space-x-2 text-rose-400 font-bold text-xs sm:text-sm mb-1">
                   <XCircle className="w-4 h-4 text-rose-400" />
@@ -253,12 +249,12 @@ export const VerifyPortal: React.FC = () => {
                 value={qrJsonInput}
                 onChange={(e) => setQrJsonInput(e.target.value)}
                 placeholder='{"v":1,"roll":"2024CS001","leaf":"...","root":"...","proof":[...]}'
-                className="w-full p-4 bg-white/[0.03] border border-white/10 rounded-2xl font-mono text-xs text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full p-4 bg-white/[0.03] border border-white/10 rounded-2xl font-mono text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#ff6b00]"
               />
             </div>
             <button
               type="submit"
-              className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold transition shadow-md shadow-indigo-600/30"
+              className="px-6 py-2.5 bg-gradient-to-r from-[#ff6b00] to-[#ea580c] hover:from-[#ff7a1a] hover:to-[#f97316] text-white rounded-xl text-xs font-bold transition shadow-md shadow-[#ff6b00]/25 active:scale-95"
             >
               Verify Payload Now
             </button>
@@ -283,8 +279,8 @@ export const VerifyPortal: React.FC = () => {
           <div
             className={`p-8 rounded-3xl border transition relative overflow-hidden ${
               verifiedResult.isValid
-                ? 'glass-panel border-emerald-500/40 glow-emerald'
-                : 'glass-panel border-rose-500/50 glow-rose'
+                ? 'glass-card border-emerald-500/40'
+                : 'glass-card border-rose-500/50'
             }`}
           >
             <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-6 text-center sm:text-left">
@@ -308,15 +304,15 @@ export const VerifyPortal: React.FC = () => {
                   <span className="text-slate-400 text-xs font-mono">&bull; Candidate: {verifiedResult.roll}</span>
                 </div>
 
-                <h3 className="text-2xl font-extrabold text-white mb-2">
+                <h3 className="font-display text-2xl font-bold text-white mb-2">
                   {verifiedResult.isValid
-                    ? '100% Cryptographically Authentic Marksheet'
+                    ? 'Cryptographically Authentic LPU Marksheet'
                     : 'Cryptographic Hash Mismatch — Invalid Transcript'}
                 </h3>
 
-                <p className="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-2xl">
+                <p className="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-2xl font-normal">
                   {verifiedResult.isValid
-                    ? 'The student transcript leaf hash connects directly to the published University Merkle Root along a valid inclusion path. The marks on this transcript are authentic.'
+                    ? 'The student transcript leaf hash connects directly to the published LPU University Merkle Root along a valid inclusion path. The marks on this transcript are authentic.'
                     : 'The scanned marksheet has either been altered after publication, or the QR payload has been tampered with. The computed root does not match the active university ledger.'}
                 </p>
               </div>
@@ -347,15 +343,15 @@ export const VerifyPortal: React.FC = () => {
             </div>
           </div>
 
-          {/* Interactive Merkle Path Visualizer */}
+          {/* Step-by-Step Merkle Audit Path */}
           {verifiedResult.steps.length > 0 && (
-            <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-white/10">
+            <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/10">
               <h4 className="text-sm font-bold text-white mb-2 flex items-center space-x-2">
-                <Layers className="w-4 h-4 text-indigo-400" />
+                <Layers className="w-4 h-4 text-[#ff6b00]" />
                 <span>Step-by-Step Merkle Audit Path ({verifiedResult.steps.length} Steps)</span>
               </h4>
               <p className="text-xs text-slate-400 mb-6">
-                Visualizing how the candidate's canonical leaf climbed the binary hash tree to reconstruct the ledger root:
+                Visualizing how the candidate canonical leaf climbs the binary hash tree to reconstruct the ledger root:
               </p>
               <ProofPathVisualizer
                 leafHash={verifiedResult.leafHash}

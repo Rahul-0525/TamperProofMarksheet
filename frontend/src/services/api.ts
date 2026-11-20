@@ -35,7 +35,7 @@ export const api = {
       backendConnected = true;
       return response.data;
     } catch (err) {
-      console.warn(`[VeriMark] Backend not reachable at ${API_BASE_URL}, using mock student data for ${rollNo}`);
+      console.warn(`[TruGrade] Backend not reachable at ${API_BASE_URL}, using mock student data for ${rollNo}`);
       const mock = MOCK_STUDENTS.find(s => s.roll_no.toLowerCase() === rollNo.toLowerCase());
       if (mock) return mock;
       return MOCK_STUDENTS[0];
@@ -51,7 +51,7 @@ export const api = {
       backendConnected = true;
       return response.data;
     } catch (err) {
-      console.warn(`[VeriMark] Backend not reachable, using mock proof for ${rollNo}`);
+      console.warn(`[TruGrade] Backend not reachable, using mock proof for ${rollNo}`);
       const mock = MOCK_PROOFS[rollNo] || MOCK_PROOFS['2024CS001'];
       return mock;
     }
@@ -70,7 +70,7 @@ export const api = {
       backendConnected = true;
       return response.data;
     } catch (err) {
-      console.warn(`[VeriMark] Backend not reachable, verifying locally`);
+      console.warn(`[TruGrade] Backend not reachable, verifying locally`);
       throw err;
     }
   },
@@ -161,7 +161,7 @@ export const api = {
       backendConnected = true;
       return response.data;
     } catch (err) {
-      console.warn('[VeriMark] Backend simulate-tamper offline, using client simulation');
+      console.warn('[TruGrade] Backend simulate-tamper offline, using client simulation');
       return { message: 'Simulated locally' };
     }
   },
@@ -187,7 +187,7 @@ export const api = {
       backendConnected = true;
       return response.data;
     } catch (err) {
-      console.warn('[VeriMark] Backend publish-batch failed or unreachable, simulating publish response');
+      console.warn('[TruGrade] Backend publish-batch failed or unreachable, simulating publish response');
       return {
         batch_id: `batch-${Math.random().toString(16).substring(2, 10)}`,
         total_students: 55,

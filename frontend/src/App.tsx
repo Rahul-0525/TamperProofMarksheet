@@ -11,10 +11,10 @@ import { AuditDashboard } from './pages/AuditDashboard';
 export const App: React.FC = () => {
   return (
     <BrowserRouter>
-      <div className="min-h-screen flex flex-col bg-[#0b0f19] text-slate-100">
+      <div className="min-h-screen flex flex-col bg-[#08090c] text-slate-100 selection:bg-[#ff6b00] selection:text-white">
         <Navbar />
 
-        <main className="flex-grow">
+        <main className="flex-grow page-enter">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/admin" element={<AdminPublish />} />
@@ -27,22 +27,41 @@ export const App: React.FC = () => {
           </Routes>
         </main>
 
-        <footer className="bg-[#080c14] border-t border-white/[0.06] text-slate-400 text-xs py-8 no-print mt-auto">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div>
-              <p className="font-semibold text-slate-200">
-                VeriMark &bull; Problem H8 (Tamper-Proof Exam Result Ledger)
-              </p>
-              <p className="text-[11px] text-slate-500 mt-0.5">
-                Code Fuzion 2026 &bull; Binary Merkle Trees &bull; Ed25519 Dual Governance &bull; Direct DB Tamper Audit
-              </p>
+        {/* Clean, Official LPU Institutional Footer */}
+        <footer className="bg-[#050608] border-t border-white/[0.08] text-slate-400 text-xs py-10 no-print mt-auto">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-6 border-b border-white/[0.06]">
+              {/* TruGrade LPU Brand */}
+              <div className="flex flex-col items-center md:items-start">
+                <div className="flex items-center space-x-1.5 font-display text-xl font-black text-white">
+                  <span>Tru</span>
+                  <span className="text-[#ff6b00]">Grade</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#ff6b00] ml-0.5" />
+                </div>
+                <p className="text-[11px] text-slate-400 mt-1 text-center md:text-left">
+                  Lovely Professional University &bull; Division of Academic Affairs &amp; Examinations
+                </p>
+              </div>
+
+              {/* Institutional Links & Helpdesk */}
+              <div className="flex flex-wrap items-center justify-center gap-6 text-[11px] text-slate-400 font-medium">
+                <span className="hover:text-white transition">Official University Portal</span>
+                <span>&bull;</span>
+                <span className="hover:text-white transition">Examination Regulations</span>
+                <span>&bull;</span>
+                <span className="hover:text-white transition">Student Grievance Cell</span>
+                <span>&bull;</span>
+                <span className="text-[#ff8a34]">Jalandhar-Delhi G.T. Road, Phagwara, Punjab 144411</span>
+              </div>
             </div>
-            <div className="flex items-center space-x-3 text-[11px] font-mono text-slate-400">
-              <span className="text-indigo-400 font-semibold">Branch: frontend2</span>
-              <span>&bull;</span>
-              <span className="text-emerald-400">100% Offline WebCrypto Capable</span>
-              <span>&bull;</span>
-              <span>1-Click Vercel Deploy</span>
+
+            <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 gap-3">
+              <p>
+                &copy; {new Date().getFullYear()} Lovely Professional University. All Rights Reserved. TruGrade Academic Ledger.
+              </p>
+              <p className="text-slate-400">
+                Official Examination Transcript Authority
+              </p>
             </div>
           </div>
         </footer>

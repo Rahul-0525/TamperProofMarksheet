@@ -12,7 +12,8 @@ import {
   ShieldCheck,
   RefreshCw,
   FileText,
-  Sparkles
+  Sparkles,
+  Building2
 } from 'lucide-react';
 import { api } from '../services/api';
 
@@ -63,34 +64,34 @@ export const AdminPublish: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10">
+    <div className="max-w-4xl mx-auto px-4 py-10 page-enter">
       {/* Header */}
       <div className="text-center mb-10">
-        <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-semibold mb-4">
-          <Database className="w-3.5 h-3.5 text-amber-400" />
-          <span>Office of the Registrar &bull; Result Publishing Terminal</span>
+        <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#ff6b00]/10 border border-[#ff6b00]/25 text-[#ff8a34] text-xs font-semibold mb-4">
+          <Building2 className="w-3.5 h-3.5 text-[#ff6b00]" />
+          <span>Lovely Professional University &bull; Office of the Registrar</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-3">
+        <h1 className="font-display text-3xl sm:text-5xl font-black text-white tracking-tight mb-3">
           Publish Semester Results
         </h1>
         <p className="text-slate-400 max-w-xl mx-auto text-sm leading-relaxed">
-          Upload official exam score spreadsheets. VeriMark canonically serializes and hashes each record, builds the balanced Merkle tree, and permanently locks the root into the append-only ledger.
+          Upload official exam score spreadsheets. TruGrade canonically serializes and hashes each record, builds the balanced Merkle tree, and locks the root into the immutable LPU academic ledger.
         </p>
       </div>
 
       {/* Main Glass Upload Box */}
-      <div className="glass-panel rounded-3xl border border-white/10 p-8 sm:p-10 mb-8 shadow-2xl glow-indigo">
+      <div className="glass-card rounded-3xl border border-white/10 p-8 sm:p-10 mb-8 shadow-2xl">
         <form onSubmit={handlePublish}>
-          <div className="border-2 border-dashed border-white/10 rounded-2xl p-10 text-center hover:border-indigo-500/40 transition-all duration-300 bg-white/[0.02]">
-            <UploadCloud className="w-12 h-12 text-indigo-400 mx-auto mb-4 animate-float" />
-            <h3 className="text-base font-bold text-white mb-1">
+          <div className="border-2 border-dashed border-white/10 rounded-2xl p-10 text-center hover:border-[#ff6b00]/40 transition-all duration-300 bg-white/[0.02]">
+            <UploadCloud className="w-12 h-12 text-[#ff6b00] mx-auto mb-4 animate-float" />
+            <h3 className="font-display text-base font-bold text-white mb-1">
               Select Semester Results CSV
             </h3>
             <p className="text-xs text-slate-400 mb-6 font-mono">
               Columns: roll_no, student_name, course, semester, subject_code, marks_obtained, max_marks, grade
             </p>
 
-            <label className="cursor-pointer inline-flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white rounded-xl text-xs font-semibold shadow-lg shadow-indigo-600/30 transition active:scale-95">
+            <label className="cursor-pointer inline-flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-[#ff6b00] to-[#ea580c] hover:from-[#ff7a1a] hover:to-[#f97316] text-white rounded-xl text-xs font-bold shadow-lg shadow-[#ff6b00]/30 transition active:scale-95">
               <span>Choose CSV File</span>
               <input
                 type="file"
@@ -101,8 +102,8 @@ export const AdminPublish: React.FC = () => {
             </label>
 
             {selectedFile && (
-              <div className="mt-6 p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-xl inline-flex items-center space-x-2 text-xs font-medium text-indigo-300 font-mono">
-                <FileSpreadsheet className="w-4 h-4 text-indigo-400" />
+              <div className="mt-6 p-3 bg-[#ff6b00]/10 border border-[#ff6b00]/20 rounded-xl inline-flex items-center space-x-2 text-xs font-medium text-[#ff8a34] font-mono">
+                <FileSpreadsheet className="w-4 h-4 text-[#ff6b00]" />
                 <span>Selected: {selectedFile.name} ({(selectedFile.size / 1024).toFixed(1)} KB)</span>
               </div>
             )}
@@ -119,7 +120,7 @@ export const AdminPublish: React.FC = () => {
             <a
               href="/sample_data/results_sample.csv"
               download="results_sample.csv"
-              className="text-xs text-indigo-400 hover:text-indigo-300 font-medium underline inline-flex items-center space-x-1"
+              className="text-xs text-[#ff8a34] hover:text-[#ffa35d] font-medium underline inline-flex items-center space-x-1"
             >
               <FileText className="w-3.5 h-3.5" />
               <span>Download sample 55-student CSV for live testing</span>
@@ -128,7 +129,7 @@ export const AdminPublish: React.FC = () => {
             <button
               type="submit"
               disabled={uploading || !selectedFile}
-              className="px-6 py-3 bg-slate-900 hover:bg-slate-800 border border-white/10 disabled:opacity-40 text-white rounded-xl text-xs font-semibold shadow-lg transition flex items-center space-x-2 active:scale-95"
+              className="px-6 py-3 bg-gradient-to-r from-[#ff6b00] to-[#ea580c] hover:from-[#ff7a1a] hover:to-[#f97316] disabled:opacity-40 text-white font-bold rounded-xl text-xs shadow-lg shadow-[#ff6b00]/30 transition flex items-center space-x-2 active:scale-95"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${uploading ? 'animate-spin' : ''}`} />
               <span>{uploading ? 'Hashing & Minting Merkle Tree...' : 'Publish to Immutable Ledger'}</span>
@@ -139,13 +140,13 @@ export const AdminPublish: React.FC = () => {
 
       {/* Success Banner */}
       {publishResult && (
-        <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-emerald-500/30 shadow-2xl glow-emerald mb-8 animate-fadeIn">
+        <div className="glass-card rounded-3xl p-6 sm:p-8 border border-emerald-500/30 shadow-2xl mb-8 animate-fadeIn">
           <div className="flex items-center space-x-4 mb-6">
             <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
               <CheckCircle2 className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-white">
+              <h3 className="font-display text-lg font-bold text-white">
                 Semester Results Minted to Ledger!
               </h3>
               <p className="text-xs text-slate-400">
@@ -178,7 +179,7 @@ export const AdminPublish: React.FC = () => {
           <div className="mt-6 flex justify-end">
             <button
               onClick={() => navigate(`/marksheet/${publishResult.sample_roll_no || '2024CS001'}`)}
-              className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold transition flex items-center space-x-2 shadow-lg shadow-emerald-600/30"
+              className="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white rounded-xl text-xs font-bold transition flex items-center space-x-2 shadow-lg shadow-emerald-600/30 active:scale-95"
             >
               <span>Inspect First Published Marksheet</span>
               <ArrowRight className="w-4 h-4" />
