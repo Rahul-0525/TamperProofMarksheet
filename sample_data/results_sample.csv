@@ -1,21 +1,221 @@
 roll_no,student_name,course,semester,academic_year,subject_code,subject_name,marks_obtained,max_marks,grade
-2024CS001,Aarav Sharma,B.Tech CSE,5,2025-2026,CS501,Operating Systems,88,100,A
-2024CS001,Aarav Sharma,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,92,100,A+
-2024CS001,Aarav Sharma,B.Tech CSE,5,2025-2026,CS503,Computer Networks,84,100,A
-2024CS001,Aarav Sharma,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,79,100,B+
-2024CS002,Diya Patel,B.Tech CSE,5,2025-2026,CS501,Operating Systems,95,100,O
-2024CS002,Diya Patel,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,90,100,A+
-2024CS002,Diya Patel,B.Tech CSE,5,2025-2026,CS503,Computer Networks,91,100,A+
-2024CS002,Diya Patel,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,88,100,A
-2024CS003,Rohan Verma,B.Tech CSE,5,2025-2026,CS501,Operating Systems,68,100,B
-2024CS003,Rohan Verma,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,72,100,B+
-2024CS003,Rohan Verma,B.Tech CSE,5,2025-2026,CS503,Computer Networks,65,100,C
-2024CS003,Rohan Verma,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,70,100,B
-2024CS004,Ananya Iyer,B.Tech CSE,5,2025-2026,CS501,Operating Systems,82,100,A
-2024CS004,Ananya Iyer,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,86,100,A
-2024CS004,Ananya Iyer,B.Tech CSE,5,2025-2026,CS503,Computer Networks,89,100,A
-2024CS004,Ananya Iyer,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,84,100,A
+2024CS001,Aarav Sharma,B.Tech CSE,5,2025-2026,CS501,Operating Systems,92,100,O
+2024CS001,Aarav Sharma,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,59,100,B
+2024CS001,Aarav Sharma,B.Tech CSE,5,2025-2026,CS503,Computer Networks,53,100,B
+2024CS001,Aarav Sharma,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,69,100,B+
+2024CS002,Diya Patel,B.Tech CSE,5,2025-2026,CS501,Operating Systems,67,100,B+
+2024CS002,Diya Patel,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,66,100,B+
+2024CS002,Diya Patel,B.Tech CSE,5,2025-2026,CS503,Computer Networks,60,100,B+
+2024CS002,Diya Patel,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,58,100,B
+2024CS003,Rohan Verma,B.Tech CSE,5,2025-2026,CS501,Operating Systems,95,100,O
+2024CS003,Rohan Verma,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,86,100,A+
+2024CS003,Rohan Verma,B.Tech CSE,5,2025-2026,CS503,Computer Networks,57,100,B
+2024CS003,Rohan Verma,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,89,100,A+
+2024CS004,Ananya Iyer,B.Tech CSE,5,2025-2026,CS501,Operating Systems,79,100,A
+2024CS004,Ananya Iyer,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,54,100,B
+2024CS004,Ananya Iyer,B.Tech CSE,5,2025-2026,CS503,Computer Networks,53,100,B
+2024CS004,Ananya Iyer,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,57,100,B
 2024CS005,Vikram Singh,B.Tech CSE,5,2025-2026,CS501,Operating Systems,45,100,P
-2024CS005,Vikram Singh,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,52,100,P
-2024CS005,Vikram Singh,B.Tech CSE,5,2025-2026,CS503,Computer Networks,48,100,P
-2024CS005,Vikram Singh,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,50,100,P
+2024CS005,Vikram Singh,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,51,100,B
+2024CS005,Vikram Singh,B.Tech CSE,5,2025-2026,CS503,Computer Networks,50,100,B
+2024CS005,Vikram Singh,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,53,100,B
+2024CS006,Pooja Reddy,B.Tech CSE,5,2025-2026,CS501,Operating Systems,93,100,O
+2024CS006,Pooja Reddy,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,96,100,O
+2024CS006,Pooja Reddy,B.Tech CSE,5,2025-2026,CS503,Computer Networks,86,100,A+
+2024CS006,Pooja Reddy,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,78,100,A
+2024CS007,Rahul Gupta,B.Tech CSE,5,2025-2026,CS501,Operating Systems,66,100,B+
+2024CS007,Rahul Gupta,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,80,100,A+
+2024CS007,Rahul Gupta,B.Tech CSE,5,2025-2026,CS503,Computer Networks,89,100,A+
+2024CS007,Rahul Gupta,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,69,100,B+
+2024CS008,Sneha Mehta,B.Tech CSE,5,2025-2026,CS501,Operating Systems,52,100,B
+2024CS008,Sneha Mehta,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,62,100,B+
+2024CS008,Sneha Mehta,B.Tech CSE,5,2025-2026,CS503,Computer Networks,96,100,O
+2024CS008,Sneha Mehta,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,79,100,A
+2024CS009,Aditya Nair,B.Tech CSE,5,2025-2026,CS501,Operating Systems,73,100,A
+2024CS009,Aditya Nair,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,69,100,B+
+2024CS009,Aditya Nair,B.Tech CSE,5,2025-2026,CS503,Computer Networks,61,100,B+
+2024CS009,Aditya Nair,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,65,100,B+
+2024CS010,Meera Chopra,B.Tech CSE,5,2025-2026,CS501,Operating Systems,73,100,A
+2024CS010,Meera Chopra,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,58,100,B
+2024CS010,Meera Chopra,B.Tech CSE,5,2025-2026,CS503,Computer Networks,57,100,B
+2024CS010,Meera Chopra,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,76,100,A
+2024CS011,Arjun Joshi,B.Tech CSE,5,2025-2026,CS501,Operating Systems,58,100,B
+2024CS011,Arjun Joshi,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,74,100,A
+2024CS011,Arjun Joshi,B.Tech CSE,5,2025-2026,CS503,Computer Networks,74,100,A
+2024CS011,Arjun Joshi,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,90,100,O
+2024CS012,Isha Bose,B.Tech CSE,5,2025-2026,CS501,Operating Systems,68,100,B+
+2024CS012,Isha Bose,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,54,100,B
+2024CS012,Isha Bose,B.Tech CSE,5,2025-2026,CS503,Computer Networks,98,100,O
+2024CS012,Isha Bose,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,81,100,A+
+2024CS013,Karan Das,B.Tech CSE,5,2025-2026,CS501,Operating Systems,86,100,A+
+2024CS013,Karan Das,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,59,100,B
+2024CS013,Karan Das,B.Tech CSE,5,2025-2026,CS503,Computer Networks,76,100,A
+2024CS013,Karan Das,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,57,100,B
+2024CS014,Tanvi Kapoor,B.Tech CSE,5,2025-2026,CS501,Operating Systems,87,100,A+
+2024CS014,Tanvi Kapoor,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,70,100,A
+2024CS014,Tanvi Kapoor,B.Tech CSE,5,2025-2026,CS503,Computer Networks,92,100,O
+2024CS014,Tanvi Kapoor,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,91,100,O
+2024CS015,Siddharth Malhotra,B.Tech CSE,5,2025-2026,CS501,Operating Systems,75,100,A
+2024CS015,Siddharth Malhotra,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,88,100,A+
+2024CS015,Siddharth Malhotra,B.Tech CSE,5,2025-2026,CS503,Computer Networks,64,100,B+
+2024CS015,Siddharth Malhotra,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,97,100,O
+2024CS016,Kavya Rao,B.Tech CSE,5,2025-2026,CS501,Operating Systems,56,100,B
+2024CS016,Kavya Rao,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,54,100,B
+2024CS016,Kavya Rao,B.Tech CSE,5,2025-2026,CS503,Computer Networks,94,100,O
+2024CS016,Kavya Rao,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,66,100,B+
+2024CS017,Nikhil Bhat,B.Tech CSE,5,2025-2026,CS501,Operating Systems,70,100,A
+2024CS017,Nikhil Bhat,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,57,100,B
+2024CS017,Nikhil Bhat,B.Tech CSE,5,2025-2026,CS503,Computer Networks,66,100,B+
+2024CS017,Nikhil Bhat,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,58,100,B
+2024CS018,Riya Kulkarni,B.Tech CSE,5,2025-2026,CS501,Operating Systems,76,100,A
+2024CS018,Riya Kulkarni,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,69,100,B+
+2024CS018,Riya Kulkarni,B.Tech CSE,5,2025-2026,CS503,Computer Networks,81,100,A+
+2024CS018,Riya Kulkarni,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,92,100,O
+2024CS019,Dev Deshmukh,B.Tech CSE,5,2025-2026,CS501,Operating Systems,75,100,A
+2024CS019,Dev Deshmukh,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,62,100,B+
+2024CS019,Dev Deshmukh,B.Tech CSE,5,2025-2026,CS503,Computer Networks,75,100,A
+2024CS019,Dev Deshmukh,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,74,100,A
+2024CS020,Shreya Mishra,B.Tech CSE,5,2025-2026,CS501,Operating Systems,65,100,B+
+2024CS020,Shreya Mishra,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,94,100,O
+2024CS020,Shreya Mishra,B.Tech CSE,5,2025-2026,CS503,Computer Networks,69,100,B+
+2024CS020,Shreya Mishra,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,96,100,O
+2024CS021,Manish Sharma,B.Tech CSE,5,2025-2026,CS501,Operating Systems,95,100,O
+2024CS021,Manish Sharma,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,93,100,O
+2024CS021,Manish Sharma,B.Tech CSE,5,2025-2026,CS503,Computer Networks,56,100,B
+2024CS021,Manish Sharma,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,90,100,O
+2024CS022,Neha Patel,B.Tech CSE,5,2025-2026,CS501,Operating Systems,92,100,O
+2024CS022,Neha Patel,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,62,100,B+
+2024CS022,Neha Patel,B.Tech CSE,5,2025-2026,CS503,Computer Networks,86,100,A+
+2024CS022,Neha Patel,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,98,100,O
+2024CS023,Gaurav Verma,B.Tech CSE,5,2025-2026,CS501,Operating Systems,67,100,B+
+2024CS023,Gaurav Verma,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,62,100,B+
+2024CS023,Gaurav Verma,B.Tech CSE,5,2025-2026,CS503,Computer Networks,81,100,A+
+2024CS023,Gaurav Verma,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,76,100,A
+2024CS024,Simran Iyer,B.Tech CSE,5,2025-2026,CS501,Operating Systems,69,100,B+
+2024CS024,Simran Iyer,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,92,100,O
+2024CS024,Simran Iyer,B.Tech CSE,5,2025-2026,CS503,Computer Networks,96,100,O
+2024CS024,Simran Iyer,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,87,100,A+
+2024CS025,Ayush Singh,B.Tech CSE,5,2025-2026,CS501,Operating Systems,66,100,B+
+2024CS025,Ayush Singh,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,95,100,O
+2024CS025,Ayush Singh,B.Tech CSE,5,2025-2026,CS503,Computer Networks,72,100,A
+2024CS025,Ayush Singh,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,55,100,B
+2024CS026,Priya Reddy,B.Tech CSE,5,2025-2026,CS501,Operating Systems,66,100,B+
+2024CS026,Priya Reddy,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,54,100,B
+2024CS026,Priya Reddy,B.Tech CSE,5,2025-2026,CS503,Computer Networks,72,100,A
+2024CS026,Priya Reddy,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,77,100,A
+2024CS027,Harsh Gupta,B.Tech CSE,5,2025-2026,CS501,Operating Systems,69,100,B+
+2024CS027,Harsh Gupta,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,56,100,B
+2024CS027,Harsh Gupta,B.Tech CSE,5,2025-2026,CS503,Computer Networks,65,100,B+
+2024CS027,Harsh Gupta,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,88,100,A+
+2024CS028,Anushka Mehta,B.Tech CSE,5,2025-2026,CS501,Operating Systems,97,100,O
+2024CS028,Anushka Mehta,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,72,100,A
+2024CS028,Anushka Mehta,B.Tech CSE,5,2025-2026,CS503,Computer Networks,65,100,B+
+2024CS028,Anushka Mehta,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,93,100,O
+2024CS029,Varun Nair,B.Tech CSE,5,2025-2026,CS501,Operating Systems,83,100,A+
+2024CS029,Varun Nair,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,77,100,A
+2024CS029,Varun Nair,B.Tech CSE,5,2025-2026,CS503,Computer Networks,93,100,O
+2024CS029,Varun Nair,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,81,100,A+
+2024CS030,Nandini Chopra,B.Tech CSE,5,2025-2026,CS501,Operating Systems,61,100,B+
+2024CS030,Nandini Chopra,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,68,100,B+
+2024CS030,Nandini Chopra,B.Tech CSE,5,2025-2026,CS503,Computer Networks,60,100,B+
+2024CS030,Nandini Chopra,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,67,100,B+
+2024CS031,Akash Joshi,B.Tech CSE,5,2025-2026,CS501,Operating Systems,87,100,A+
+2024CS031,Akash Joshi,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,86,100,A+
+2024CS031,Akash Joshi,B.Tech CSE,5,2025-2026,CS503,Computer Networks,68,100,B+
+2024CS031,Akash Joshi,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,89,100,A+
+2024CS032,Divya Bose,B.Tech CSE,5,2025-2026,CS501,Operating Systems,79,100,A
+2024CS032,Divya Bose,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,89,100,A+
+2024CS032,Divya Bose,B.Tech CSE,5,2025-2026,CS503,Computer Networks,77,100,A
+2024CS032,Divya Bose,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,75,100,A
+2024CS033,Sanjay Das,B.Tech CSE,5,2025-2026,CS501,Operating Systems,66,100,B+
+2024CS033,Sanjay Das,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,60,100,B+
+2024CS033,Sanjay Das,B.Tech CSE,5,2025-2026,CS503,Computer Networks,84,100,A+
+2024CS033,Sanjay Das,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,83,100,A+
+2024CS034,Preeti Kapoor,B.Tech CSE,5,2025-2026,CS501,Operating Systems,57,100,B
+2024CS034,Preeti Kapoor,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,55,100,B
+2024CS034,Preeti Kapoor,B.Tech CSE,5,2025-2026,CS503,Computer Networks,59,100,B
+2024CS034,Preeti Kapoor,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,61,100,B+
+2024CS035,Kunal Malhotra,B.Tech CSE,5,2025-2026,CS501,Operating Systems,92,100,O
+2024CS035,Kunal Malhotra,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,62,100,B+
+2024CS035,Kunal Malhotra,B.Tech CSE,5,2025-2026,CS503,Computer Networks,95,100,O
+2024CS035,Kunal Malhotra,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,79,100,A
+2024CS036,Swati Rao,B.Tech CSE,5,2025-2026,CS501,Operating Systems,90,100,O
+2024CS036,Swati Rao,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,56,100,B
+2024CS036,Swati Rao,B.Tech CSE,5,2025-2026,CS503,Computer Networks,76,100,A
+2024CS036,Swati Rao,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,76,100,A
+2024CS037,Rajesh Bhat,B.Tech CSE,5,2025-2026,CS501,Operating Systems,90,100,O
+2024CS037,Rajesh Bhat,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,81,100,A+
+2024CS037,Rajesh Bhat,B.Tech CSE,5,2025-2026,CS503,Computer Networks,85,100,A+
+2024CS037,Rajesh Bhat,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,68,100,B+
+2024CS038,Poonam Kulkarni,B.Tech CSE,5,2025-2026,CS501,Operating Systems,87,100,A+
+2024CS038,Poonam Kulkarni,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,52,100,B
+2024CS038,Poonam Kulkarni,B.Tech CSE,5,2025-2026,CS503,Computer Networks,95,100,O
+2024CS038,Poonam Kulkarni,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,98,100,O
+2024CS039,Abhishek Deshmukh,B.Tech CSE,5,2025-2026,CS501,Operating Systems,59,100,B
+2024CS039,Abhishek Deshmukh,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,95,100,O
+2024CS039,Abhishek Deshmukh,B.Tech CSE,5,2025-2026,CS503,Computer Networks,86,100,A+
+2024CS039,Abhishek Deshmukh,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,69,100,B+
+2024CS040,Sakshi Mishra,B.Tech CSE,5,2025-2026,CS501,Operating Systems,93,100,O
+2024CS040,Sakshi Mishra,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,73,100,A
+2024CS040,Sakshi Mishra,B.Tech CSE,5,2025-2026,CS503,Computer Networks,59,100,B
+2024CS040,Sakshi Mishra,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,70,100,A
+2024CS041,Pranav Sharma,B.Tech CSE,5,2025-2026,CS501,Operating Systems,79,100,A
+2024CS041,Pranav Sharma,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,62,100,B+
+2024CS041,Pranav Sharma,B.Tech CSE,5,2025-2026,CS503,Computer Networks,81,100,A+
+2024CS041,Pranav Sharma,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,52,100,B
+2024CS042,Payal Patel,B.Tech CSE,5,2025-2026,CS501,Operating Systems,98,100,O
+2024CS042,Payal Patel,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,98,100,O
+2024CS042,Payal Patel,B.Tech CSE,5,2025-2026,CS503,Computer Networks,68,100,B+
+2024CS042,Payal Patel,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,84,100,A+
+2024CS043,Amit Verma,B.Tech CSE,5,2025-2026,CS501,Operating Systems,63,100,B+
+2024CS043,Amit Verma,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,84,100,A+
+2024CS043,Amit Verma,B.Tech CSE,5,2025-2026,CS503,Computer Networks,58,100,B
+2024CS043,Amit Verma,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,92,100,O
+2024CS044,Komal Iyer,B.Tech CSE,5,2025-2026,CS501,Operating Systems,71,100,A
+2024CS044,Komal Iyer,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,92,100,O
+2024CS044,Komal Iyer,B.Tech CSE,5,2025-2026,CS503,Computer Networks,84,100,A+
+2024CS044,Komal Iyer,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,90,100,O
+2024CS045,Deepak Singh,B.Tech CSE,5,2025-2026,CS501,Operating Systems,64,100,B+
+2024CS045,Deepak Singh,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,61,100,B+
+2024CS045,Deepak Singh,B.Tech CSE,5,2025-2026,CS503,Computer Networks,75,100,A
+2024CS045,Deepak Singh,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,62,100,B+
+2024CS046,Sonal Reddy,B.Tech CSE,5,2025-2026,CS501,Operating Systems,86,100,A+
+2024CS046,Sonal Reddy,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,85,100,A+
+2024CS046,Sonal Reddy,B.Tech CSE,5,2025-2026,CS503,Computer Networks,52,100,B
+2024CS046,Sonal Reddy,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,90,100,O
+2024CS047,Yash Gupta,B.Tech CSE,5,2025-2026,CS501,Operating Systems,72,100,A
+2024CS047,Yash Gupta,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,83,100,A+
+2024CS047,Yash Gupta,B.Tech CSE,5,2025-2026,CS503,Computer Networks,53,100,B
+2024CS047,Yash Gupta,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,59,100,B
+2024CS048,Bhavna Mehta,B.Tech CSE,5,2025-2026,CS501,Operating Systems,75,100,A
+2024CS048,Bhavna Mehta,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,71,100,A
+2024CS048,Bhavna Mehta,B.Tech CSE,5,2025-2026,CS503,Computer Networks,67,100,B+
+2024CS048,Bhavna Mehta,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,55,100,B
+2024CS049,Ravi Nair,B.Tech CSE,5,2025-2026,CS501,Operating Systems,67,100,B+
+2024CS049,Ravi Nair,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,88,100,A+
+2024CS049,Ravi Nair,B.Tech CSE,5,2025-2026,CS503,Computer Networks,57,100,B
+2024CS049,Ravi Nair,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,57,100,B
+2024CS050,Tanya Chopra,B.Tech CSE,5,2025-2026,CS501,Operating Systems,98,100,O
+2024CS050,Tanya Chopra,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,83,100,A+
+2024CS050,Tanya Chopra,B.Tech CSE,5,2025-2026,CS503,Computer Networks,56,100,B
+2024CS050,Tanya Chopra,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,86,100,A+
+2024CS051,Kartik Joshi,B.Tech CSE,5,2025-2026,CS501,Operating Systems,60,100,B+
+2024CS051,Kartik Joshi,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,60,100,B+
+2024CS051,Kartik Joshi,B.Tech CSE,5,2025-2026,CS503,Computer Networks,94,100,O
+2024CS051,Kartik Joshi,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,82,100,A+
+2024CS052,Shruti Bose,B.Tech CSE,5,2025-2026,CS501,Operating Systems,87,100,A+
+2024CS052,Shruti Bose,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,62,100,B+
+2024CS052,Shruti Bose,B.Tech CSE,5,2025-2026,CS503,Computer Networks,68,100,B+
+2024CS052,Shruti Bose,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,85,100,A+
+2024CS053,Naveen Das,B.Tech CSE,5,2025-2026,CS501,Operating Systems,90,100,O
+2024CS053,Naveen Das,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,79,100,A
+2024CS053,Naveen Das,B.Tech CSE,5,2025-2026,CS503,Computer Networks,65,100,B+
+2024CS053,Naveen Das,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,86,100,A+
+2024CS054,Vidhi Kapoor,B.Tech CSE,5,2025-2026,CS501,Operating Systems,98,100,O
+2024CS054,Vidhi Kapoor,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,96,100,O
+2024CS054,Vidhi Kapoor,B.Tech CSE,5,2025-2026,CS503,Computer Networks,64,100,B+
+2024CS054,Vidhi Kapoor,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,97,100,O
+2024CS055,Vishal Malhotra,B.Tech CSE,5,2025-2026,CS501,Operating Systems,71,100,A
+2024CS055,Vishal Malhotra,B.Tech CSE,5,2025-2026,CS502,Database Management Systems,77,100,A
+2024CS055,Vishal Malhotra,B.Tech CSE,5,2025-2026,CS503,Computer Networks,94,100,O
+2024CS055,Vishal Malhotra,B.Tech CSE,5,2025-2026,CS504,Theory of Computation,93,100,O

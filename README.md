@@ -42,6 +42,7 @@ Marks get changed after publication, and students cannot prove what their origin
 
 - **Onboarding Guide for Laptops:** [`docs/ONBOARDING_AND_GIT_SETUP.md`](docs/ONBOARDING_AND_GIT_SETUP.md)
 - **Backend Guide & AI Agent Directive:** [`docs/BACKEND_GUIDE.md`](docs/BACKEND_GUIDE.md)
+- **Backend Integration & Handoff Guide:** [`docs/BACKEND_INTEGRATION_GUIDE.md`](docs/BACKEND_INTEGRATION_GUIDE.md)
 - **Frontend Guide & AI Agent Directive:** [`docs/FRONTEND_GUIDE.md`](docs/FRONTEND_GUIDE.md)
 - **Shared API & Cryptographic Contracts:** [`contracts/CONTRACT_SPEC.md`](contracts/CONTRACT_SPEC.md)
 
