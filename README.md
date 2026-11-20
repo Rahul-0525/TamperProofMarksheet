@@ -38,19 +38,26 @@ Marks get changed after publication, and students cannot prove what their origin
 
 ---
 
-## 👥 3-Person Team Distribution
+## 👥 3-Person Team Distribution & Guides
 
-- **Person 1 — Cryptographic Core & Backend Engine:**
-  - Merkle tree construction, leaf hashing, and proof generation endpoints.
-  - Ed25519 dual-signature verification & append-only revision ledger.
-- **Person 2 — Full-Stack Frontend & Verification UX:**
-  - Student marksheet layout and print formatting.
-  - Client-side webcam/upload QR scanner and cryptographic proof verifier.
-  - Dual-admin approval interface.
-- **Person 3 — Data Pipeline, Tamper Audit Daemon & Judge Defense:**
-  - Bulk CSV ingestion and performance optimization.
-  - Continuous database tamper auditor and alert visualizer.
-  - Automated break-test suite (`judge_simulator.py`) for live judging.
+- **Onboarding Guide for Laptops:** [`docs/ONBOARDING_AND_GIT_SETUP.md`](docs/ONBOARDING_AND_GIT_SETUP.md)
+- **Backend Guide & AI Agent Directive:** [`docs/BACKEND_GUIDE.md`](docs/BACKEND_GUIDE.md)
+- **Frontend Guide & AI Agent Directive:** [`docs/FRONTEND_GUIDE.md`](docs/FRONTEND_GUIDE.md)
+- **Shared API & Cryptographic Contracts:** [`contracts/CONTRACT_SPEC.md`](contracts/CONTRACT_SPEC.md)
+
+---
+
+## ⚡ Evaluator Test Criteria (Target Metrics)
+
+1. **Hidden Test Data (40% Weight):**
+   - Bulk ingestion of 1,500+ records in $< 2$ seconds.
+   - Proof generation and verification latency $< 50\text{ ms}$.
+2. **Direct DB Tamper Detection (20% Technical Depth):**
+   - Immediate detection and pinpointing of direct SQL tampering (`UPDATE results SET marks = 99`).
+3. **Viva Understanding (15% Weight):**
+   - Every team member has a dedicated viva preparation section in their guide to explain code concepts on demand.
+4. **Mandatory Vercel Deployment:**
+   - 1-click frontend deployment on Vercel with SPA rewrite rules in `frontend/vercel.json`.
 
 ---
 
