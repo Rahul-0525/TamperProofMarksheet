@@ -1,20 +1,32 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShieldCheck, FileText, QrCode, Lock, AlertTriangle, GitBranch } from 'lucide-react';
+import {
+  ShieldCheck,
+  FileText,
+  QrCode,
+  Lock,
+  AlertTriangle,
+  FileSpreadsheet,
+  Home as HomeIcon
+} from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const location = useLocation();
 
   const navItems = [
+    { label: 'Overview', path: '/', icon: HomeIcon },
+    { label: 'Publish Batch', path: '/admin', icon: FileSpreadsheet },
     { label: 'Marksheet', path: '/marksheet/2024CS001', icon: FileText },
     { label: 'Verify Portal', path: '/verify', icon: QrCode },
-    { label: 'Dual Governance', path: '/governance', icon: Lock },
     { label: 'Tamper Audit', path: '/audit', icon: AlertTriangle },
+    { label: 'Dual Governance', path: '/governance', icon: Lock },
   ];
 
   const isActive = (path: string) => {
-    if (path.startsWith('/marksheet') && location.pathname.startsWith('/marksheet')) return true;
-    return location.pathname === path;
+    if (path === '/' && location.pathname === '/') return true;
+    if (path !== '/' && path.startsWith('/marksheet') && location.pathname.startsWith('/marksheet')) return true;
+    if (path !== '/' && location.pathname === path) return true;
+    return false;
   };
 
   return (
@@ -40,7 +52,7 @@ export const Navbar: React.FC = () => {
           </Link>
 
           {/* Navigation Links */}
-          <nav className="flex items-center space-x-1 sm:space-x-2">
+          <nav className="flex items-center space-x-1">
             {navItems.map((item) => {
               const active = isActive(item.path);
               const Icon = item.icon;
@@ -48,28 +60,24 @@ export const Navbar: React.FC = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition ${
+                  className={`flex items-center space-x-1.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition ${
                     active
-                      ? 'bg-indigo-600 text-white shadow-sm'
+                      ? 'bg-indigo-600 text-white shadow-sm font-semibold'
                       : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
                   }`}
                 >
-                  <Icon className="w-4 h-4" />
+                  <Icon className="w-3.5 h-3.5" />
                   <span>{item.label}</span>
                 </Link>
               );
             })}
           </nav>
 
-          {/* Branch Pill & Status */}
-          <div className="hidden lg:flex items-center space-x-3">
-            <div className="flex items-center space-x-1.5 px-2.5 py-1 rounded-md bg-slate-800/90 border border-slate-700/80 text-xs text-slate-300 font-mono">
-              <GitBranch className="w-3.5 h-3.5 text-indigo-400" />
-              <span>feature/frontend-ui</span>
-            </div>
-            <div className="flex items-center space-x-1.5 px-2 py-1 rounded-md bg-emerald-950/60 border border-emerald-700/50 text-[11px] text-emerald-300">
+          {/* Status Badge */}
+          <div className="hidden xl:flex items-center space-x-2">
+            <div className="flex items-center space-x-1.5 px-2.5 py-1 rounded-md bg-emerald-950/60 border border-emerald-700/50 text-[11px] text-emerald-300">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span>Ledger v1.0</span>
+              <span>Ledger Active</span>
             </div>
           </div>
         </div>

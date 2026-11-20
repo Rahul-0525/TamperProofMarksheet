@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
+import { Home } from './pages/Home';
+import { AdminPublish } from './pages/AdminPublish';
 import { MarksheetView } from './pages/MarksheetView';
 import { VerifyPortal } from './pages/VerifyPortal';
 import { GovernancePortal } from './pages/GovernancePortal';
@@ -14,13 +16,14 @@ export const App: React.FC = () => {
 
         <main className="flex-grow">
           <Routes>
-            <Route path="/" element={<Navigate to="/marksheet/2024CS001" replace />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/admin" element={<AdminPublish />} />
             <Route path="/marksheet" element={<Navigate to="/marksheet/2024CS001" replace />} />
             <Route path="/marksheet/:roll_no" element={<MarksheetView />} />
             <Route path="/verify" element={<VerifyPortal />} />
             <Route path="/governance" element={<GovernancePortal />} />
             <Route path="/audit" element={<AuditDashboard />} />
-            <Route path="*" element={<Navigate to="/marksheet/2024CS001" replace />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
 
@@ -31,11 +34,11 @@ export const App: React.FC = () => {
                 VeriMark — Problem H8 (Tamper-Proof Exam Result Ledger)
               </p>
               <p className="text-[11px] text-slate-500">
-                Code Fuzion 2026 &bull; Cryptographic Merkle Trees &bull; Dual-Key Governance &bull; Direct DB Tamper Audit
+                Code Fuzion 2026 &bull; Binary Merkle Trees &bull; Dual-Key Governance &bull; Direct DB Tamper Audit
               </p>
             </div>
             <div className="flex items-center space-x-4 text-[11px]">
-              <span className="font-mono text-indigo-400">Branch: feature/frontend-ui</span>
+              <span className="font-mono text-indigo-400">VeriMark v1.0</span>
               <span>&bull;</span>
               <span>1-Click Vercel Ready</span>
             </div>
