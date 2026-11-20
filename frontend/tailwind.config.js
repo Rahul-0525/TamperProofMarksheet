@@ -12,27 +12,44 @@ export default {
         mono: ['"JetBrains Mono"', 'monospace'],
       },
       colors: {
-        pine: {
-          950: '#0f1f1a', // Lighter, cooler meadow-pine backdrop
-          900: '#142923',
-          850: '#19342c',
-          800: '#204036',
-          700: '#2b5448',
-          600: '#386a5b',
-          500: '#488472',
-          400: '#5ea28d',
-          300: '#7ec0ab',
-          200: '#a8dccd',
-          100: '#d7f2eb',
+        // Muted Forest Green Color Palette (Sampled directly from user reference)
+        forest: {
+          950: '#0a0f09', // Swatch 1: Deep Muted Forest Black/Pine
+          900: '#141e16',
+          850: '#1a271d',
+          800: '#1f2f22', // Swatch 2: Deep Pine Spruce Green
+          700: '#2a3e2e',
+          600: '#354d39',
+          500: '#3e5640', // Swatch 3: Muted Forest Moss / Evergreen
+          400: '#647e66',
+          300: '#7e9680',
+          200: '#94a789', // Swatch 4: Soft Meadow Sage Green
+          100: '#b8c7b0',
+          50:  '#edf3ea',
         },
-        coolMeadow: {
-          50: '#f0fdf9',
-          100: '#ccfbf1',
-          200: '#99f6e4',
-          300: '#5eead4',
-          400: '#2dd4bf',
-          500: '#14b8a6',
-          600: '#0d9488',
+        slateFog: {
+          700: '#4e626e',
+          600: '#637b88',
+          500: '#7a94a1', // Swatch 5: Misty Mountain Slate Fog / Blue-Grey
+          400: '#9cb0bc',
+          300: '#b8c7cf',
+          200: '#ced9df', // Swatch 6: Ethereal Pale Cloud / Mist White
+          100: '#e5ecf0',
+          50:  '#f4f7f9',
+        },
+        // Direct pine alias mapped to muted forest for seamless backward compatibility
+        pine: {
+          950: '#0a0f09',
+          900: '#141e16',
+          850: '#1a271d',
+          800: '#1f2f22',
+          700: '#2a3e2e',
+          600: '#354d39',
+          500: '#3e5640',
+          400: '#647e66',
+          300: '#94a789',
+          200: '#b8c7b0',
+          100: '#ced9df',
         },
         warmAmber: {
           glow: '#fbbf24',

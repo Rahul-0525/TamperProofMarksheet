@@ -38,7 +38,7 @@ const AppContent: React.FC = () => {
       </main>
 
       {/* Clean Dribbble-Style Luxury Footer with Official LPU Crest */}
-      <footer className="relative z-10 bg-[#0e1f1a]/90 backdrop-blur-2xl border-t border-white/[0.08] text-pine-200 text-xs py-12 no-print mt-auto">
+      <footer className="relative z-10 bg-[#0a0f09]/95 backdrop-blur-2xl border-t border-white/[0.08] text-[#ced9df] text-xs py-12 no-print mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8 pb-8 border-b border-white/[0.08]">
             {/* Left: Official LPU University Logo & Accreditation Badge */}
