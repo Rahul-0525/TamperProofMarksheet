@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { FluidBackground } from './components/FluidBackground';
+import { LpuLogo } from './components/LpuLogo';
 import { useScrollObserver } from './utils/useScrollObserver';
 import { Home } from './pages/Home';
 import { AdminPublish } from './pages/AdminPublish';
@@ -36,31 +37,44 @@ const AppContent: React.FC = () => {
         </Routes>
       </main>
 
-      {/* Clean Dribbble-Style Luxury Footer */}
-      <footer className="relative z-10 bg-[#070e0d]/90 backdrop-blur-2xl border-t border-white/[0.08] text-pine-300 text-xs py-10 no-print mt-auto">
+      {/* Clean Dribbble-Style Luxury Footer with Official LPU Crest */}
+      <footer className="relative z-10 bg-[#0e1f1a]/90 backdrop-blur-2xl border-t border-white/[0.08] text-pine-200 text-xs py-12 no-print mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-6 border-b border-white/[0.06]">
-            {/* TruGrade LPU Brand */}
-            <div className="flex flex-col items-center md:items-start">
-              <div className="flex items-center space-x-1.5 font-display text-xl font-black text-white">
-                <span>Tru</span>
-                <span className="text-[#fbbf24]">Grade</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-[#fbbf24] ml-0.5" />
-              </div>
-              <p className="text-[11px] text-pine-300/80 mt-1 text-center md:text-left font-medium">
-                Lovely Professional University &bull; Division of Academic Affairs &amp; Examinations
-              </p>
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-8 pb-8 border-b border-white/[0.08]">
+            {/* Left: Official LPU University Logo & Accreditation Badge */}
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 text-center sm:text-left">
+              <LpuLogo size="md" />
             </div>
 
-            {/* Institutional Links & Campus Address */}
-            <div className="flex flex-wrap items-center justify-center gap-6 text-[11px] text-pine-200 font-medium">
+            {/* Right: TruGrade Ledger System Tag & Verification Status */}
+            <div className="flex flex-col items-center lg:items-end text-center lg:text-right">
+              <div className="flex items-center space-x-2">
+                <span className="font-display text-xl font-black text-white">
+                  Tru<span className="text-[#fbbf24]">Grade</span>
+                </span>
+                <span className="px-2 py-0.5 rounded-full bg-[#f59e0b]/15 text-[#fbbf24] border border-[#f59e0b]/30 font-mono text-[10px] font-bold">
+                  v2.4 LEDGER
+                </span>
+              </div>
+              <p className="text-[11px] text-pine-300/90 mt-1 font-medium max-w-sm">
+                Cryptographic transcript sealing &amp; offline Merkle verification engineered for Lovely Professional University.
+              </p>
+            </div>
+          </div>
+
+          {/* Institutional Links & Campus Address */}
+          <div className="py-6 flex flex-wrap items-center justify-center lg:justify-between gap-4 text-[11px] text-pine-200 font-medium border-b border-white/[0.04]">
+            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
               <span className="hover:text-white transition cursor-pointer">Official University Portal</span>
-              <span>&bull;</span>
+              <span className="text-pine-600">&bull;</span>
               <span className="hover:text-white transition cursor-pointer">Examination Regulations</span>
-              <span>&bull;</span>
-              <span className="hover:text-white transition cursor-pointer">Student Grievance Cell</span>
-              <span>&bull;</span>
-              <span className="text-[#fbbf24] font-semibold">Jalandhar-Delhi G.T. Road, Phagwara, Punjab 144411</span>
+              <span className="text-pine-600">&bull;</span>
+              <span className="hover:text-white transition cursor-pointer">Academic Scrutiny &amp; Grievance</span>
+              <span className="text-pine-600">&bull;</span>
+              <span className="hover:text-white transition cursor-pointer">Dual-Key Governance Policy</span>
+            </div>
+            <div className="text-[#fbbf24] font-semibold text-center">
+              Jalandhar - Delhi G.T. Road, Phagwara, Punjab 144411
             </div>
           </div>
 
@@ -68,8 +82,9 @@ const AppContent: React.FC = () => {
             <p>
               &copy; {new Date().getFullYear()} Lovely Professional University. All Rights Reserved. TruGrade Academic Ledger.
             </p>
-            <p className="text-pine-300 font-semibold">
-              Official Examination Transcript Authority
+            <p className="text-pine-300 font-semibold flex items-center space-x-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>Official Academic Record Authentication Authority</span>
             </p>
           </div>
         </div>

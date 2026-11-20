@@ -31,43 +31,44 @@
 /* Main Atmospheric Cinematic Canvas Container */
 .atmospheric-canvas-stage {
   background: 
-    radial-gradient(circle 900px at 50% 65%, rgba(245, 158, 11, 0.12) 0%, rgba(24, 46, 40, 0.3) 35%, rgba(10, 20, 18, 0.95) 85%),
-    linear-gradient(180deg, #11221e 0%, #0d1a17 50%, #08110f 100%);
+    radial-gradient(circle 900px at 50% 65%, rgba(245, 158, 11, 0.14) 0%, rgba(35, 70, 60, 0.35) 35%, rgba(15, 31, 26, 0.95) 85%),
+    radial-gradient(circle at 18% 70%, rgba(45, 212, 191, 0.12) 0%, transparent 45%),
+    linear-gradient(180deg, #162c26 0%, #12241f 50%, #0d1a16 100%);
   position: relative;
 }
 
 /* Rounded Exterior Hero Frame (Matches Dribbble container) */
 .lodge-card-frame {
-  background: linear-gradient(175deg, rgba(25, 48, 42, 0.7) 0%, rgba(12, 24, 21, 0.85) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-top: 1px solid rgba(255, 255, 255, 0.28);
+  background: linear-gradient(175deg, rgba(32, 64, 55, 0.65) 0%, rgba(18, 36, 31, 0.8) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-top: 1px solid rgba(255, 255, 255, 0.32);
   border-radius: 36px;
   box-shadow: 
-    0 30px 70px -15px rgba(0, 0, 0, 0.75),
-    0 0 0 1px rgba(255, 255, 255, 0.05);
+    0 30px 70px -15px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
 /* Floating Dark Frosted Booking/Action Card */
 .floating-action-card {
-  background: rgba(14, 28, 24, 0.78);
+  background: rgba(22, 44, 38, 0.75);
   backdrop-filter: blur(28px);
   -webkit-backdrop-filter: blur(28px);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-top: 1px solid rgba(255, 255, 255, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 28px;
   box-shadow: 
-    0 25px 50px -10px rgba(0, 0, 0, 0.7),
-    0 1px 0 rgba(255, 255, 255, 0.1) inset;
+    0 25px 50px -10px rgba(0, 0, 0, 0.55),
+    0 1px 0 rgba(255, 255, 255, 0.12) inset;
 }
 
 /* Sunken Inset Pill Input Channel (Check-in/Check-out pill style) */
 .inset-pill-field {
-  background: rgba(8, 18, 15, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-top: 1px solid rgba(0, 0, 0, 0.5);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(14, 28, 24, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid rgba(0, 0, 0, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 18px;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.45);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(12px);
   transition: all 0.2s ease;
 }
@@ -117,13 +118,13 @@
 
 /* Frosted Glass Tiles for Feature Cards */
 .glass-card-hover {
-  background: rgba(17, 34, 30, 0.65);
+  background: rgba(24, 48, 41, 0.65);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-top: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 28px;
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -136,8 +137,99 @@
 
 /* Warm Interior Window Glow Simulation */
 .cabin-window-glow {
-  background: radial-gradient(circle, rgba(245, 158, 11, 0.35) 0%, rgba(217, 119, 6, 0.15) 50%, transparent 80%);
-  filter: blur(40px);
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.32) 0%, rgba(217, 119, 6, 0.14) 50%, transparent 80%);
+  filter: blur(45px);
+}
+
+/* Animated Shimmering Color Gradient for Heading */
+@keyframes gradient-flow-smooth {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-gradient-heading {
+  background: linear-gradient(
+    115deg,
+    #ffffff 0%,
+    #fbbf24 20%,
+    #34d399 40%,
+    #6ee7b7 52%,
+    #38bdf8 68%,
+    #f59e0b 84%,
+    #ffffff 100%
+  );
+  background-size: 260% 260%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-flow-smooth 7.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Subtle Ambient Floating Background Animations */
+@keyframes ambient-float-slow-1 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(35px, -25px, 0) scale(1.07);
+  }
+  66% {
+    transform: translate3d(-25px, 20px, 0) scale(0.96);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes ambient-float-slow-2 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  40% {
+    transform: translate3d(-40px, 30px, 0) scale(1.08);
+  }
+  80% {
+    transform: translate3d(30px, -15px, 0) scale(0.95);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes ambient-pulse-window {
+  0% {
+    transform: translate3d(-50%, 0, 0) scale(1);
+    opacity: 0.82;
+  }
+  50% {
+    transform: translate3d(-50%, -15px, 0) scale(1.08);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0) scale(1);
+    opacity: 0.82;
+  }
+}
+
+.animate-ambient-float-1 {
+  animation: ambient-float-slow-1 22s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-ambient-float-2 {
+  animation: ambient-float-slow-2 28s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-ambient-pulse {
+  animation: ambient-pulse-window 16s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
 /* Camera Video Feed Mirroring for Laptops / Front-facing webcams */

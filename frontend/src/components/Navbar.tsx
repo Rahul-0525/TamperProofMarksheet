@@ -70,10 +70,10 @@ export const Navbar: React.FC = () => {
   return (
     <header className="sticky top-0 z-50 no-print transition-all duration-300">
       {/* Sleek LPU Top Institutional Bar (Responsive) */}
-      <div className="bg-[#0b1714]/95 backdrop-blur-xl border-b border-white/[0.06] px-3 sm:px-6 py-1.5 text-xs text-pine-200">
+      <div className="bg-[#0e201b]/95 backdrop-blur-xl border-b border-white/[0.08] px-3 sm:px-6 py-1.5 text-xs text-pine-200">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-2 text-[11px] truncate">
-            <span className="w-2 h-2 rounded-full bg-[#f59e0b] shadow-sm shadow-[#f59e0b]/50 flex-shrink-0" />
+            <span className="w-2 h-2 rounded-full bg-[#fbbf24] shadow-sm shadow-[#fbbf24]/50 flex-shrink-0 animate-pulse" />
             <span className="font-semibold text-white truncate">Lovely Professional University</span>
             <span className="text-pine-400 hidden sm:inline">&bull;</span>
             <span className="text-pine-300 hidden sm:inline">Division of Examinations</span>
@@ -88,7 +88,7 @@ export const Navbar: React.FC = () => {
       </div>
 
       {/* Main Glass Floating Header */}
-      <div className="bg-[#0d1c18]/85 backdrop-blur-2xl border-b border-white/[0.08] px-4 sm:px-6 lg:px-8 shadow-lg">
+      <div className="bg-[#132822]/85 backdrop-blur-2xl border-b border-white/[0.08] px-4 sm:px-6 lg:px-8 shadow-lg">
         <div className="max-w-7xl mx-auto h-16 flex items-center justify-between">
           {/* TruGrade Logo */}
           <Link to="/" className="flex items-center space-x-2.5 group select-none">

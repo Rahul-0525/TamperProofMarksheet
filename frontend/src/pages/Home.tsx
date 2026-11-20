@@ -56,7 +56,7 @@ export const Home: React.FC = () => {
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-end pb-4">
           {/* Left Column: Nature's Perfect Hideaways -> Tamper-Proof Academic Ledger */}
           <div className="lg:col-span-7 space-y-6">
-            <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.06] drop-shadow-md">
+            <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.06] drop-shadow-md select-none animated-gradient-heading">
               Tamper-Proof <br />
               Academic <br />
               Ledger
