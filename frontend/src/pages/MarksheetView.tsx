@@ -19,7 +19,8 @@ import {
   X,
   Copy,
   Check,
-  ExternalLink
+  ExternalLink,
+  Zap
 } from 'lucide-react';
 import { StudentResult, CompactQRPayload, MerkleProofResponse } from '../types';
 import { api } from '../services/api';
@@ -41,6 +42,7 @@ export const MarksheetView: React.FC = () => {
   const [errorMsg, setErrorMsg] = useState('');
   const [qrModalOpen, setQrModalOpen] = useState(false);
   const [copiedPayload, setCopiedPayload] = useState(false);
+  const [qrDensity, setQrDensity] = useState<'fast' | 'standard'>('fast');
 
   // Close modal on ESC key
   useEffect(() => {
@@ -116,7 +118,7 @@ export const MarksheetView: React.FC = () => {
     window.print();
   };
 
-  // Build authentic QR payload strictly from this student's cryptographic proof
+  // Build authentic compact QR payload strictly from this student's cryptographic proof
   const qrPayload: CompactQRPayload = {
     v: 1,
     roll: student?.roll_no || currentRoll,
@@ -125,8 +127,7 @@ export const MarksheetView: React.FC = () => {
     proof: (proofData?.audit_path || []).map(step => ({
       p: step.position === 'left' ? 'L' : 'R',
       h: step.hash
-    })),
-    verify_url: `${window.location.origin}/verify?roll=${encodeURIComponent(student?.roll_no || currentRoll)}`
+    }))
   };
   const qrString = JSON.stringify(qrPayload);
 
@@ -333,11 +334,11 @@ export const MarksheetView: React.FC = () => {
                 className="group relative flex flex-col items-center justify-center p-3 bg-slate-50 hover:bg-amber-50/60 border-2 border-slate-200 hover:border-[#f59e0b] rounded-2xl cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md select-none"
                 title="Click to enlarge QR code for effortless camera scanning"
               >
-                <div className="relative bg-white p-2 rounded-xl border border-slate-300 shadow-sm transition-transform duration-200 group-hover:scale-[1.03]">
+                <div className="relative bg-white p-2.5 rounded-xl border border-slate-300 shadow-sm transition-transform duration-200 group-hover:scale-[1.03]">
                   <QRCodeSVG
                     value={qrString}
-                    size={130}
-                    level="M"
+                    size={140}
+                    level="L"
                     includeMargin={false}
                   />
                   {/* Hover zoom overlay */}
@@ -349,10 +350,10 @@ export const MarksheetView: React.FC = () => {
 
                 <div className="mt-2 text-center">
                   <span className="inline-flex items-center space-x-1 text-[9px] font-bold tracking-wider text-slate-700 uppercase group-hover:text-[#d97706] transition-colors">
-                    <Maximize2 className="w-2.5 h-2.5 text-[#d97706]" />
-                    <span>Click to Enlarge</span>
+                    <Zap className="w-2.5 h-2.5 text-[#d97706]" />
+                    <span>Turbo Scan (Click to Zoom)</span>
                   </span>
-                  <span className="text-[8px] font-mono text-slate-500 block">TruGrade Digital Seal</span>
+                  <span className="text-[8px] font-mono text-slate-500 block">Level-L High-Speed QR</span>
                 </div>
               </div>
             </div>
@@ -503,23 +504,54 @@ export const MarksheetView: React.FC = () => {
               </button>
             </div>
 
-            {/* High-Contrast Centered QR Code Stage */}
-            <div className="flex flex-col items-center justify-center">
+            {/* High-Contrast Centered QR Code Stage with Turbo Density Selector */}
+            <div className="flex flex-col items-center justify-center space-y-4">
               <div className="p-4 sm:p-6 bg-white rounded-3xl shadow-2xl ring-4 ring-[#fbbf24]/40 flex items-center justify-center">
                 <QRCodeSVG
                   value={qrString}
-                  size={300}
-                  level="M"
+                  size={340}
+                  level={qrDensity === 'fast' ? 'L' : 'M'}
                   includeMargin={true}
                 />
               </div>
 
-              <div className="mt-3 text-center space-y-0.5">
+              {/* Density / Speed Selector Pills */}
+              <div className="flex items-center space-x-2 bg-black/40 p-1 rounded-full border border-white/10 text-[11px]">
+                <button
+                  type="button"
+                  onClick={() => setQrDensity('fast')}
+                  className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full font-semibold transition active:scale-95 ${
+                    qrDensity === 'fast'
+                      ? 'bg-[#fbbf24] text-slate-900 shadow-sm'
+                      : 'text-pine-300 hover:text-white'
+                  }`}
+                  title="Level L uses 7% error correction, resulting in 55% fewer matrix dots and larger modules for instant camera focus"
+                >
+                  <Zap className="w-3.5 h-3.5" />
+                  <span>Turbo Scan (Level L - Fast)</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setQrDensity('standard')}
+                  className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full font-semibold transition active:scale-95 ${
+                    qrDensity === 'standard'
+                      ? 'bg-white/20 text-white shadow-sm'
+                      : 'text-pine-300 hover:text-white'
+                  }`}
+                  title="Level M uses 15% error correction"
+                >
+                  <span>Standard (Level M)</span>
+                </button>
+              </div>
+
+              <div className="mt-1 text-center space-y-0.5 max-w-sm">
                 <span className="text-[11px] font-mono text-[#fbbf24] font-semibold block">
-                  Scan with your mobile camera or the TruGrade Verifier
+                  Scan with mobile camera or TruGrade Verifier
                 </span>
-                <span className="text-[10px] text-pine-300">
-                  Contains balanced Merkle sibling path &amp; root verification payload
+                <span className="text-[10px] text-pine-300 block">
+                  {qrDensity === 'fast'
+                    ? '⚡ Level L maximizes module size so cameras & webcams lock focus instantly.'
+                    : '🛡️ Level M includes 15% error correction redundancy.'}
                 </span>
               </div>
             </div>

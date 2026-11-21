@@ -47,7 +47,7 @@ export interface CompactQRPayload {
   leaf: string;
   root: string;
   proof: Array<{ p: 'L' | 'R'; h: string }>;
-  verify_url: string;
+  verify_url?: string;
 }
 
 export type SignerRole = 'DEAN' | 'CONTROLLER';
