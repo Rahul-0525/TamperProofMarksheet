@@ -13,21 +13,36 @@ import {
   ShieldCheck,
   Sparkles
 } from 'lucide-react';
-import { MOCK_STUDENTS } from '../utils/mockData';
+import { getActiveCohort } from '../utils/mockData';
 
 export const Home: React.FC = () => {
   const navigate = useNavigate();
-  const [rollInput, setRollInput] = useState('2024CS001');
+  const cohort = getActiveCohort();
+  const defaultRoll = cohort.students[0]?.roll_no || '2024CS001';
+  const [rollInput, setRollInput] = useState(defaultRoll);
   const [errorMsg, setErrorMsg] = useState('');
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!rollInput.trim()) {
+    const query = rollInput.trim();
+    if (!query) {
       setErrorMsg('Please enter a valid student registration or roll number.');
       return;
     }
     setErrorMsg('');
-    navigate(`/marksheet/${rollInput.trim().toUpperCase()}`);
+
+    // Check exact or suffix in active cohort
+    const match = cohort.students.find(s => {
+      const r = s.roll_no.toLowerCase();
+      const q = query.toLowerCase();
+      return r === q || r.endsWith(q) || r.includes(q);
+    });
+
+    if (match) {
+      navigate(`/marksheet/${match.roll_no}`);
+    } else {
+      navigate(`/marksheet/${query.toUpperCase()}`);
+    }
   };
 
   return (
@@ -155,13 +170,13 @@ export const Home: React.FC = () => {
               <div className="pt-4 border-t border-white/[0.08] flex items-center justify-between text-xs text-pine-300">
                 <span className="text-[11px] text-pine-400 font-medium">Quick Sample:</span>
                 <div className="flex space-x-2">
-                  {MOCK_STUDENTS.slice(0, 3).map((s) => (
+                  {cohort.students.slice(0, 3).map((s) => (
                     <button
                       key={s.roll_no}
                       onClick={() => setRollInput(s.roll_no)}
                       className="px-2.5 py-1 rounded-full bg-white/[0.06] hover:bg-white/20 text-white font-mono text-[11px] transition font-semibold"
                     >
-                      {s.roll_no.substring(6)}
+                      {s.roll_no.length > 6 ? s.roll_no.substring(s.roll_no.length - 4) : s.roll_no}
                     </button>
                   ))}
                 </div>

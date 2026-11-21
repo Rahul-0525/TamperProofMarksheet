@@ -7,26 +7,100 @@ export const MOCK_STUDENTS: StudentResult[] = cohortData.students as StudentResu
 
 export const MOCK_PROOFS: Record<string, MerkleProofResponse> = cohortData.proofs as Record<string, MerkleProofResponse>;
 
-export function getCompactQRPayload(rollNo: string): CompactQRPayload {
-  let customProofs: Record<string, MerkleProofResponse> = {};
+export interface ActiveCohort {
+  isCustom: boolean;
+  students: StudentResult[];
+  proofs: Record<string, MerkleProofResponse>;
+  rootHash: string;
+  batchId?: string;
+  publishedAt?: string;
+  totalStudents: number;
+}
+
+/**
+ * Returns the currently active ledger cohort.
+ * If the user uploaded a custom CSV (e.g. rolls 23-98), ONLY those custom
+ * students and proofs are active. If not, it falls back to the default 55-student LPU cohort.
+ */
+export function getActiveCohort(): ActiveCohort {
   try {
-    const raw = localStorage.getItem('trugrade_custom_proofs');
-    if (raw) customProofs = JSON.parse(raw);
-  } catch (e) {}
+    const rawStudents = localStorage.getItem('trugrade_custom_students');
+    const rawProofs = localStorage.getItem('trugrade_custom_proofs');
+    const rawRoot = localStorage.getItem('trugrade_custom_root');
+    const rawBatch = localStorage.getItem('trugrade_custom_batch');
 
-  const norm = (rollNo || '').toLowerCase().trim();
-  const allProofs = { ...MOCK_PROOFS, ...customProofs };
+    if (rawStudents) {
+      const customStudents: StudentResult[] = JSON.parse(rawStudents);
+      if (Array.isArray(customStudents) && customStudents.length > 0) {
+        const customProofs: Record<string, MerkleProofResponse> = rawProofs ? JSON.parse(rawProofs) : {};
+        const firstRoll = customStudents[0]?.roll_no;
+        const customRoot = rawRoot || customProofs[firstRoll]?.root_hash || PUBLISHED_ROOT_HASH;
+        const batchInfo = rawBatch ? JSON.parse(rawBatch) : null;
 
-  // 1. Exact match
-  let proof: MerkleProofResponse | undefined = allProofs[rollNo] || Object.values(allProofs).find(p => p.roll_no.toLowerCase() === norm);
-
-  // 2. Numeric shorthand match (e.g. "19" -> "2024CS019")
-  if (!proof && /^\d+$/.test(norm)) {
-    const padded = norm.padStart(3, '0');
-    proof = Object.values(allProofs).find(p => p.roll_no.endsWith(padded));
+        return {
+          isCustom: true,
+          students: customStudents,
+          proofs: customProofs,
+          rootHash: customRoot,
+          batchId: batchInfo?.batch_id,
+          publishedAt: batchInfo?.published_at,
+          totalStudents: customStudents.length
+        };
+      }
+    }
+  } catch (e) {
+    console.warn('[TruGrade] Error loading custom cohort from localStorage:', e);
   }
 
-  // 3. Fallback
+  return {
+    isCustom: false,
+    students: MOCK_STUDENTS,
+    proofs: MOCK_PROOFS,
+    rootHash: PUBLISHED_ROOT_HASH,
+    totalStudents: MOCK_STUDENTS.length
+  };
+}
+
+/**
+ * Clears custom uploaded CSV data from the browser and restores the default 55-student cohort.
+ */
+export function resetToDefaultCohort(): void {
+  try {
+    localStorage.removeItem('trugrade_custom_students');
+    localStorage.removeItem('trugrade_custom_proofs');
+    localStorage.removeItem('trugrade_custom_root');
+    localStorage.removeItem('trugrade_custom_batch');
+  } catch (e) {}
+}
+
+export function getCompactQRPayload(rollNo: string): CompactQRPayload {
+  const cohort = getActiveCohort();
+  const norm = (rollNo || '').toLowerCase().trim();
+
+  // 1. Exact match in active cohort proofs
+  let proof: MerkleProofResponse | undefined =
+    cohort.proofs[rollNo] ||
+    Object.values(cohort.proofs).find(p => p.roll_no.toLowerCase() === norm);
+
+  // 2. Numeric / suffix match (e.g. user typed "23" matching roll "23" or "...023")
+  if (!proof && norm) {
+    proof = Object.values(cohort.proofs).find(p => {
+      const r = p.roll_no.toLowerCase();
+      return r === norm || r.endsWith(norm) || r.includes(norm);
+    });
+  }
+
+  // 3. Fallback: First student in active cohort
+  if (!proof) {
+    const firstRoll = cohort.students[0]?.roll_no;
+    if (firstRoll && cohort.proofs[firstRoll]) {
+      proof = cohort.proofs[firstRoll];
+    } else {
+      proof = Object.values(cohort.proofs)[0];
+    }
+  }
+
+  // 4. Guaranteed emergency fallback
   const fallbackProof: MerkleProofResponse = MOCK_PROOFS['2024CS001'] || Object.values(MOCK_PROOFS)[0];
   const targetProof = proof || fallbackProof;
 
@@ -34,12 +108,12 @@ export function getCompactQRPayload(rollNo: string): CompactQRPayload {
     v: 1,
     roll: targetProof.roll_no,
     leaf: targetProof.leaf_hash,
-    root: targetProof.root_hash,
-    proof: targetProof.audit_path.map(step => ({
+    root: targetProof.root_hash || cohort.rootHash,
+    proof: (targetProof.audit_path || []).map(step => ({
       p: step.position === 'left' ? 'L' : 'R',
       h: step.hash
     })),
-    verify_url: `https://verimark.edu/verify?roll=${targetProof.roll_no}`
+    verify_url: `https://verimark.edu/verify?roll=${encodeURIComponent(targetProof.roll_no)}`
   };
 }
 

@@ -21,7 +21,7 @@ export const Navbar: React.FC = () => {
 
   const navItems = [
     { label: 'Public Portal', path: '/', icon: HomeIcon, roleBadge: 'STUDENT / PUBLIC', desc: 'University results search' },
-    { label: 'Marksheet', path: '/marksheet/2024CS001', icon: FileText, roleBadge: 'TRANSCRIPT', desc: 'Official grade transcript' },
+    { label: 'Marksheet', path: '/marksheet', icon: FileText, roleBadge: 'TRANSCRIPT', desc: 'Official grade transcript' },
     { label: 'Verify Portal', path: '/verify', icon: QrCode, roleBadge: 'THIRD-PARTY / HR', desc: 'QR cryptographic proof' },
     { label: 'Governance Chamber', path: '/governance', icon: Lock, roleBadge: 'DEAN & CONTROLLER', desc: 'Dual-key Ed25519 signing' },
     { label: 'Tamper Auditor', path: '/audit', icon: AlertTriangle, roleBadge: 'SECURITY / AUDITOR', desc: 'Direct SQL tamper detection' },

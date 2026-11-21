@@ -28,7 +28,7 @@ const AppContent: React.FC = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/admin" element={<AdminPublish />} />
-          <Route path="/marksheet" element={<Navigate to="/marksheet/2024CS001" replace />} />
+          <Route path="/marksheet" element={<MarksheetView />} />
           <Route path="/marksheet/:roll_no" element={<MarksheetView />} />
           <Route path="/verify" element={<VerifyPortal />} />
           <Route path="/governance" element={<GovernancePortal />} />

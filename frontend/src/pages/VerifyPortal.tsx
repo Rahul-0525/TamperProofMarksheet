@@ -18,11 +18,13 @@ import {
 import { CompactQRPayload, MerkleProofStep } from '../types';
 import { verifyMerkleProof } from '../utils/crypto';
 import { ProofPathVisualizer } from '../components/ProofPathVisualizer';
-import { getCompactQRPayload } from '../utils/mockData';
+import { getCompactQRPayload, getActiveCohort } from '../utils/mockData';
 
 export const VerifyPortal: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const initialRoll = searchParams.get('roll') || '2024CS001';
+  const cohort = getActiveCohort();
+  const defaultRoll = cohort.students[0]?.roll_no || '2024CS001';
+  const initialRoll = searchParams.get('roll') || defaultRoll;
 
   const [inputMode, setInputMode] = useState<'scan' | 'paste' | 'preset'>('preset');
   const [qrJsonInput, setQrJsonInput] = useState('');
@@ -248,69 +250,67 @@ export const VerifyPortal: React.FC = () => {
         {/* Tab 1: Demo Presets */}
         {inputMode === 'preset' && (
           <div>
-            <p className="text-xs text-pine-200 mb-4 font-semibold">
-              Select a test scenario to evaluate genuine verification vs tamper detection:
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-              <button
-                onClick={() => loadPreset('2024CS001', false)}
-                className="inset-pill-field p-4 text-left flex flex-col justify-between group active:scale-95"
-              >
-                <div>
-                  <div className="flex items-center space-x-2 text-[#fbbf24] font-bold text-xs sm:text-sm mb-1">
-                    <CheckCircle2 className="w-4 h-4 text-[#fbbf24]" />
-                    <span>Aarav (2024CS001)</span>
+            <div className="flex flex-wrap items-center justify-between mb-4 gap-2">
+              <p className="text-xs text-pine-200 font-semibold">
+                Select a test scenario to evaluate genuine verification vs tamper detection:
+              </p>
+              {cohort.isCustom && (
+                <span className="px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 font-mono text-[10px] font-bold">
+                  Active Custom Ledger ({cohort.totalStudents} records)
+                </span>
+              )}
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+              {cohort.students[0] && (
+                <button
+                  onClick={() => loadPreset(cohort.students[0].roll_no, false)}
+                  className="inset-pill-field p-4 text-left flex flex-col justify-between group active:scale-95"
+                >
+                  <div>
+                    <div className="flex items-center space-x-2 text-[#fbbf24] font-bold text-xs sm:text-sm mb-1">
+                      <CheckCircle2 className="w-4 h-4 text-[#fbbf24]" />
+                      <span>{cohort.students[0].student_name} ({cohort.students[0].roll_no})</span>
+                    </div>
+                    <p className="text-[11px] text-pine-200/80 group-hover:text-white">
+                      Verifies authentic marksheet and calculates full Merkle inclusion path.
+                    </p>
                   </div>
-                  <p className="text-[11px] text-pine-200/80 group-hover:text-white">
-                    Verifies authentic marksheet and calculates full Merkle inclusion path.
-                  </p>
-                </div>
-              </button>
+                </button>
+              )}
 
-              <button
-                onClick={() => loadPreset('2024CS019', false)}
-                className="inset-pill-field p-4 text-left flex flex-col justify-between group active:scale-95 border-amber-400/40"
-              >
-                <div>
-                  <div className="flex items-center space-x-2 text-[#fbbf24] font-bold text-xs sm:text-sm mb-1">
-                    <CheckCircle2 className="w-4 h-4 text-[#fbbf24]" />
-                    <span>Dev Deshmukh (019)</span>
+              {cohort.students[1] && (
+                <button
+                  onClick={() => loadPreset(cohort.students[1].roll_no, false)}
+                  className="inset-pill-field p-4 text-left flex flex-col justify-between group active:scale-95"
+                >
+                  <div>
+                    <div className="flex items-center space-x-2 text-[#fbbf24] font-bold text-xs sm:text-sm mb-1">
+                      <CheckCircle2 className="w-4 h-4 text-[#fbbf24]" />
+                      <span>{cohort.students[1].student_name} ({cohort.students[1].roll_no})</span>
+                    </div>
+                    <p className="text-[11px] text-pine-200/80 group-hover:text-white">
+                      Verifies alternate sibling positioning along the binary hash tree.
+                    </p>
                   </div>
-                  <p className="text-[11px] text-pine-200/80 group-hover:text-white">
-                    Roll 19 from uploaded semester CSV with 6-level Merkle path.
-                  </p>
-                </div>
-              </button>
+                </button>
+              )}
 
-              <button
-                onClick={() => loadPreset('2024CS002', false)}
-                className="inset-pill-field p-4 text-left flex flex-col justify-between group active:scale-95"
-              >
-                <div>
-                  <div className="flex items-center space-x-2 text-[#fbbf24] font-bold text-xs sm:text-sm mb-1">
-                    <CheckCircle2 className="w-4 h-4 text-[#fbbf24]" />
-                    <span>Diya (2024CS002)</span>
+              {cohort.students[0] && (
+                <button
+                  onClick={() => loadPreset(cohort.students[0].roll_no, true)}
+                  className="inset-pill-field p-4 text-left flex flex-col justify-between group active:scale-95 border-rose-500/40"
+                >
+                  <div>
+                    <div className="flex items-center space-x-2 text-rose-300 font-bold text-xs sm:text-sm mb-1">
+                      <XCircle className="w-4 h-4 text-rose-400" />
+                      <span>Simulate Forged Marksheet</span>
+                    </div>
+                    <p className="text-[11px] text-rose-200/80 group-hover:text-rose-100">
+                      Altered marks or forged QR code triggers immediate cryptographic failure.
+                    </p>
                   </div>
-                  <p className="text-[11px] text-pine-200/80 group-hover:text-white">
-                    Verifies alternate sibling positioning along the binary hash tree.
-                  </p>
-                </div>
-              </button>
-
-              <button
-                onClick={() => loadPreset('2024CS001', true)}
-                className="inset-pill-field p-4 text-left flex flex-col justify-between group active:scale-95 border-rose-500/40"
-              >
-                <div>
-                  <div className="flex items-center space-x-2 text-rose-300 font-bold text-xs sm:text-sm mb-1">
-                    <XCircle className="w-4 h-4 text-rose-400" />
-                    <span>Simulate Forgery</span>
-                  </div>
-                  <p className="text-[11px] text-rose-200/80 group-hover:text-rose-100">
-                    Altered marks or forged QR code triggers immediate cryptographic failure.
-                  </p>
-                </div>
-              </button>
+                </button>
+              )}
             </div>
           </div>
         )}

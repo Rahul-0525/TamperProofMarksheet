@@ -13,23 +13,34 @@ import {
   Calendar,
   Hash,
   AlertCircle,
-  FileSpreadsheet
+  FileSpreadsheet,
+  RotateCcw
 } from 'lucide-react';
-import { StudentResult, CompactQRPayload } from '../types';
+import { StudentResult, CompactQRPayload, MerkleProofResponse } from '../types';
 import { api } from '../services/api';
-import { getCompactQRPayload } from '../utils/mockData';
-
-const POPULAR_ROLLS = ['2024CS001', '2024CS002', '2024CS003', '2024CS004', '2024CS019', '2024CS055'];
+import { getActiveCohort, resetToDefaultCohort } from '../utils/mockData';
 
 export const MarksheetView: React.FC = () => {
   const { roll_no } = useParams<{ roll_no: string }>();
   const navigate = useNavigate();
-  const currentRoll = roll_no ? roll_no.toUpperCase() : '2024CS001';
+
+  const cohort = getActiveCohort();
+  const activeStudents = cohort.students;
+  const defaultRoll = activeStudents[0]?.roll_no || '2024CS001';
+  const currentRoll = roll_no ? roll_no.toUpperCase() : defaultRoll;
 
   const [student, setStudent] = useState<StudentResult | null>(null);
+  const [proofData, setProofData] = useState<MerkleProofResponse | null>(null);
   const [searchRoll, setSearchRoll] = useState(currentRoll);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
+
+  // If visiting /marksheet without param, normalize URL to first student
+  useEffect(() => {
+    if (!roll_no && defaultRoll) {
+      navigate(`/marksheet/${defaultRoll}`, { replace: true });
+    }
+  }, [roll_no, defaultRoll]);
 
   useEffect(() => {
     setSearchRoll(currentRoll);
@@ -42,9 +53,12 @@ export const MarksheetView: React.FC = () => {
     try {
       const data = await api.getStudentResult(roll);
       setStudent(data);
+      const proof = await api.getMerkleProof(data.roll_no);
+      setProofData(proof);
     } catch (err: any) {
       console.error(err);
       setStudent(null);
+      setProofData(null);
       setErrorMsg(err?.message || `Student with roll number "${roll}" not found in current ledger.`);
     } finally {
       setLoading(false);
@@ -53,34 +67,81 @@ export const MarksheetView: React.FC = () => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    const clean = searchRoll.trim().toUpperCase();
-    if (clean) {
-      // Smart normalizer: if user enters just a number like "19", expand to "2024CS019"
-      if (/^\d+$/.test(clean)) {
-        const padded = clean.padStart(3, '0');
-        navigate(`/marksheet/2024CS${padded}`);
-      } else {
-        navigate(`/marksheet/${clean}`);
-      }
+    const query = searchRoll.trim();
+    if (!query) return;
+
+    // 1. Exact match in active cohort
+    const exact = activeStudents.find(s => s.roll_no.toLowerCase() === query.toLowerCase());
+    if (exact) {
+      navigate(`/marksheet/${exact.roll_no}`);
+      return;
     }
+
+    // 2. Suffix / number match in active cohort (e.g. user typed "23" matching roll "23" or "...023")
+    const match = activeStudents.find(s => {
+      const r = s.roll_no.toLowerCase();
+      const q = query.toLowerCase();
+      return r === q || r.endsWith(q) || r.includes(q);
+    });
+    if (match) {
+      navigate(`/marksheet/${match.roll_no}`);
+      return;
+    }
+
+    // 3. Direct navigation to show not-found card
+    navigate(`/marksheet/${query.toUpperCase()}`);
   };
 
   const handlePrint = () => {
     window.print();
   };
 
-  const baseQr = getCompactQRPayload(student?.roll_no || currentRoll);
+  // Build authentic QR payload strictly from this student's cryptographic proof
   const qrPayload: CompactQRPayload = {
-    ...baseQr,
-    root: (student as any)?.root_hash || baseQr.root,
-    leaf: student?.leaf_hash || baseQr.leaf
+    v: 1,
+    roll: student?.roll_no || currentRoll,
+    leaf: student?.leaf_hash || proofData?.leaf_hash || '',
+    root: (student as any)?.root_hash || proofData?.root_hash || cohort.rootHash,
+    proof: (proofData?.audit_path || []).map(step => ({
+      p: step.position === 'left' ? 'L' : 'R',
+      h: step.hash
+    })),
+    verify_url: `${window.location.origin}/verify?roll=${encodeURIComponent(student?.roll_no || currentRoll)}`
   };
   const qrString = JSON.stringify(qrPayload);
 
+  // Dynamic quick-pick buttons from the active cohort (first 6 students)
+  const quickRolls = activeStudents.slice(0, 6).map(s => s.roll_no);
+
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-8 lg:px-10 py-10 sm:py-16 space-y-10">
+    <div className="max-w-5xl mx-auto px-4 sm:px-8 lg:px-10 py-10 sm:py-16 space-y-8">
+      {/* Active Custom Ledger Status Banner */}
+      {cohort.isCustom && (
+        <div className="no-print bg-amber-500/15 border border-amber-500/35 rounded-2xl px-5 py-3.5 flex flex-wrap items-center justify-between gap-3 text-xs text-amber-200 shadow-lg fly-in is-revealed">
+          <div className="flex items-center space-x-2.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" />
+            <span>
+              Active Custom Ledger: <strong>{cohort.totalStudents} Students</strong> ({cohort.students[0]?.roll_no} &rarr; {cohort.students[cohort.students.length - 1]?.roll_no})
+            </span>
+            <span className="hidden sm:inline opacity-70 font-mono text-[10px]">
+              &bull; Root: {cohort.rootHash.substring(0, 10)}...
+            </span>
+          </div>
+          <button
+            onClick={() => {
+              resetToDefaultCohort();
+              window.location.href = '/marksheet';
+            }}
+            className="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-xl transition font-semibold text-xs active:scale-95"
+          >
+            <RotateCcw className="w-3 h-3 text-[#fbbf24]" />
+            <span>Reset to Default LPU Dataset</span>
+          </button>
+        </div>
+      )}
+
       {/* Sleek Action & Selector Bar (Hidden during print) - Spacey & Relaxed */}
-      <div className="no-print mb-10 floating-action-card p-5 sm:p-7 rounded-[30px] flex flex-wrap items-center justify-between gap-6 fly-in is-revealed shadow-2xl">
+      <div className="no-print mb-8 floating-action-card p-5 sm:p-7 rounded-[30px] flex flex-wrap items-center justify-between gap-6 fly-in is-revealed shadow-2xl">
         {/* Search Box with Sunken Inset Input */}
         <form onSubmit={handleSearch} className="flex items-center space-x-3 flex-grow max-w-md">
           <div className="inset-pill-field relative flex-grow flex items-center px-4 py-2">
@@ -89,7 +150,7 @@ export const MarksheetView: React.FC = () => {
               type="text"
               value={searchRoll}
               onChange={(e) => setSearchRoll(e.target.value)}
-              placeholder="Search Roll No (e.g., 19 or 2024CS019)"
+              placeholder={`Search Roll No (e.g., ${activeStudents[0]?.roll_no || '2024CS001'})`}
               className="bg-transparent text-white font-mono uppercase text-xs focus:outline-none w-full placeholder:text-pine-400/60 font-semibold"
             />
           </div>
@@ -101,10 +162,10 @@ export const MarksheetView: React.FC = () => {
           </button>
         </form>
 
-        {/* Quick-Pick Selector */}
+        {/* Dynamic Quick-Pick Selector from Active Cohort */}
         <div className="flex items-center space-x-1.5 text-xs flex-wrap gap-y-1">
           <span className="text-pine-300 text-xs font-bold mr-1 hidden sm:inline">Rolls:</span>
-          {POPULAR_ROLLS.map((roll) => (
+          {quickRolls.map((roll) => (
             <button
               key={roll}
               onClick={() => {
@@ -117,7 +178,7 @@ export const MarksheetView: React.FC = () => {
                   : 'bg-white/[0.06] hover:bg-white/[0.14] text-pine-200'
               }`}
             >
-              {roll === '2024CS019' ? '★ 019' : roll.replace('2024CS', '')}
+              {roll.length > 8 ? roll.substring(roll.length - 4) : roll}
             </button>
           ))}
         </div>
@@ -155,19 +216,15 @@ export const MarksheetView: React.FC = () => {
             {errorMsg || `Roll number "${currentRoll}" is not indexed in the active academic ledger.`}
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <button
-              onClick={() => navigate('/marksheet/2024CS019')}
-              className="btn-pill-white px-6 py-2.5 text-xs font-bold shadow-lg active:scale-95 flex items-center space-x-2"
-            >
-              <span>View Roll 2024CS019 (Dev Deshmukh)</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-            <button
-              onClick={() => navigate('/marksheet/2024CS001')}
-              className="btn-pill-glass px-5 py-2.5 text-xs font-semibold"
-            >
-              View 2024CS001 (Aarav Sharma)
-            </button>
+            {activeStudents[0] && (
+              <button
+                onClick={() => navigate(`/marksheet/${activeStudents[0].roll_no}`)}
+                className="btn-pill-white px-6 py-2.5 text-xs font-bold shadow-lg active:scale-95 flex items-center space-x-2"
+              >
+                <span>View First Record ({activeStudents[0].roll_no})</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            )}
             <button
               onClick={() => navigate('/admin')}
               className="btn-pill-glass px-5 py-2.5 text-xs font-semibold flex items-center space-x-2"
@@ -330,7 +387,7 @@ export const MarksheetView: React.FC = () => {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between text-slate-300 gap-1">
                 <span>Active University Ledger Root:</span>
                 <span className="text-emerald-400 break-all select-all font-semibold">
-                  {(student as any)?.root_hash || baseQr.root}
+                  {(student as any)?.root_hash || qrPayload.root}
                 </span>
               </div>
             </div>

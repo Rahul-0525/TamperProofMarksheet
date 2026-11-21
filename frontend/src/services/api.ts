@@ -11,7 +11,8 @@ import {
   MOCK_CORRECTIONS,
   MOCK_AUDIT_SECURE,
   MOCK_AUDIT_TAMPERED,
-  PUBLISHED_ROOT_HASH
+  PUBLISHED_ROOT_HASH,
+  getActiveCohort
 } from '../utils/mockData';
 import { parseCSVAndBuildLedger } from '../utils/crypto';
 
@@ -28,60 +29,50 @@ const client = axios.create({
 let backendConnected = false;
 
 function findStudentLocally(rollNo: string): StudentResult | null {
-  let customStudents: StudentResult[] = [];
-  try {
-    const raw = localStorage.getItem('trugrade_custom_students');
-    if (raw) customStudents = JSON.parse(raw);
-  } catch (e) {}
-
-  const all = [...customStudents, ...MOCK_STUDENTS];
+  const cohort = getActiveCohort();
   const norm = (rollNo || '').toLowerCase().trim();
 
-  // 1. Exact match
-  const exact = all.find(s => s.roll_no.toLowerCase() === norm);
+  // 1. Exact match in active cohort
+  const exact = cohort.students.find(s => s.roll_no.toLowerCase() === norm);
   if (exact) return exact;
 
-  // 2. Numeric shorthand match (e.g., "19" -> "2024CS019")
-  if (/^\d+$/.test(norm)) {
-    const padded = norm.padStart(3, '0');
-    const matchNum = all.find(s => s.roll_no.endsWith(padded));
+  // 2. Numeric / suffix match (e.g. user enters "23" matching roll "23" or "...023")
+  if (norm) {
+    const matchNum = cohort.students.find(s => {
+      const r = s.roll_no.toLowerCase();
+      return r === norm || r.endsWith(norm) || r.includes(norm);
+    });
     if (matchNum) return matchNum;
   }
-
-  // 3. Substring match
-  const partial = all.find(s => s.roll_no.toLowerCase().includes(norm));
-  if (partial) return partial;
 
   return null;
 }
 
 function findProofLocally(rollNo: string): MerkleProofResponse | null {
-  let customProofs: Record<string, MerkleProofResponse> = {};
-  try {
-    const raw = localStorage.getItem('trugrade_custom_proofs');
-    if (raw) customProofs = JSON.parse(raw);
-  } catch (e) {}
-
-  const allProofs = { ...MOCK_PROOFS, ...customProofs };
+  const cohort = getActiveCohort();
   const norm = (rollNo || '').toLowerCase().trim();
 
   // 1. Exact key match
-  if (allProofs[rollNo]) return allProofs[rollNo];
-  const exact = Object.values(allProofs).find(p => p.roll_no.toLowerCase() === norm);
+  if (cohort.proofs[rollNo]) return cohort.proofs[rollNo];
+  const exact = Object.values(cohort.proofs).find(p => p.roll_no.toLowerCase() === norm);
   if (exact) return exact;
 
-  // 2. Numeric shorthand
-  if (/^\d+$/.test(norm)) {
-    const padded = norm.padStart(3, '0');
-    const matchNum = Object.values(allProofs).find(p => p.roll_no.endsWith(padded));
-    if (matchNum) return matchNum;
+  // 2. Numeric / suffix match
+  if (norm) {
+    const match = Object.values(cohort.proofs).find(p => {
+      const r = p.roll_no.toLowerCase();
+      return r === norm || r.endsWith(norm) || r.includes(norm);
+    });
+    if (match) return match;
   }
 
-  // 3. Substring match
-  const partial = Object.values(allProofs).find(p => p.roll_no.toLowerCase().includes(norm));
-  if (partial) return partial;
+  // 3. Fallback to first student in active cohort
+  const firstRoll = cohort.students[0]?.roll_no;
+  if (firstRoll && cohort.proofs[firstRoll]) {
+    return cohort.proofs[firstRoll];
+  }
 
-  return null;
+  return Object.values(cohort.proofs)[0] || null;
 }
 
 export const api = {
@@ -94,17 +85,13 @@ export const api = {
       backendConnected = true;
       return response.data;
     } catch (err) {
-      console.warn(`[TruGrade] Backend not reachable at ${API_BASE_URL}, querying local Merkle cohort for ${rollNo}`);
+      console.warn(`[TruGrade] Backend not reachable at ${API_BASE_URL}, querying active ledger for ${rollNo}`);
+      const cohort = getActiveCohort();
       const student = findStudentLocally(rollNo);
       if (student) {
-        let activeRoot = PUBLISHED_ROOT_HASH;
-        try {
-          const customRoot = localStorage.getItem('trugrade_custom_root');
-          if (customRoot) activeRoot = customRoot;
-        } catch (e) {}
         return {
           ...student,
-          root_hash: activeRoot
+          root_hash: cohort.rootHash
         };
       }
       throw new Error(`Student with roll number "${rollNo}" not found in active academic ledger.`);
@@ -120,10 +107,12 @@ export const api = {
       backendConnected = true;
       return response.data;
     } catch (err) {
-      console.warn(`[TruGrade] Backend not reachable, querying local proof store for ${rollNo}`);
+      console.warn(`[TruGrade] Backend not reachable, querying active proof store for ${rollNo}`);
       const proof = findProofLocally(rollNo);
       if (proof) return proof;
-      return MOCK_PROOFS['2024CS001'];
+      const cohort = getActiveCohort();
+      const fallback = Object.values(cohort.proofs)[0] || MOCK_PROOFS['2024CS001'];
+      return fallback;
     }
   },
 
