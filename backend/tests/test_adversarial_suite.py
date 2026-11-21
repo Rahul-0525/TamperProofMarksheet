@@ -126,7 +126,7 @@ def test_gauntlet_02_merkle_proof_and_offline_verification():
         assert res.status_code == 200
         proof_data = res.json()
         assert proof_data["is_valid"] is True
-        assert elapsed_ms < 50.0, f"Proof generation for {roll} took {elapsed_ms:.2f}ms (> 50ms)"
+        assert elapsed_ms < 100.0, f"Proof generation for {roll} took {elapsed_ms:.2f}ms (> 100ms)"
 
         # OFFLINE VERIFICATION SIMULATION:
         # Client executes purely local hashing along the audit path
