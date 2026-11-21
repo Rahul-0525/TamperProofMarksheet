@@ -63,7 +63,7 @@ export const Home: React.FC = () => {
 
           <div className="hidden sm:flex items-center space-x-2.5 text-xs text-pine-200 bg-black/25 px-3.5 py-1.5 rounded-full border border-white/[0.08]">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="font-mono text-[11px] font-semibold text-white">Ledger Active &bull; Root Sealed</span>
+            <span className="font-mono text-[11px] font-semibold text-white">Public Portal &bull; Ledger Sealed</span>
           </div>
         </div>
 

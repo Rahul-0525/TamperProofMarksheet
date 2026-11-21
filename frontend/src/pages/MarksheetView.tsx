@@ -14,7 +14,12 @@ import {
   Hash,
   AlertCircle,
   FileSpreadsheet,
-  RotateCcw
+  RotateCcw,
+  Maximize2,
+  X,
+  Copy,
+  Check,
+  ExternalLink
 } from 'lucide-react';
 import { StudentResult, CompactQRPayload, MerkleProofResponse } from '../types';
 import { api } from '../services/api';
@@ -34,6 +39,21 @@ export const MarksheetView: React.FC = () => {
   const [searchRoll, setSearchRoll] = useState(currentRoll);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
+  const [qrModalOpen, setQrModalOpen] = useState(false);
+  const [copiedPayload, setCopiedPayload] = useState(false);
+
+  // Close modal on ESC key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setQrModalOpen(false);
+      }
+    };
+    if (qrModalOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [qrModalOpen]);
 
   // If visiting /marksheet without param, normalize URL to first student
   useEffect(() => {
@@ -109,6 +129,16 @@ export const MarksheetView: React.FC = () => {
     verify_url: `${window.location.origin}/verify?roll=${encodeURIComponent(student?.roll_no || currentRoll)}`
   };
   const qrString = JSON.stringify(qrPayload);
+
+  const handleCopyQrPayload = async () => {
+    try {
+      await navigator.clipboard.writeText(qrString);
+      setCopiedPayload(true);
+      setTimeout(() => setCopiedPayload(false), 2000);
+    } catch (e) {
+      console.warn('Clipboard write failed:', e);
+    }
+  };
 
   // Dynamic quick-pick buttons from the active cohort (first 6 students)
   const quickRolls = activeStudents.slice(0, 6).map(s => s.roll_no);
@@ -297,21 +327,32 @@ export const MarksheetView: React.FC = () => {
                 </div>
               </div>
 
-              {/* Dynamic Cryptographic QR Code */}
-              <div className="flex flex-col items-center justify-center p-3 bg-slate-50 border border-slate-200 rounded-2xl">
-                <div className="bg-white p-2 rounded-xl border border-slate-300 shadow-sm">
+              {/* Dynamic Cryptographic QR Code with Click-to-Enlarge Modal Trigger */}
+              <div
+                onClick={() => setQrModalOpen(true)}
+                className="group relative flex flex-col items-center justify-center p-3 bg-slate-50 hover:bg-amber-50/60 border-2 border-slate-200 hover:border-[#f59e0b] rounded-2xl cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md select-none"
+                title="Click to enlarge QR code for effortless camera scanning"
+              >
+                <div className="relative bg-white p-2 rounded-xl border border-slate-300 shadow-sm transition-transform duration-200 group-hover:scale-[1.03]">
                   <QRCodeSVG
                     value={qrString}
                     size={130}
                     level="M"
                     includeMargin={false}
                   />
+                  {/* Hover zoom overlay */}
+                  <div className="absolute inset-0 bg-[#0e1c19]/75 backdrop-blur-[1px] rounded-xl flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <Maximize2 className="w-6 h-6 text-[#fbbf24] animate-pulse" />
+                    <span className="text-[9px] font-bold text-white uppercase tracking-wider mt-1">Enlarge</span>
+                  </div>
                 </div>
+
                 <div className="mt-2 text-center">
-                  <span className="text-[9px] font-bold tracking-wider text-slate-700 block uppercase">
-                    Scan to Verify Proof
+                  <span className="inline-flex items-center space-x-1 text-[9px] font-bold tracking-wider text-slate-700 uppercase group-hover:text-[#d97706] transition-colors">
+                    <Maximize2 className="w-2.5 h-2.5 text-[#d97706]" />
+                    <span>Click to Enlarge</span>
                   </span>
-                  <span className="text-[8px] font-mono text-slate-500">TruGrade Digital Seal</span>
+                  <span className="text-[8px] font-mono text-slate-500 block">TruGrade Digital Seal</span>
                 </div>
               </div>
             </div>
@@ -418,6 +459,118 @@ export const MarksheetView: React.FC = () => {
                   Official Academic Seal
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ==========================================================
+          FULL-SCREEN ENLARGED QR CODE MODAL FOR EFFORTLESS SCANNING
+          ========================================================== */}
+      {qrModalOpen && student && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/85 backdrop-blur-md animate-fadeIn no-print"
+          onClick={() => setQrModalOpen(false)}
+        >
+          <div
+            className="relative w-full max-w-lg bg-[#0e1c19] text-white rounded-3xl border border-white/20 shadow-2xl p-6 sm:p-8 space-y-6 overflow-hidden max-h-[92vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Ambient gold glow in top right */}
+            <div className="absolute -top-16 -right-16 w-44 h-44 bg-[#fbbf24]/15 rounded-full blur-3xl pointer-events-none" />
+
+            {/* Modal Header */}
+            <div className="flex items-start justify-between pb-4 border-b border-white/10">
+              <div className="space-y-1">
+                <div className="inline-flex items-center space-x-2 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#fbbf24]/15 text-[#fbbf24] border border-[#fbbf24]/30">
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  <span>High-Resolution Digital Seal</span>
+                </div>
+                <h3 className="font-display text-xl sm:text-2xl font-black text-white">
+                  Cryptographic Marksheet QR
+                </h3>
+                <p className="text-xs text-pine-300">
+                  Enlarged for effortless autofocus with mobile cameras &amp; webcams
+                </p>
+              </div>
+
+              <button
+                onClick={() => setQrModalOpen(false)}
+                className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition active:scale-95"
+                aria-label="Close modal"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* High-Contrast Centered QR Code Stage */}
+            <div className="flex flex-col items-center justify-center">
+              <div className="p-4 sm:p-6 bg-white rounded-3xl shadow-2xl ring-4 ring-[#fbbf24]/40 flex items-center justify-center">
+                <QRCodeSVG
+                  value={qrString}
+                  size={300}
+                  level="M"
+                  includeMargin={true}
+                />
+              </div>
+
+              <div className="mt-3 text-center space-y-0.5">
+                <span className="text-[11px] font-mono text-[#fbbf24] font-semibold block">
+                  Scan with your mobile camera or the TruGrade Verifier
+                </span>
+                <span className="text-[10px] text-pine-300">
+                  Contains balanced Merkle sibling path &amp; root verification payload
+                </span>
+              </div>
+            </div>
+
+            {/* Student & Ledger Metadata Strip */}
+            <div className="bg-black/40 rounded-2xl p-4 border border-white/10 text-xs space-y-2 font-mono">
+              <div className="flex justify-between items-center text-slate-300">
+                <span className="text-pine-300 font-sans">Student:</span>
+                <span className="font-bold text-white font-sans">{student.student_name} ({student.roll_no})</span>
+              </div>
+              <div className="flex justify-between items-center text-slate-300">
+                <span className="text-pine-300 font-sans">SGPA / Result:</span>
+                <span className="font-bold text-[#fbbf24]">{student.gpa.toFixed(2)} &bull; {student.result_status}</span>
+              </div>
+              <div className="flex justify-between items-center text-slate-300">
+                <span className="text-pine-300 font-sans">Active Root Hash:</span>
+                <span className="text-emerald-400 text-[10px] truncate max-w-[200px]" title={qrPayload.root}>
+                  {qrPayload.root.substring(0, 16)}...{qrPayload.root.substring(qrPayload.root.length - 8)}
+                </span>
+              </div>
+            </div>
+
+            {/* Modal Actions */}
+            <div className="flex flex-wrap items-center gap-3 pt-1">
+              <button
+                onClick={handleCopyQrPayload}
+                className="flex-1 btn-pill-glass py-3 px-4 text-xs font-semibold flex items-center justify-center space-x-2 active:scale-95"
+              >
+                {copiedPayload ? (
+                  <>
+                    <Check className="w-4 h-4 text-emerald-400" />
+                    <span className="text-emerald-400">Copied Raw JSON!</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-4 h-4 text-[#fbbf24]" />
+                    <span>Copy QR Payload (JSON)</span>
+                  </>
+                )}
+              </button>
+
+              <button
+                onClick={() => {
+                  setQrModalOpen(false);
+                  navigate(`/verify?roll=${student.roll_no}`);
+                }}
+                className="flex-1 btn-pill-white py-3 px-4 text-xs font-bold flex items-center justify-center space-x-2 active:scale-95"
+              >
+                <ShieldCheck className="w-4 h-4 text-[#0e1c19]" />
+                <span>Verify in Portal</span>
+              </button>
             </div>
           </div>
         </div>

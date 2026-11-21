@@ -27,6 +27,8 @@ const AppContent: React.FC = () => {
       <main className="relative z-10 flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/portal" element={<Navigate to="/" replace />} />
+          <Route path="/index.html" element={<Navigate to="/" replace />} />
           <Route path="/admin" element={<AdminPublish />} />
           <Route path="/marksheet" element={<MarksheetView />} />
           <Route path="/marksheet/:roll_no" element={<MarksheetView />} />
